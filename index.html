@@ -9,14 +9,14 @@
     
     <style>
         :root {
-            --primary: #1e90ff;
-            --primary-glow: rgba(30, 144, 255, 0.4);
+            --primary: #00d2ff;
+            --primary-glow: rgba(0, 210, 255, 0.4);
             --bg-dark: #020205;
-            --card-bg: rgba(7, 7, 10, 0.96);
+            --card-bg: rgba(7, 7, 15, 0.9);
             --accent-green: #00ff88;
             --accent-red: #ff4d4d;
             --accent-cyan: #00bcd4;
-            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            --transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -31,7 +31,7 @@
             justify-content: center;
             padding: 20px;
             overflow-x: hidden;
-            perspective: 1500px;
+            perspective: 2000px;
         }
 
         #hero-canvas {
@@ -41,136 +41,181 @@
             pointer-events: none;
         }
 
-        /* --- GŁÓWNA KARTA --- */
+        /* --- GŁÓWNA KARTA Z EFEKTEM GLASSMORPHISM --- */
         .main-card {
             background: var(--card-bg);
-            backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 40px;
-            padding: 50px;
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            padding: 60px;
             width: 100%;
-            max-width: 1100px;
+            max-width: 1200px;
             display: grid;
             grid-template-columns: 1.2fr 1.8fr;
-            gap: 50px;
-            box-shadow: 0 30px 100px rgba(0,0,0,0.7);
+            gap: 60px;
+            box-shadow: 0 50px 150px rgba(0,0,0,0.9), inset 0 0 20px rgba(255,255,255,0.02);
             position: relative;
             transform-style: preserve-3d;
-            transition: transform 0.6s ease-out;
+            transition: transform 0.2s ease-out;
+        }
+
+        /* Dekoracyjne ruszające się paski (Flowing Lines) */
+        .main-card::before {
+            content: '';
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(45deg, transparent, var(--primary), transparent, var(--accent-cyan), transparent);
+            background-size: 400% 400%;
+            z-index: -1;
+            border-radius: 52px;
+            animation: borderFlow 8s linear infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes borderFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         /* --- LEWA STRONA --- */
-        .left-side { border-right: 1px solid rgba(255,255,255,0.08); padding-right: 20px; text-align: center; }
+        .left-side { border-right: 1px solid rgba(255,255,255,0.05); padding-right: 30px; text-align: center; }
         
+        .logo-container { position: relative; display: inline-block; margin-bottom: 20px; }
         .server-logo { 
-            max-width: 150px; 
-            filter: drop-shadow(0 0 15px var(--primary-glow)); 
-            margin-bottom: 10px;
-            transition: var(--transition);
+            max-width: 170px; 
+            filter: drop-shadow(0 0 25px var(--primary-glow)); 
+            animation: float 4s ease-in-out infinite;
         }
 
-        h1 { font-size: 2.8rem; color: var(--primary); font-weight: 900; letter-spacing: -1px; margin-bottom: 20px; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        h1 { font-size: 3.2rem; background: linear-gradient(to bottom, #fff, #666); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; letter-spacing: -2px; margin-bottom: 25px; }
 
         .copy-ip {
-            background: var(--primary);
-            color: white; padding: 18px; border-radius: 15px; font-weight: 900; 
+            background: linear-gradient(135deg, var(--primary), #0055ff);
+            color: white; padding: 22px; border-radius: 20px; font-weight: 900; 
             cursor: pointer; text-align: center;
             transition: var(--transition);
-            box-shadow: 0 4px 15px rgba(30, 144, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 210, 255, 0.3);
             border: none;
             width: 100%;
-            margin-bottom: 20px;
-        }
-        .copy-ip:hover { 
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px var(--primary-glow);
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            overflow: hidden;
+            position: relative;
         }
 
-        .section-label { font-size: 0.65rem; color: #555; letter-spacing: 2px; text-transform: uppercase; font-weight: 900; margin: 25px 0 12px 0; text-align: left; }
-
-        /* --- WYDAJNOŚĆ --- */
-        .perf-panel { background: rgba(255,255,255,0.02); padding: 15px; border-radius: 20px; text-align: left; }
-        .perf-row { display: flex; justify-content: space-between; font-size: 0.6rem; font-weight: 800; margin-bottom: 5px; color: #aaa; }
-        .perf-bar { height: 5px; background: rgba(255,255,255,0.05); border-radius: 10px; margin-bottom: 15px; overflow: hidden; }
-        .perf-fill { height: 100%; background: var(--primary); box-shadow: 0 0 10px var(--primary); }
-
-        /* --- PEŁNA ADMINISTRACJA --- */
-        .admins-grid { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 10px; 
-            text-align: left;
+        .copy-ip:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 15px 40px var(--primary-glow); }
+        
+        /* Połysk na przycisku */
+        .copy-ip::after {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
         }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .section-label { font-size: 0.7rem; color: #444; letter-spacing: 4px; text-transform: uppercase; font-weight: 900; margin: 30px 0 15px 0; text-align: left; border-left: 3px solid var(--primary); padding-left: 10px; }
+
+        /* --- DYNAMICZNE PASKI PERF --- */
+        .perf-panel { background: rgba(0,0,0,0.3); padding: 20px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.03); }
+        .perf-row { display: flex; justify-content: space-between; font-size: 0.65rem; font-weight: 900; margin-bottom: 8px; color: #888; }
+        .perf-bar { height: 6px; background: rgba(255,255,255,0.03); border-radius: 10px; margin-bottom: 18px; overflow: hidden; position: relative; }
+        .perf-fill { 
+            height: 100%; 
+            background: linear-gradient(90deg, var(--primary), var(--accent-cyan)); 
+            box-shadow: 0 0 15px var(--primary);
+            transition: width 2s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+            position: relative;
+        }
+
+        /* --- ADMINI - NOWY WYGLĄD --- */
+        .admins-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .admin-card {
-            background: rgba(255, 255, 255, 0.03); 
-            padding: 10px; 
-            border-radius: 12px; 
+            background: rgba(255, 255, 255, 0.02); 
+            padding: 12px; 
+            border-radius: 18px; 
             display: flex; 
             align-items: center; 
-            gap: 10px; 
+            gap: 12px; 
             transition: var(--transition);
-            border: 1px solid rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
         }
         .admin-card:hover {
-            background: rgba(30, 144, 255, 0.08);
+            background: rgba(255, 255, 255, 0.05);
             border-color: var(--primary);
-            transform: scale(1.02);
+            transform: translateX(5px);
         }
         .avatar { 
-            width: 32px; 
-            height: 32px; 
-            border-radius: 8px; 
-            background: #111;
-            border: 1px solid rgba(30, 144, 255, 0.3);
+            width: 40px; height: 40px; border-radius: 12px; 
+            background: #000; padding: 2px; border: 1px solid rgba(255,255,255,0.1);
         }
-        .admin-info p { font-size: 0.75rem; font-weight: 800; color: #fff; }
-        .admin-info span { font-size: 0.55rem; color: var(--primary); text-transform: uppercase; font-weight: 900; display: block; }
 
         /* --- PRAWA STRONA --- */
-        .right-side { display: flex; flex-direction: column; justify-content: center; }
-        .status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .status-box { 
-            background: rgba(255,255,255,0.03); padding: 15px; border-radius: 15px; 
-            display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800;
+            background: rgba(255,255,255,0.02); padding: 25px; border-radius: 25px; 
+            border: 1px solid rgba(255,255,255,0.05); font-size: 0.9rem; font-weight: 900;
+            text-align: center;
         }
         
-        .pulse { width: 8px; height: 8px; background: var(--accent-green); border-radius: 50%; margin-right: 10px; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+        .pulse { width: 10px; height: 10px; background: var(--accent-green); border-radius: 50%; display: inline-block; margin-right: 10px; box-shadow: 0 0 15px var(--accent-green); }
 
-        .mode { 
-            padding: 20px; border-radius: 15px; font-weight: 900; text-align: center; 
-            background: rgba(255,77,77,0.05); border: 1px solid var(--accent-red); color: var(--accent-red);
+        .mode-box { 
+            padding: 30px; border-radius: 25px; font-weight: 900; text-align: center; 
+            background: linear-gradient(135deg, rgba(255,77,77,0.1), rgba(255,0,0,0.05));
+            border: 1px solid rgba(255,77,77,0.3); color: var(--accent-red);
+            font-size: 1.2rem; letter-spacing: 1px;
+            position: relative; overflow: hidden;
         }
 
         .rule-item { 
-            display: flex; align-items: center; gap: 15px; 
-            background: rgba(255,255,255,0.02); padding: 12px 20px; border-radius: 15px; margin-bottom: 8px; font-size: 0.8rem;
+            display: flex; align-items: center; gap: 20px; 
+            background: rgba(255,255,255,0.01); padding: 18px 25px; border-radius: 20px; 
+            margin-bottom: 12px; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.03);
+            transition: 0.3s;
         }
-        .rule-icon { color: var(--primary); font-weight: 900; }
+        .rule-item:hover { background: rgba(255,255,255,0.04); transform: scale(1.02); }
+        .rule-icon { color: var(--primary); font-size: 1.1rem; font-weight: 900; opacity: 0.5; }
 
-        /* --- PRZYCISKI DOLNE --- */
-        .btn-row { display: flex; gap: 12px; margin-top: 20px; }
+        /* --- PRZYCISKI MODERNE --- */
+        .btn-row { display: flex; gap: 15px; margin-top: 30px; }
         .btn { 
-            flex: 1; text-decoration: none; color: white; padding: 18px; border-radius: 15px; 
-            font-weight: 900; text-align: center; transition: var(--transition); font-size: 0.7rem;
-            text-transform: uppercase; letter-spacing: 1px;
+            flex: 1; text-decoration: none; color: white; padding: 20px; border-radius: 20px; 
+            font-weight: 900; text-align: center; transition: var(--transition); font-size: 0.75rem;
+            text-transform: uppercase; letter-spacing: 1px; border: 1px solid rgba(255,255,255,0.1);
         }
         .btn-dc { background: #5865F2; }
         .btn-shop { background: #ff9800; }
         .btn-rec { background: var(--accent-cyan); }
         
-        .btn:hover { transform: translateY(-5px); filter: brightness(1.1); }
+        .btn:hover { transform: translateY(-7px); box-shadow: 0 15px 30px rgba(0,0,0,0.5); border-color: rgba(255,255,255,0.3); }
 
         #notif {
-            position: fixed; top: 30px; background: var(--accent-green); color: #020205;
-            padding: 12px 30px; border-radius: 50px; font-weight: 900; display: none; z-index: 1000;
+            position: fixed; bottom: 40px; background: var(--accent-green); color: #000;
+            padding: 15px 40px; border-radius: 50px; font-weight: 900; display: none; 
+            z-index: 1000; box-shadow: 0 10px 40px rgba(0,255,136,0.4);
+            animation: slideIn 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
         }
 
+        @keyframes slideIn { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
         @media (max-width: 950px) {
-            body { overflow-y: auto; align-items: flex-start; }
-            .main-card { grid-template-columns: 1fr; padding: 30px; margin: 20px 0; }
-            .left-side { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 30px; padding-right: 0; }
-            .btn-row { flex-direction: column; }
+            .main-card { grid-template-columns: 1fr; padding: 30px; border-radius: 30px; }
+            .left-side { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 40px; padding-right: 0; }
+            h1 { font-size: 2.5rem; }
         }
     </style>
 </head>
@@ -180,19 +225,21 @@
 
     <div class="main-card" id="card">
         <div class="left-side">
-            <img src="logo.png" alt="Logo" class="server-logo">
+            <div class="logo-container">
+                <img src="logo.png" alt="Logo" class="server-logo">
+            </div>
             <h1>DuceMC.PL</h1>
-            <button class="copy-ip" onclick="copyIP()">SKOPIUJ IP</button>
+            <button class="copy-ip" onclick="copyIP()" id="ipBtn">SKOPIUJ IP SERWERA</button>
             
-            <p class="section-label">LIVE PERFORMANCE</p>
+            <p class="section-label">SYSTEM PERFORMANCE</p>
             <div class="perf-panel">
-                <div class="perf-row"><span>SYSTEM LOAD</span><span>12%</span></div>
-                <div class="perf-bar"><div class="perf-fill" style="width: 12%;"></div></div>
-                <div class="perf-row"><span>PING (PL)</span><span>18ms</span></div>
-                <div class="perf-bar"><div class="perf-fill" style="width: 15%; background: var(--accent-green);"></div></div>
+                <div class="perf-row"><span>CPU USAGE</span><span id="cpu-val">12%</span></div>
+                <div class="perf-bar"><div class="perf-fill" id="cpu-bar" style="width: 12%;"></div></div>
+                <div class="perf-row"><span>MEMORY</span><span id="ram-val">2.4GB</span></div>
+                <div class="perf-bar"><div class="perf-fill" id="ram-bar" style="width: 45%; background: var(--accent-cyan);"></div></div>
             </div>
 
-            <p class="section-label">EKIPA SERWERA</p>
+            <p class="section-label">CORE ADMINISTRATION</p>
             <div class="admins-grid">
                 <div class="admin-card">
                     <img src="https://cravatar.eu/avatar/RdstoneBrilliant/64.png" class="avatar">
@@ -208,51 +255,64 @@
                 </div>
                 <div class="admin-card">
                     <img src="https://cravatar.eu/avatar/gracz900002/64.png" class="avatar">
-                    <div class="admin-info"><span>MODERATOR</span><p>gracz900</p></div>
+                    <div class="admin-info"><span>MOD</span><p>gracz900</p></div>
                 </div>
             </div>
         </div>
 
         <div class="right-side">
-            <p class="section-label">SYSTEM STATUS</p>
+            <p class="section-label">NETWORK STATUS</p>
             <div class="status-grid">
-                <div class="status-box"><span class="pulse"></span> ONLINE</div>
-                <div class="status-box" style="color: var(--primary)">1.8 - 1.21</div>
+                <div class="status-box"><span class="pulse"></span> SERWER ONLINE</div>
+                <div class="status-box" style="color: var(--primary)">WERSJA 1.8 - 1.21</div>
             </div>
 
-            <p class="section-label">DOSTĘPNE TRYBY</p>
-            <div class="mode">⚔️ DUELS 1VS1 (BETA)</div>
+            <p class="section-label">ACTIVE GAME MODES</p>
+            <div class="mode-box">
+                <div style="font-size: 0.7rem; opacity: 0.6; margin-bottom: 5px;">NAJBARDZIEJ DOPRACOWANE</div>
+                ⚔️ DUELS 1VS1 (BETA)
+            </div>
 
-            <p class="section-label">REGULAMIN W SKRÓCIE</p>
-            <div class="rule-item"><span class="rule-icon">01</span> Zakaz wspomagaczy i makr.</div>
-            <div class="rule-item"><span class="rule-icon">02</span> Szanuj graczy i administrację.</div>
-            <div class="rule-item"><span class="rule-icon">03</span> Zakaz reklamowania serwerów.</div>
+            <p class="section-label">SERVER GUIDELINES</p>
+            <div class="rule-item">
+                <span class="rule-icon">01</span> 
+                <span>Absolutny zakaz używania wspomagaczy (Cheaty/Makra).</span>
+            </div>
+            <div class="rule-item">
+                <span class="rule-icon">02</span> 
+                <span>Kultura osobista na czacie oraz szacunek do innych.</span>
+            </div>
+            <div class="rule-item">
+                <span class="rule-icon">03</span> 
+                <span>Wszelkie błędy zgłaszaj natychmiast administracji.</span>
+            </div>
 
             <div class="btn-row">
                 <a href="https://dc.ducemc.pl" target="_blank" class="btn btn-dc">Discord</a>
-                <a href="sklep.html" class="btn btn-shop">Sklep</a>
+                <a href="sklep.html" class="btn btn-shop">Sklep Premium</a>
                 <a href="rekrutacja.html" class="btn btn-rec">Rekrutacja</a>
             </div>
         </div>
     </div>
 
-    <div id="notif">ADRES IP SKOPIOWANY!</div>
+    <div id="notif">COPIED TO CLIPBOARD!</div>
 
     <script>
+        // GWIAZDY 3D W TLE
         const canvas = document.getElementById('hero-canvas');
         const ctx = canvas.getContext('2d');
-        const card = document.getElementById('card');
         let stars = [];
 
         function init() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             stars = [];
-            for(let i=0; i<150; i++) {
+            for(let i=0; i<200; i++) {
                 stars.push({
                     x: Math.random() * canvas.width - canvas.width/2,
                     y: Math.random() * canvas.height - canvas.height/2,
-                    z: Math.random() * canvas.width
+                    z: Math.random() * canvas.width,
+                    o: Math.random()
                 });
             }
         }
@@ -263,35 +323,48 @@
             ctx.save(); 
             ctx.translate(canvas.width/2, canvas.height/2);
             for(let s of stars) {
-                s.z -= 0.8;
+                s.z -= 1.5;
                 if(s.z <= 0) s.z = canvas.width;
                 let px = s.x / (s.z / canvas.width);
                 let py = s.y / (s.z / canvas.width);
-                let size = (1 - s.z / canvas.width) * 1.5;
+                let size = (1 - s.z / canvas.width) * 2;
                 ctx.beginPath(); 
                 ctx.arc(px, py, size, 0, Math.PI*2);
-                ctx.fillStyle = `rgba(30, 144, 255, ${0.6 - s.z/canvas.width})`;
+                ctx.fillStyle = `rgba(0, 210, 255, ${s.o})`;
                 ctx.fill();
             }
             ctx.restore();
             requestAnimationFrame(draw);
         }
 
-        window.addEventListener('mousemove', (e) => {
-            let xAxis = (window.innerWidth / 2 - e.pageX) / 150;
-            let yAxis = (window.innerHeight / 2 - e.pageY) / 150;
-            card.style.transform = `rotateY(${xAxis}deg) rotateX(${-yAxis}deg)`;
-        });
+        // DYNAMICZNE STATYSTYKI (Ruszające się paski)
+        setInterval(() => {
+            const cpu = Math.floor(Math.random() * (15 - 5 + 1)) + 5;
+            const ram = (Math.random() * (2.8 - 2.1) + 2.1).toFixed(1);
+            document.getElementById('cpu-val').innerText = cpu + "%";
+            document.getElementById('cpu-bar').style.width = cpu + "%";
+            document.getElementById('ram-val').innerText = ram + "GB";
+            document.getElementById('ram-bar').style.width = (ram / 8 * 100) + "%";
+        }, 3000);
 
-        window.addEventListener('mouseleave', () => {
-            card.style.transform = `rotateY(0deg) rotateX(0deg)`;
+        // PARALLAX EFFECT 3D
+        const card = document.getElementById('card');
+        window.addEventListener('mousemove', (e) => {
+            let xAxis = (window.innerWidth / 2 - e.pageX) / 40;
+            let yAxis = (window.innerHeight / 2 - e.pageY) / 40;
+            card.style.transform = `rotateY(${xAxis}deg) rotateX(${-yAxis}deg)`;
         });
 
         function copyIP() {
             navigator.clipboard.writeText("DUCEMC.PL");
             const n = document.getElementById('notif');
             n.style.display = 'block';
-            setTimeout(() => { n.style.display = 'none'; }, 2000);
+            const btn = document.getElementById('ipBtn');
+            btn.innerText = "SKOPIOWANO!";
+            setTimeout(() => { 
+                n.style.display = 'none'; 
+                btn.innerText = "SKOPIUJ IP SERWERA";
+            }, 2000);
         }
 
         window.addEventListener('resize', init);
