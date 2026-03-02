@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DuceMC.PL | TikTok</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #02060a;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            padding: 50px 0;
+        }
+        .header { text-align: center; margin-bottom: 50px; }
+        .header h1 { font-size: 3rem; background: linear-gradient(90deg, #ff0050, #00f2ea); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .video-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: 0.3s;
+        }
+        .video-card:hover { transform: scale(1.02); border-color: #ff0050; }
+        
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            opacity: 0.6;
+        }
+        .back-btn:hover { opacity: 1; }
+        
+        /* Styl dla iframe TikToka */
+        iframe {
+            width: 100%;
+            border-radius: 15px;
+            border: none;
+            aspect-ratio: 9/16;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>NASZ TIKTOK</h1>
+            <p>Najnowsze klipy i zapowiedzi</p>
+            <a href="index.html" class="back-btn">← WRÓĆ DO STRONY</a>
+        </div>
+
+        <div class="video-grid">
+            <div class="video-card">
+                <div style="height: 500px; background: #000; border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+                    <span style="opacity: 0.3;">MIEJSCE NA FILM 1</span>
+                </div>
+            </div>
+            
+            <div class="video-card">
+                <div style="height: 500px; background: #000; border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+                    <span style="opacity: 0.3;">MIEJSCE NA FILM 2</span>
+                </div>
+            </div>
+
+            <div class="video-card">
+                <div style="height: 500px; background: #000; border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+                    <span style="opacity: 0.3;">MIEJSCE NA FILM 3</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
