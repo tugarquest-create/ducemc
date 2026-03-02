@@ -3,280 +3,248 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DuceMC.PL | Officjalna Strona</title>
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Montserrat:wght@300;600;900&display=swap" rel="stylesheet">
+    <title>DuceMC.PL | The Next Era</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --primary: #00f2ff;
-            --shop: #ffaa00;
-            --discord: #5865f2;
-            --rec: #00ff88;
-            --bg: #020205;
-            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --accent: #ff0055; /* Hot Pink/Crimson */
+            --secondary: #7000ff; /* Electric Purple */
+            --bg-start: #0a0510;
+            --bg-end: #1a0a2e;
+            --text-glow: 0 0 20px rgba(255, 0, 85, 0.6);
+            --glass: rgba(255, 255, 255, 0.03);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        
         body {
-            background: var(--bg);
+            background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
             color: white;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Space Grotesk', sans-serif;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
-            perspective: 2000px;
+            overflow-x: hidden;
+            perspective: 1500px;
         }
 
-        /* --- BACKGROUND ANIMATION --- */
-        .bg-gradient {
+        /* --- ANIMOWANA TAPETA --- */
+        #canvas-web {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(0, 242, 255, 0.15) 0%, transparent 50%);
-            z-index: -1;
+            z-index: -1; opacity: 0.5;
+            background: radial-gradient(circle at 50% 50%, #2a0a4a 0%, transparent 80%);
         }
 
-        canvas { position: fixed; top: 0; left: 0; z-index: -2; opacity: 0.4; }
-
-        /* --- MAIN PORTAL --- */
-        .portal {
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(40px);
+        /* --- GŁÓWNY KONTENER --- */
+        .master-panel {
+            background: rgba(15, 10, 25, 0.7);
+            backdrop-filter: blur(50px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 60px;
-            padding: 80px 60px;
+            border-radius: 40px;
+            padding: 60px;
             width: 90%;
-            max-width: 1200px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 50px;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+            max-width: 1000px;
+            text-align: center;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.8);
             transform-style: preserve-3d;
-            transition: transform 0.1s;
+            animation: panelEntrance 1.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* --- LOGO SECTION --- */
-        .logo-container {
-            position: relative;
-            transform: translateZ(50px);
-        }
-        .logo-main {
-            width: 180px;
-            filter: drop-shadow(0 0 30px var(--primary));
-            animation: float 5s ease-in-out infinite;
-            z-index: 2;
-            position: relative;
-        }
-        .logo-aura {
-            position: absolute; top: 50%; left: 50%;
-            width: 250px; height: 250px;
-            background: var(--primary);
-            filter: blur(100px);
-            opacity: 0.3;
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
+        @keyframes panelEntrance {
+            from { opacity: 0; transform: scale(0.8) rotateX(20deg); }
+            to { opacity: 1; transform: scale(1) rotateX(0); }
         }
 
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        /* --- LOGO I TYTUŁ --- */
+        .logo-box { position: relative; display: inline-block; margin-bottom: 20px; }
+        .logo-img { width: 140px; animation: hoverAni 4s ease-in-out infinite; z-index: 5; position: relative; }
+        
+        @keyframes hoverAni { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-15px) scale(1.05); } }
 
-        .server-name {
+        .glitch-title {
             font-family: 'Syncopate', sans-serif;
-            font-size: 4.5rem;
+            font-size: 5rem;
             font-weight: 700;
-            letter-spacing: -5px;
-            background: linear-gradient(to bottom, #fff 30%, #444);
+            text-transform: uppercase;
+            letter-spacing: -6px;
+            position: relative;
+            background: linear-gradient(to bottom, #fff, #888);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-top: -20px;
+            margin-bottom: 40px;
+        }
+        .glitch-title::after {
+            content: 'DUCEMC';
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: transparent; -webkit-background-clip: text;
+            color: var(--accent); opacity: 0.3; transform: translate(-4px, 2px); z-index: -1;
         }
 
-        /* --- HYPER BUTTONS GRID --- */
-        .nav-grid {
+        /* --- PRZYCISKI - NOWY DESIGN --- */
+        .action-container {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
-            width: 100%;
+            margin-top: 40px;
         }
 
-        .nav-btn {
+        .cyber-btn {
             position: relative;
-            padding: 30px 20px;
-            border-radius: 25px;
-            text-decoration: none;
-            color: white;
-            font-weight: 900;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            text-align: center;
-            background: rgba(255, 255, 255, 0.03);
+            background: var(--glass);
             border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 20px;
+            text-decoration: none;
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
             overflow: hidden;
-            transition: var(--transition);
+            transition: all 0.4s;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
         }
 
-        .nav-btn i { font-size: 1.5rem; transition: var(--transition); }
+        .cyber-btn i { font-size: 1.8rem; margin-bottom: 5px; opacity: 0.7; transition: 0.4s; }
 
-        /* Color Themes & Light Animations */
-        .btn-shop:hover { border-color: var(--shop); box-shadow: 0 0 40px rgba(255, 170, 0, 0.3); background: rgba(255, 170, 0, 0.05); }
-        .btn-rec:hover { border-color: var(--rec); box-shadow: 0 0 40px rgba(0, 255, 136, 0.3); background: rgba(0, 255, 136, 0.05); }
-        .btn-reg:hover { border-color: var(--primary); box-shadow: 0 0 40px rgba(0, 242, 255, 0.3); background: rgba(0, 242, 255, 0.05); }
-        .btn-dc:hover { border-color: var(--discord); box-shadow: 0 0 40px rgba(88, 101, 242, 0.3); background: rgba(88, 101, 242, 0.05); }
+        /* Unikalne kolory dla przycisków */
+        .btn-sklep:hover { color: #ffaa00; border-color: #ffaa00; box-shadow: 0 0 30px rgba(255, 170, 0, 0.2); }
+        .btn-rek:hover { color: var(--accent); border-color: var(--accent); box-shadow: 0 0 30px rgba(255, 0, 85, 0.2); }
+        .btn-reg:hover { color: var(--secondary); border-color: var(--secondary); box-shadow: 0 0 30px rgba(112, 0, 255, 0.2); }
+        .btn-dc:hover { color: #5865f2; border-color: #5865f2; box-shadow: 0 0 30px rgba(88, 101, 242, 0.2); }
 
-        .nav-btn::before {
-            content: '';
-            position: absolute; top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: conic-gradient(transparent, transparent, transparent, rgba(255,255,255,0.1));
-            animation: rotate 4s linear infinite;
-            opacity: 0;
-            transition: 0.3s;
-        }
-        .nav-btn:hover::before { opacity: 1; }
-        @keyframes rotate { to { transform: rotate(360deg); } }
+        .cyber-btn:hover i { transform: scale(1.2) translateY(-5px); opacity: 1; }
 
-        /* --- IP PANEL --- */
-        .ip-bar {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px dashed var(--primary);
-            padding: 15px 40px;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
+        /* --- IP BAR --- */
+        .ip-wrapper {
+            margin-top: 50px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px 40px;
+            border-radius: 100px;
+            display: inline-flex;
             align-items: center;
             gap: 20px;
+            cursor: pointer;
+            border: 1px solid var(--accent);
+            box-shadow: 0 0 20px rgba(255, 0, 85, 0.1);
+            transition: 0.3s;
         }
-        .ip-bar:hover { background: var(--primary); color: black; transform: scale(1.05); }
-        .ip-bar .ip-text { font-family: 'Syncopate', sans-serif; font-weight: 700; letter-spacing: 2px; }
+        .ip-wrapper:hover { transform: scale(1.05); box-shadow: 0 0 40px rgba(255, 0, 85, 0.3); }
+        .ip-val { font-family: 'Syncopate', sans-serif; font-size: 1.4rem; color: #fff; }
+        .copy-tag { font-size: 0.7rem; font-weight: 900; background: var(--accent); color: white; padding: 4px 10px; border-radius: 5px; }
 
-        /* --- STATUS DOT --- */
-        .status {
-            display: flex; align-items: center; gap: 8px; font-size: 0.7rem; font-weight: 900;
-            color: var(--rec); text-transform: uppercase;
+        /* --- NOTIFICATION --- */
+        #toast {
+            position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%);
+            background: var(--accent); color: white; padding: 15px 40px;
+            border-radius: 50px; font-weight: 900; transition: 0.5s;
         }
-        .dot { width: 8px; height: 8px; background: var(--rec); border-radius: 50%; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(0, 255, 136, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0); } }
+        #toast.active { bottom: 40px; }
 
-        #notif {
-            position: fixed; bottom: 30px; background: white; color: black;
-            padding: 12px 30px; border-radius: 40px; font-weight: 900; font-size: 0.8rem;
-            display: none; animation: slideUp 0.3s ease-out;
-        }
-        @keyframes slideUp { from { transform: translateY(100px); } to { transform: translateY(0); } }
-
-        @media (max-width: 900px) {
-            .nav-grid { grid-template-columns: 1fr 1fr; }
-            .server-name { font-size: 2.5rem; letter-spacing: -2px; }
-            .portal { padding: 40px 20px; }
+        @media (max-width: 768px) {
+            .glitch-title { font-size: 2.8rem; letter-spacing: -2px; }
+            .master-panel { padding: 30px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-gradient"></div>
-    <canvas id="stars"></canvas>
+    <canvas id="canvas-web"></canvas>
 
-    <div class="portal" id="portal">
-        <div class="logo-container">
-            <div class="logo-aura"></div>
-            <img src="logo.png" alt="DuceMC" class="logo-main">
+    <div class="master-panel" id="panel">
+        <div class="logo-box">
+            <img src="logo.png" alt="DuceMC" class="logo-img">
         </div>
 
-        <h1 class="server-name">DUCEMC.PL</h1>
+        <h1 class="glitch-title">DUCEMC</h1>
+        
+        <p style="text-transform: uppercase; letter-spacing: 5px; font-size: 0.7rem; opacity: 0.5; margin-top: -30px; margin-bottom: 40px;">Elite Duel Experience</p>
 
-        <div class="status">
-            <div class="dot"></div> Serwer jest Online: 124 graczy
-        </div>
-
-        <div class="nav-grid">
-            <a href="sklep.html" class="nav-btn btn-shop">
-                <span>🛒</span>
-                SKLEP PREMIUM
+        <div class="action-container">
+            <a href="sklep.html" class="cyber-btn btn-sklep">
+                <i>🛒</i>
+                <span>Sklep</span>
             </a>
-            <a href="rekrutacja.html" class="nav-btn btn-rec">
-                <span>✉️</span>
-                REKRUTACJA
+            <a href="rekrutacja.html" class="cyber-btn btn-rek">
+                <i>✉️</i>
+                <span>Rekrutacja</span>
             </a>
-            <a href="regulamin.html" class="nav-btn btn-reg">
-                <span>📜</span>
-                REGULAMIN
+            <a href="regulamin.html" class="cyber-btn btn-reg">
+                <i>📜</i>
+                <span>Regulamin</span>
             </a>
-            <a href="https://dc.ducemc.pl" class="nav-btn btn-dc">
-                <span>📱</span>
-                DISCORD
+            <a href="https://dc.ducemc.pl" class="cyber-btn btn-dc">
+                <i>📱</i>
+                <span>Discord</span>
             </a>
         </div>
 
-        <div class="ip-bar" onclick="copyIP()">
-            <span class="ip-text">IP: DUCEMC.PL</span>
-            <span style="font-size: 0.6rem; opacity: 0.6;">KLIKNIJ ABY SKOPIOWAĆ</span>
+        <div class="ip-wrapper" onclick="copyIP()">
+            <span class="ip-val">DUCEMC.PL</span>
+            <span class="copy-tag">KOPIUJ IP</span>
         </div>
     </div>
 
-    <div id="notif">IP SKOPIOWANE DO SCHOWKA!</div>
+    <div id="toast">SYSTEM: IP SKOPIOWANE!</div>
 
     <script>
-        const portal = document.getElementById('portal');
-        const bg = document.querySelector('.bg-gradient');
-
-        // Dynamiczne światło tła i ruch 3D
+        const panel = document.getElementById('panel');
+        
+        // Dynamiczna interakcja z panelem (3D Tilt)
         window.addEventListener('mousemove', (e) => {
-            const x = (e.clientX / window.innerWidth) * 100;
-            const y = (e.clientY / window.innerHeight) * 100;
-            bg.style.setProperty('--x', x + '%');
-            bg.style.setProperty('--y', y + '%');
-
-            const rotateX = (window.innerHeight / 2 - e.clientY) / 50;
-            const rotateY = (window.innerWidth / 2 - e.clientX) / 50;
-            portal.style.transform = `rotateX(${rotateX}deg) rotateY(${-rotateY}deg)`;
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 40;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 40;
+            panel.style.transform = `rotateY(${xAxis}deg) rotateX(${-yAxis}deg)`;
         });
 
-        function copyIP() {
-            navigator.clipboard.writeText("DUCEMC.PL");
-            const n = document.getElementById('notif');
-            n.style.display = 'block';
-            setTimeout(() => n.style.display = 'none', 2500);
-        }
-
-        // Gwiazdy w tle
-        const canvas = document.getElementById('stars');
+        // Tło - Animowane sześciany i siatka
+        const canvas = document.getElementById('canvas-web');
         const ctx = canvas.getContext('2d');
-        let points = [];
+        let particles = [];
 
         function init() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            points = [];
-            for(let i=0; i<100; i++) {
-                points.push({
+            particles = [];
+            for(let i=0; i<60; i++) {
+                particles.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height,
-                    v: Math.random() * 0.5 + 0.2
+                    size: Math.random() * 2 + 1,
+                    speed: Math.random() * 0.5 + 0.1,
+                    opacity: Math.random() * 0.5
                 });
             }
         }
 
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "rgba(0, 242, 255, 0.3)";
-            points.forEach(p => {
-                p.y -= p.v;
+            particles.forEach(p => {
+                p.y -= p.speed;
                 if(p.y < 0) p.y = canvas.height;
+                ctx.fillStyle = `rgba(255, 0, 85, ${p.opacity})`;
                 ctx.beginPath();
-                ctx.arc(p.x, p.y, 1, 0, Math.PI*2);
+                ctx.rect(p.x, p.y, p.size, p.size); // Rysujemy małe kwadraciki/pixele
                 ctx.fill();
             });
             requestAnimationFrame(animate);
         }
 
+        function copyIP() {
+            navigator.clipboard.writeText("DUCEMC.PL");
+            const t = document.getElementById('toast');
+            t.classList.add('active');
+            setTimeout(() => t.classList.remove('active'), 2500);
+        }
+
+        window.addEventListener('resize', init);
         init();
         animate();
-        window.onresize = init;
     </script>
 </body>
 </html>
