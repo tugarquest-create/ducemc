@@ -3,222 +3,230 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DuceMC.PL | Elite Minecraft Network</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>DuceMC.PL | Doładuj Portfel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #00d2ff;
             --accent: #3a7bd5;
-            --bg-dark: #050a0f;
-            --glass: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.08);
+            --bg-dark: #03080f;
+            --glass: rgba(10, 25, 47, 0.85);
+            --border: rgba(0, 210, 255, 0.2);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; cursor: default; }
 
         body {
             font-family: 'Montserrat', sans-serif;
-            background: var(--bg-dark);
-            background: radial-gradient(circle at top, #0a192f 0%, #050a0f 100%);
+            background-color: var(--bg-dark);
             color: white;
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             overflow-x: hidden;
         }
 
-        /* TŁO: BĄBELKI I WODA */
-        #bubbles {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;
-            pointer-events: none;
+        .bg-image {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: url('pobrane (1).jpg') center/cover no-repeat;
+            filter: brightness(0.2) blur(5px);
+            z-index: -2;
         }
 
-        /* LAYOUT KART (Insp. CraftCube) */
-        .wrapper {
-            display: flex; gap: 25px; width: 95%; max-width: 1100px; z-index: 10;
-            transition: transform 0.2s ease-out;
+        #bubbles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 25px;
+            width: 95%;
+            max-width: 1100px;
+            z-index: 10;
         }
 
-        .card {
-            background: rgba(10, 25, 47, 0.7);
+        .glass-card {
+            background: var(--glass);
             backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 40px;
-            position: relative;
-            overflow: hidden;
+            border: 1px solid var(--border);
+            border-radius: 25px;
+            padding: 35px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
 
-        .card-main { flex: 1.2; text-align: center; }
-        .card-side { flex: 1.8; }
+        h2 { font-weight: 900; font-size: 1.5rem; margin-bottom: 20px; color: var(--primary); text-transform: uppercase; }
 
-        /* TEKST I LOGO */
-        .logo { width: 120px; filter: drop-shadow(0 0 20px var(--primary)); margin-bottom: 15px; }
-        
-        h1 { 
-            font-size: 3.2rem; font-weight: 900; letter-spacing: -1px;
-            background: linear-gradient(to bottom, #fff, var(--primary));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            animation: titleGlow 3s ease-in-out infinite alternate;
+        /* PORTFEL - GRID (Insp. CraftCube) */
+        .wallet-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
         }
 
-        @keyframes titleGlow { from { filter: drop-shadow(0 0 5px rgba(0,210,255,0.2)); } to { filter: drop-shadow(0 0 20px rgba(0,210,255,0.6)); } }
-
-        /* ELEMENTY Z CRAFTCUBE */
-        .online-tag {
-            display: inline-block; background: rgba(0, 210, 255, 0.1);
-            color: var(--primary); padding: 6px 15px; border-radius: 50px;
-            font-size: 0.7rem; font-weight: 700; margin-bottom: 15px;
-            border: 1px solid rgba(0, 210, 255, 0.2);
-        }
-
-        .nav-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-
-        .btn-action {
-            background: var(--glass); border: 1px solid var(--glass-border);
-            padding: 20px; border-radius: 18px; text-decoration: none; color: white;
-            transition: 0.3s; display: flex; flex-direction: column; align-items: center; gap: 10px;
-        }
-
-        .btn-action:hover {
-            background: rgba(0, 210, 255, 0.08);
-            border-color: var(--primary);
-            transform: translateY(-5px);
-        }
-
-        .ip-copy {
-            margin-top: 30px; background: var(--primary); color: #000;
-            padding: 15px; border-radius: 12px; font-weight: 900;
-            cursor: pointer; box-shadow: 0 10px 30px rgba(0, 210, 255, 0.3);
+        .wallet-option {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px 10px;
+            text-align: center;
+            cursor: pointer;
             transition: 0.3s;
         }
 
-        .ip-copy:hover { transform: scale(1.02); filter: brightness(1.1); }
-
-        /* OSTATNIE ZAKUPY (DOLNY PASEK) */
-        .recent-purchases {
-            margin-top: 40px; text-align: center; z-index: 10;
+        .wallet-option:hover, .wallet-option.active {
+            border-color: var(--primary);
+            background: rgba(0, 210, 255, 0.1);
+            transform: translateY(-3px);
         }
-        .heads-row { display: flex; gap: 10px; margin-top: 15px; opacity: 0.7; }
-        .head { width: 32px; height: 32px; border-radius: 6px; border: 1px solid var(--glass-border); }
 
-        /* NOTIF */
-        #notif {
-            position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
-            background: #fff; color: #000; padding: 15px 30px;
-            border-radius: 50px; font-weight: 800; transition: 0.5s; z-index: 1000;
+        .coin-icon { font-size: 1.8rem; display: block; margin-bottom: 10px; filter: drop-shadow(0 0 10px gold); }
+        .vpln-amount { font-weight: 900; font-size: 1.1rem; }
+
+        /* CUSTOM PRICE SECTION */
+        .custom-price-box {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
         }
-        #notif.active { top: 30px; }
 
-        @media (max-width: 900px) {
-            .wrapper { flex-direction: column; }
-            .nav-grid { grid-template-columns: 1fr; }
+        input[type=range] {
+            width: 100%;
+            margin: 20px 0;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        .price-display {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 800;
+        }
+
+        .btn-pay {
+            width: 100%;
+            margin-top: 25px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            color: white;
+            padding: 18px;
+            border-radius: 15px;
+            border: none;
+            font-weight: 900;
+            font-size: 1rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            box-shadow: 0 10px 20px rgba(0, 210, 255, 0.3);
+            transition: 0.3s;
+        }
+
+        .btn-pay:hover { filter: brightness(1.1); transform: scale(1.02); }
+
+        @media (max-width: 850px) {
+            .container { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
+    <div class="bg-image"></div>
     <canvas id="bubbles"></canvas>
 
-    <div class="wrapper" id="scene">
-        <div class="card card-main">
-            <div class="online-tag">● 142 GRACZY ONLINE</div>
-            <img src="logo.png" class="logo" onerror="this.style.display='none'">
-            <h1>DUCEMC.PL</h1>
-            <p style="opacity: 0.5; font-size: 0.8rem; margin: 15px 0;">INNOWACYJNA SIEĆ SERWERÓW</p>
+    <div class="container">
+        <div class="glass-card" style="text-align: center;">
+            <div style="font-size: 0.7rem; color: var(--primary); font-weight: 800; margin-bottom: 10px;">ZALOGOWANY JAKO:</div>
+            <img src="https://cravatar.eu/avatar/MHF_Steve/64.png" style="border-radius: 10px; margin-bottom: 15px; border: 2px solid var(--primary);">
+            <h1 style="font-size: 1.8rem; font-weight: 900;">GRACZ</h1>
+            <p style="opacity: 0.5; font-size: 0.8rem;">Twój balans: <b>0.00 vPLN</b></p>
             
-            <div class="ip-copy" onclick="copyIP()">SKOPIUJ IP</div>
+            <hr style="margin: 30px 0; opacity: 0.1;">
+            
+            <a href="index.html" style="color: white; text-decoration: none; font-size: 0.8rem; font-weight: 700; opacity: 0.5;">← POWRÓT DO STRONY</a>
         </div>
 
-        <div class="card card-side">
-            <p style="font-size: 0.6rem; letter-spacing: 3px; opacity: 0.4; margin-bottom: 20px; font-weight: 900;">MENU NAWIGACYJNE</p>
-            <div class="nav-grid">
-                <a href="#" class="btn-action">
-                    <span style="font-size: 1.5rem;">💎</span>
-                    <b>SKLEP VIP</b>
-                </a>
-                <a href="#" class="btn-action">
-                    <span style="font-size: 1.5rem;">📜</span>
-                    <b>REGULAMIN</b>
-                </a>
-                <a href="#" class="btn-action">
-                    <span style="font-size: 1.5rem;">🗳️</span>
-                    <b>VOUCHERY</b>
-                </a>
-                <a href="https://dc.ducemc.pl" class="btn-action" style="background: rgba(88, 101, 242, 0.1);">
-                    <span style="font-size: 1.5rem;">💬</span>
-                    <b style="color: #5865f2;">DISCORD</b>
-                </a>
+        <div class="glass-card">
+            <h2>Ile potrzebujesz doładować?</h2>
+            
+            <div class="wallet-grid">
+                <div class="wallet-option" onclick="selectFixed(20, this)">
+                    <span class="coin-icon">💰</span>
+                    <span class="vpln-amount">20 vPLN</span>
+                </div>
+                <div class="wallet-option" onclick="selectFixed(30, this)">
+                    <span class="coin-icon">💰</span>
+                    <span class="vpln-amount">30 vPLN</span>
+                </div>
+                <div class="wallet-option active" onclick="selectFixed(40, this)">
+                    <span class="coin-icon">💰</span>
+                    <span class="vpln-amount">40 vPLN</span>
+                </div>
             </div>
+
+            <div class="custom-price-box">
+                <div class="price-display">
+                    <span>NIESTANDARDOWA KWOTA</span>
+                    <span id="current-vpln" style="color: var(--primary); font-size: 1.2rem;">40 vPLN</span>
+                </div>
+                
+                <input type="range" id="price-slider" min="20" max="999" value="40" oninput="updatePrice(this.value)">
+                
+                <div style="display: flex; justify-content: space-between; font-size: 0.7rem; opacity: 0.4; font-weight: 800;">
+                    <span>MIN: 20 zł</span>
+                    <span>MAX: 999 zł</span>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px; padding: 15px; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-weight: 600; opacity: 0.7;">Do zapłaty:</span>
+                <span id="final-price" style="font-size: 1.5rem; font-weight: 900; color: #fff;">40.00 PLN</span>
+            </div>
+
+            <button class="btn-pay">Przejdź do płatności</button>
         </div>
     </div>
-
-    <div class="recent-purchases">
-        <p style="font-size: 0.7rem; font-weight: 700; opacity: 0.4;">OSTATNIE ZAKUPY</p>
-        <div class="heads-row">
-            <img src="https://cravatar.eu/avatar/MHF_Steve/32.png" class="head">
-            <img src="https://cravatar.eu/avatar/MHF_Alex/32.png" class="head">
-            <img src="https://cravatar.eu/avatar/TugareK/32.png" class="head">
-            <img src="https://cravatar.eu/avatar/RdstoneBrilliant/32.png" class="head">
-            <img src="https://cravatar.eu/avatar/xGwiazdek15/32.png" class="head">
-        </div>
-    </div>
-
-    <div id="notif">SKOPIOWANO ADRES IP!</div>
 
     <script>
-        // --- ANIMACJA BĄBELKÓW (CANVAS) ---
+        function updatePrice(val) {
+            document.getElementById('current-vpln').innerText = val + " vPLN";
+            document.getElementById('final-price').innerText = parseFloat(val).toFixed(2) + " PLN";
+            
+            // Odznacz pakiety jeśli używamy suwaka
+            document.querySelectorAll('.wallet-option').forEach(el => el.classList.remove('active'));
+        }
+
+        function selectFixed(val, el) {
+            // Zaznacz wybrany pakiet
+            document.querySelectorAll('.wallet-option').forEach(item => item.classList.remove('active'));
+            el.classList.add('active');
+            
+            // Zaktualizuj suwak i ceny
+            document.getElementById('price-slider').value = val;
+            updatePrice(val);
+        }
+
+        // --- BĄBELKI (Ten sam styl co na głównej) ---
         const canvas = document.getElementById('bubbles');
         const ctx = canvas.getContext('2d');
-        let particles = [];
-
-        function initCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            particles = [];
-            for(let i=0; i<50; i++) {
-                particles.push({
-                    x: Math.random() * canvas.width,
-                    y: canvas.height + Math.random() * 100,
-                    r: Math.random() * 4 + 1,
-                    s: Math.random() * 2 + 0.5,
-                    o: Math.random() * 0.5
-                });
+        let bubbles = [];
+        function init() {
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            bubbles = [];
+            for(let i=0; i<30; i++) {
+                bubbles.push({ x: Math.random()*canvas.width, y: canvas.height+50, r: Math.random()*2+1, v: Math.random()*1+0.5, o: Math.random()*0.2 });
             }
         }
-
-        function drawBubbles() {
+        function animate() {
             ctx.clearRect(0,0,canvas.width, canvas.height);
-            ctx.fillStyle = "rgba(0, 210, 255, 0.3)";
-            particles.forEach(p => {
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-                ctx.fill();
-                p.y -= p.s;
-                if(p.y < -10) p.y = canvas.height + 10;
+            bubbles.forEach(b => {
+                ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, Math.PI*2);
+                ctx.fillStyle = `rgba(0, 210, 255, ${b.o})`; ctx.fill();
+                b.y -= b.v; if(b.y < -20) b.y = canvas.height+20;
             });
-            requestAnimationFrame(drawBubbles);
+            requestAnimationFrame(animate);
         }
-
-        window.addEventListener('resize', initCanvas);
-        initCanvas(); drawBubbles();
-
-        // --- RUCH SCENY ---
-        const scene = document.getElementById('scene');
-        window.addEventListener('mousemove', (e) => {
-            let x = (window.innerWidth / 2 - e.pageX) / 100;
-            let y = (window.innerHeight / 2 - e.pageY) / 100;
-            scene.style.transform = `rotateY(${-x}deg) rotateX(${y}deg)`;
-        });
-
-        function copyIP() {
-            navigator.clipboard.writeText("DUCEMC.PL");
-            const n = document.getElementById('notif');
-            n.classList.add('active');
-            setTimeout(() => n.classList.remove('active'), 2500);
-        }
+        window.addEventListener('resize', init);
+        init(); animate();
     </script>
 </body>
 </html>
