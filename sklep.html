@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sklep | DuceMC.PL</title>
+    <title>Sklep Duels | DuceMC.PL</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     
     <style>
@@ -62,7 +62,7 @@
         .category-label { font-size: 1.2rem; font-weight: 900; color: var(--primary); text-align: left; margin: 40px 0 20px 0; border-left: 4px solid var(--primary); padding-left: 15px; }
 
         /* --- SIATKA PRZEDMIOTÓW --- */
-        .items-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+        .items-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
 
         .item-card {
             background: var(--card-bg);
@@ -79,8 +79,8 @@
         .item-card:hover { transform: translateY(-8px); border-color: var(--primary); box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
 
         .item-icon { font-size: 2.2rem; margin-bottom: 15px; }
-        .item-name { font-size: 1.2rem; font-weight: 900; margin-bottom: 5px; text-transform: uppercase; }
-        .item-price { color: #00ff88; font-size: 1.1rem; font-weight: 700; margin-bottom: 15px; }
+        .item-name { font-size: 1.3rem; font-weight: 900; margin-bottom: 5px; text-transform: uppercase; }
+        .item-price { color: #00ff88; font-size: 1.2rem; font-weight: 700; margin-bottom: 20px; }
         
         .buy-btn {
             display: block;
@@ -92,12 +92,12 @@
             font-weight: 900;
             border-radius: 10px;
             transition: var(--transition);
-            font-size: 0.75rem;
+            font-size: 0.8rem;
         }
 
         .buy-btn:hover { filter: brightness(1.2); box-shadow: 0 5px 15px rgba(255, 152, 0, 0.4); }
 
-        /* Kolory z Twojego LPC */
+        /* Kolory z Twojej konfiguracji LPC */
         .c-vip { color: #ffb015; }
         .c-rekin { color: #3080e9; }
         .c-gangster { color: #6b5ad0; }
@@ -119,17 +119,47 @@
     </nav>
 
     <div class="shop-container">
-        <h2>SKLEP SERWEROWY</h2>
-        <p class="subtitle">Wybierz rangę lub pakiet specjalny</p>
+        <h2>SKLEP DUELS</h2>
+        <p class="subtitle">Wybierz rangę i zdominuj arenę</p>
 
-        <div class="category-label">DOSTĘPNE RANGI</div>
+        <div class="category-label">RANGI SERWEROWE</div>
         <div class="items-grid">
-            <div class="item-card"><span class="item-icon">⭐</span><div class="item-name c-vip">Vip</div><div class="item-price">5.00 PLN</div><a href="#" class="buy-btn">KUP TERAZ</a></div>
-            <div class="item-card"><span class="item-icon">🦈</span><div class="item-name c-rekin">Rekin</div><div class="item-price">10.00 PLN</div><a href="#" class="buy-btn">KUP TERAZ</a></div>
-            <div class="item-card"><span class="item-icon">🎭</span><div class="item-name c-gangster">GangSter</div><div class="item-price">15.00 PLN</div><a href="#" class="buy-btn">KUP TERAZ</a></div>
-            <div class="item-card"><span class="item-icon">💰</span><div class="item-name c-magnat">Magnat</div><div class="item-price">20.00 PLN</div><a href="#" class="buy-btn">KUP TERAZ</a></div>
-            <div class="item-card"><span class="item-icon">⚡</span><div class="item-name c-raiot">Raiot</div><div class="item-price">30.00 PLN</div><a href="#" class="buy-btn">KUP TERAZ</a></div>
-            <div class="item-card"><span class="item-icon">🛡️</span><div class="item-name c-empire">Empire</div><div class="item-price">50.00 PLN</div><a href="#" class="buy-btn">KUP TERAZ</a></div>
+            <div class="item-card">
+                <span class="item-icon">⭐</span>
+                <div class="item-name c-vip">Vip</div>
+                <div class="item-price">14.99 PLN</div>
+                <a href="#" class="buy-btn">KUP TERAZ</a>
+            </div>
+            <div class="item-card">
+                <span class="item-icon">🦈</span>
+                <div class="item-name c-rekin">Rekin</div>
+                <div class="item-price">34.99 PLN</div>
+                <a href="#" class="buy-btn">KUP TERAZ</a>
+            </div>
+            <div class="item-card">
+                <span class="item-icon">🎭</span>
+                <div class="item-name c-gangster">GangSter</div>
+                <div class="item-price">59.99 PLN</div>
+                <a href="#" class="buy-btn">KUP TERAZ</a>
+            </div>
+            <div class="item-card">
+                <span class="item-icon">💰</span>
+                <div class="item-name c-magnat">Magnat</div>
+                <div class="item-price">89.99 PLN</div>
+                <a href="#" class="buy-btn">KUP TERAZ</a>
+            </div>
+            <div class="item-card">
+                <span class="item-icon">⚡</span>
+                <div class="item-name c-raiot">Raiot</div>
+                <div class="item-price">119.99 PLN</div>
+                <a href="#" class="buy-btn">KUP TERAZ</a>
+            </div>
+            <div class="item-card">
+                <span class="item-icon">🛡️</span>
+                <div class="item-name c-empire">Empire</div>
+                <div class="item-price">149.99 PLN</div>
+                <a href="#" class="buy-btn">KUP TERAZ</a>
+            </div>
         </div>
 
         <div class="category-label">PAKIETY SPECJALNE</div>
@@ -137,22 +167,16 @@
             <div class="item-card special-card">
                 <span class="item-icon">👑</span>
                 <div class="item-name">Pakiet Empire</div>
-                <div class="item-price">75.00 PLN</div>
-                <p style="font-size: 0.7rem; color: #ccc; margin-bottom: 10px;">Ranga Empire + Zestaw Case + 50k Monety</p>
+                <div class="item-price">199.99 PLN</div>
+                <p style="font-size: 0.7rem; color: #ccc; margin-bottom: 10px;">Ranga Empire + Unikalne Efekty + Wszystkie Kosmetyki</p>
                 <a href="#" class="buy-btn">WYBIERZ</a>
             </div>
-            <div class="item-card special-card" style="background: rgba(0, 255, 136, 0.05); border-color: #00ff88 !important;">
+            <div class="item-card special-card" style="border-color: #00ff88 !important; background: rgba(0, 255, 136, 0.05);">
                 <span class="item-icon">💎</span>
                 <div class="item-name" style="color: #00ff88;">Pakiet Bogacza</div>
-                <div class="item-price">100.00 PLN</div>
-                <p style="font-size: 0.7rem; color: #ccc; margin-bottom: 10px;">Największa ilość waluty + Unikalny Prefix</p>
+                <div class="item-price">299.99 PLN</div>
+                <p style="font-size: 0.7rem; color: #ccc; margin-bottom: 10px;">Dostęp do loży bogaczy + Złoty Prefix na czacie</p>
                 <a href="#" class="buy-btn">WYBIERZ</a>
-            </div>
-            <div class="item-card">
-                <span class="item-icon">📦</span>
-                <div class="item-name">Zestaw Case</div>
-                <div class="item-price">10.00 PLN</div>
-                <a href="#" class="buy-btn">KUP TERAZ</a>
             </div>
         </div>
     </div>
