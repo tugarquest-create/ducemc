@@ -11,7 +11,7 @@
             --primary: #00e5ff;
             --primary-glow: rgba(0, 229, 255, 0.4);
             --bg-dark: #020205;
-            --card-bg: rgba(10, 10, 20, 0.85);
+            --card-bg: rgba(10, 10, 20, 0.9);
             --border: rgba(0, 229, 255, 0.1);
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -65,33 +65,18 @@
         h1 { font-size: 3rem; font-weight: 900; letter-spacing: -1px; margin-bottom: 5px; }
         .last-update { color: #444; font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; }
 
-        /* Wyszukiwarka */
-        .search-bar {
-            width: 100%;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 15px;
-            padding: 15px 25px;
-            color: white;
-            font-family: inherit;
-            margin-bottom: 30px;
-            transition: 0.3s;
-        }
-        .search-bar:focus { border-color: var(--primary); box-shadow: 0 0 20px rgba(0, 229, 255, 0.1); outline: none; }
-
-        /* Sekcje */
-        .rules-wrapper { display: flex; flex-direction: column; gap: 15px; }
+        .rules-wrapper { display: flex; flex-direction: column; gap: 12px; }
 
         .rule-section {
             background: var(--card-bg);
             border: 1px solid var(--border);
-            border-radius: 20px;
+            border-radius: 15px;
             overflow: hidden;
             transition: var(--transition);
         }
 
         .rule-header {
-            padding: 25px 30px;
+            padding: 20px 25px;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
@@ -103,11 +88,11 @@
         .rule-title { display: flex; align-items: center; gap: 15px; }
         .rule-number {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 1rem;
+            font-size: 0.9rem;
             color: var(--primary);
-            opacity: 0.6;
+            opacity: 0.5;
         }
-        .rule-header h3 { font-size: 1.1rem; font-weight: 800; text-transform: uppercase; }
+        .rule-header h3 { font-size: 1rem; font-weight: 800; text-transform: uppercase; }
 
         .rule-content {
             max-height: 0;
@@ -117,66 +102,50 @@
         }
 
         .rule-section.active .rule-content {
-            max-height: 800px;
-            padding: 10px 30px 30px 75px;
+            max-height: 1200px;
+            padding: 10px 25px 25px 65px;
         }
 
-        .rule-section.active {
-            border-color: var(--primary);
-            box-shadow: 0 10px 30px rgba(0, 229, 255, 0.05);
-        }
+        .rule-section.active { border-color: var(--primary); }
 
         .rule-list { list-style: none; }
         .rule-list li {
             position: relative;
-            margin-bottom: 12px;
-            color: #ccc;
-            font-size: 0.9rem;
+            margin-bottom: 10px;
+            color: #bbb;
+            font-size: 0.85rem;
             line-height: 1.5;
         }
 
         .rule-list li::before {
             content: '>';
             position: absolute;
-            left: -25px;
+            left: -20px;
             color: var(--primary);
             font-family: 'JetBrains Mono', monospace;
         }
 
-        /* Stopka */
-        .footer-info {
-            margin-top: 50px;
-            text-align: center;
-        }
-
+        .footer-info { margin-top: 50px; text-align: center; }
         .accept-box {
             background: rgba(255,255,255,0.02);
-            padding: 25px;
-            border-radius: 15px;
+            padding: 20px;
+            border-radius: 10px;
             border: 1px dashed #333;
-            color: #666;
-            font-size: 0.8rem;
+            color: #555;
+            font-size: 0.75rem;
             font-weight: 700;
-            line-height: 1.4;
         }
 
         .btn-back {
             display: inline-block;
-            margin-top: 30px;
+            margin-top: 25px;
             color: var(--primary);
             text-decoration: none;
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 2px;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             transition: 0.3s;
-        }
-        .btn-back:hover { transform: translateY(-2px); text-shadow: 0 0 15px var(--primary); }
-
-        @media (max-width: 600px) {
-            h1 { font-size: 2rem; }
-            .rule-header { padding: 20px; }
-            .rule-section.active .rule-content { padding-left: 45px; }
         }
     </style>
 </head>
@@ -186,78 +155,93 @@
 
     <div class="container">
         <header>
-            <div class="badge">DuceMC.PL Security</div>
+            <div class="badge">Oficjalny Dokument DuceMC</div>
             <h1>REGULAMIN</h1>
-            <p class="last-update">Revision: 02.03.2026</p>
+            <p class="last-update">Aktualizacja: 02.03.2026</p>
         </header>
-
-        <input type="text" class="search-bar" placeholder="Szukaj w regulaminie (np. cheaty, czat, ban)..." id="search">
 
         <div class="rules-wrapper">
             <div class="rule-section active">
                 <div class="rule-header" onclick="toggleSection(this)">
-                    <div class="rule-title">
-                        <span class="rule-number">01</span>
-                        <h3>Postanowienia Ogólne</h3>
-                    </div>
+                    <div class="rule-title"><span class="rule-number">01</span><h3>Zasady Ogólne</h3></div>
                     <span>▼</span>
                 </div>
                 <div class="rule-content">
                     <ul class="rule-list">
-                        <li>Wejście na serwer oznacza automatyczną akceptację poniższego regulaminu.</li>
-                        <li>Nieznajomość regulaminu nie zwalnia z odpowiedzialności za jego łamanie.</li>
-                        <li>Administracja zastrzega sobie prawo do zmiany zasad w dowolnym momencie.</li>
+                        <li>§1.1 Rejestracja na serwerze oznacza pełną akceptację regulaminu.</li>
+                        <li>§1.2 Nieznajomość zasad nie zwalnia z nałożonych kar.</li>
+                        <li>§1.3 Administracja może ukarać za czyn szkodliwy, nawet jeśli nie ma go w spisie.</li>
+                        <li>§1.4 Zakaz posiadania nicków obraźliwych, rasistowskich lub wulgarnych.</li>
+                        <li>§1.5 Zakaz podszywania się pod znanych YouTuberów oraz Administrację.</li>
+                        <li>§1.6 Każdy gracz odpowiada za bezpieczeństwo swojego konta.</li>
+                        <li>§1.7 Regulamin może ulec zmianie bez wcześniejszego powiadomienia graczy.</li>
                     </ul>
                 </div>
             </div>
 
             <div class="rule-section">
                 <div class="rule-header" onclick="toggleSection(this)">
-                    <div class="rule-title">
-                        <span class="rule-number">02</span>
-                        <h3>Rozgrywka i Cheaty</h3>
-                    </div>
+                    <div class="rule-title"><span class="rule-number">02</span><h3>Rozgrywka i Cheaty</h3></div>
                     <span>▼</span>
                 </div>
                 <div class="rule-content">
                     <ul class="rule-list">
-                        <li>Używanie wspomagaczy (Killaura, Fly, Autoclicker itp.) = Ban permanentny.</li>
-                        <li>Wykorzystywanie błędów serwera musi być niezwłocznie zgłoszone.</li>
-                        <li>Zakaz używania modyfikacji dających przewagę (X-Ray, ESP).</li>
+                        <li>§2.1 Używanie wspomagaczy (KillAura, Reach, Fly, Speed itp.) = Ban permanentny.</li>
+                        <li>§2.2 Zakaz używania modyfikacji typu X-Ray, ESP oraz Minimap z radarem graczy.</li>
+                        <li>§2.3 Używanie AutoClickera lub makr (powyżej 15 CPS) jest zabronione.</li>
+                        <li>§2.4 Wykorzystywanie błędów gry (bugów) do własnych korzyści jest karane.</li>
+                        <li>§2.5 Gracz ma 5 minut na poddanie się sprawdzaniu przez administratora.</li>
+                        <li>§2.6 Wyjście z serwera podczas sprawdzania = Ban permanentny.</li>
+                        <li>§2.7 Współpraca z osobą cheatujaćą jest traktowana jak cheatowanie.</li>
+                        <li>§2.8 Zakaz celowego lagowania serwera (budowanie lag-maszyn).</li>
                     </ul>
                 </div>
             </div>
 
             <div class="rule-section">
                 <div class="rule-header" onclick="toggleSection(this)">
-                    <div class="rule-title">
-                        <span class="rule-number">03</span>
-                        <h3>Kultura i Czat</h3>
-                    </div>
+                    <div class="rule-title"><span class="rule-number">03</span><h3>Czat i Kultura</h3></div>
                     <span>▼</span>
                 </div>
                 <div class="rule-content">
                     <ul class="rule-list">
-                        <li>Szanuj innych graczy. Obrazy, rasizm i toksyczność nie są tolerowane.</li>
-                        <li>Reklamowanie innych serwerów lub kanałów bez zgody jest zabronione.</li>
-                        <li>Nie spamuj i nie nadużywaj dużych liter na czacie głównym.</li>
+                        <li>§3.1 Zakaz obrażania graczy oraz ich rodzin w sposób rażący.</li>
+                        <li>§3.2 Zakaz szerzenia nienawiści (rasizm, nazizm, homofobia).</li>
+                        <li>§3.3 Zakaz spamowania oraz floodowania (powtarzania znaków).</li>
+                        <li>§3.4 Zakaz reklamowania innych serwerów Minecraft oraz stron WWW.</li>
+                        <li>§3.5 Zakaz handlowania przedmiotami za realną walutę (PSC/Przelew).</li>
+                        <li>§3.6 Zakaz udostępniania danych osobowych osób trzecich (Doxing).</li>
+                        <li>§3.7 Zakaz proszenia o itemy, rangi lub OP od Administracji.</li>
                     </ul>
                 </div>
             </div>
 
             <div class="rule-section">
                 <div class="rule-header" onclick="toggleSection(this)">
-                    <div class="rule-title">
-                        <span class="rule-number">04</span>
-                        <h3>Płatności i Wsparcie</h3>
-                    </div>
+                    <div class="rule-title"><span class="rule-number">04</span><h3>Finanse i Sklep</h3></div>
                     <span>▼</span>
                 </div>
                 <div class="rule-content">
                     <ul class="rule-list">
-                        <li>Rangi zakupione w sklepie są formą wsparcia serwera i nie podlegają zwrotom.</li>
-                        <li>Ban za łamanie regulaminu nie uprawnia do odzyskania środków za rangę.</li>
-                        <li>Wszelkie reklamacje składamy przez oficjalny system ticketów na Discordzie.</li>
+                        <li>§4.1 Zakup rangi w sklepie jest dobrowolną dotacją na serwer.</li>
+                        <li>§4.2 Serwer nie zwraca pieniędzy za zakupione usługi.</li>
+                        <li>§4.3 Ban nie uprawnia do zwrotu kosztów za aktywną rangę VIP/Premium.</li>
+                        <li>§4.4 Problemy z płatnościami należy zgłaszać przez system Ticket na Discordzie.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="rule-section">
+                <div class="rule-header" onclick="toggleSection(this)">
+                    <div class="rule-title"><span class="rule-number">05</span><h3>Administracja</h3></div>
+                    <span>▼</span>
+                </div>
+                <div class="rule-content">
+                    <ul class="rule-list">
+                        <li>§5.1 Słowo administratora jest ostateczne w sporach.</li>
+                        <li>§5.2 Zakaz okłamywania administracji w zgłoszeniach.</li>
+                        <li>§5.3 Skargi na adminów składamy tylko z dowodem wideo (nagraniem).</li>
+                        <li>§5.4 Utrudnianie pracy administratorowi skutkuje banem czasowym.</li>
                     </ul>
                 </div>
             </div>
@@ -265,64 +249,36 @@
 
         <div class="footer-info">
             <div class="accept-box">
-                GRAJĄC NA SERWERZE DUCEMC.PL POTWIERDZASZ, ŻE ZAPOZNAŁEŚ SIĘ Z POWYŻSZYMI ZASADAMI I ZOBOWIĄZUJESZ SIĘ DO ICH PRZESTRZEGANIA.
+                GRAJĄC NA DUCEMC.PL ŚWIADCZYSZ O PEŁNEJ AKCEPTACJI ZASAD.
             </div>
-            <a href="index.html" class="btn-back">← POWRÓT DO STRONY GŁÓWNEJ</a>
+            <a href="index.html" class="btn-back">← POWRÓT DO PORTALU</a>
         </div>
     </div>
 
     <script>
-        function toggleSection(element) {
-            const section = element.parentElement;
-            section.classList.toggle('active');
+        function toggleSection(e) {
+            e.parentElement.classList.toggle('active');
         }
 
-        // Search System
-        document.getElementById('search').addEventListener('input', function(e) {
-            const term = e.target.value.toLowerCase();
-            const sections = document.querySelectorAll('.rule-section');
-            
-            sections.forEach(sec => {
-                const text = sec.innerText.toLowerCase();
-                if(text.includes(term)) {
-                    sec.style.display = "block";
-                    if(term.length > 2) sec.classList.add('active');
-                } else {
-                    sec.style.display = "none";
-                }
-            });
-        });
-
-        // Matrix Background
         const canvas = document.getElementById('matrix-bg');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-
         const chars = '01ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         const fontSize = 12;
-        const columns = canvas.width / fontSize;
-        const drops = Array(Math.floor(columns)).fill(1);
-
+        const drops = Array(Math.floor(canvas.width/fontSize)).fill(1);
         function draw() {
             ctx.fillStyle = 'rgba(2, 2, 5, 0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = '#00e5ff';
             ctx.font = fontSize + 'px Courier New';
-
             drops.forEach((y, i) => {
-                const text = chars[Math.floor(Math.random() * chars.length)];
-                ctx.fillText(text, i * fontSize, y * fontSize);
-                if (y * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                ctx.fillText(chars[Math.floor(Math.random()*chars.length)], i*fontSize, y*fontSize);
+                if (y*fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
                 drops[i]++;
             });
         }
         setInterval(draw, 50);
-
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        });
     </script>
 </body>
 </html>
