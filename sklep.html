@@ -7,143 +7,261 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #ff9800; /* Pomarańczowy dla sklepu */
-            --bg-dark: #020205;
-            --card-bg: rgba(15, 15, 20, 0.98);
+            --primary: #ff9800;
+            --bg-dark: #05050a;
+            --card-bg: rgba(20, 20, 30, 0.8);
             --vip: #f1c40f;
             --svip: #e67e22;
             --sponsor: #e74c3c;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        
         body {
             font-family: 'Montserrat', sans-serif;
             background: var(--bg-dark);
+            background-image: radial-gradient(circle at top right, rgba(255,152,0,0.1), transparent),
+                              radial-gradient(circle at bottom left, rgba(30,144,255,0.1), transparent);
             color: white;
             min-height: 100vh;
-            padding: 40px 20px;
+            padding: 60px 20px;
+            overflow-x: hidden;
         }
 
-        .container { max-width: 1000px; margin: 0 auto; }
-        h1 { text-align: center; font-weight: 900; font-size: 3rem; margin-bottom: 10px; color: var(--primary); }
-        .subtitle { text-align: center; color: #666; margin-bottom: 50px; text-transform: uppercase; letter-spacing: 2px; }
+        .container { max-width: 1100px; margin: 0 auto; }
 
+        /* Nagłówek */
+        header { text-align: center; margin-bottom: 60px; }
+        h1 { 
+            font-weight: 900; 
+            font-size: 4rem; 
+            letter-spacing: -2px;
+            background: linear-gradient(to bottom, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .subtitle { color: #888; text-transform: uppercase; letter-spacing: 4px; font-size: 0.9rem; }
+
+        /* Grid Sklepu */
         .shop-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 30px;
         }
 
+        /* Styl Karty Produktu */
         .shop-item {
             background: var(--card-bg);
+            backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 25px;
-            padding: 30px;
+            border-radius: 35px;
+            padding: 40px;
             text-align: center;
-            transition: all 0.3s ease;
+            transition: var(--transition);
             position: relative;
-            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .shop-item:hover {
-            transform: translateY(-10px);
-            border-color: var(--primary);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            transform: translateY(-15px) scale(1.02);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
         }
 
-        .rank-icon { font-size: 3rem; margin-bottom: 15px; display: block; }
-        .rank-name { font-weight: 900; font-size: 1.5rem; margin-bottom: 10px; }
-        .price { font-size: 2rem; font-weight: 900; margin-bottom: 20px; display: block; }
-        
-        .features { list-style: none; margin-bottom: 30px; text-align: left; font-size: 0.9rem; color: #aaa; }
-        .features li { margin-bottom: 10px; display: flex; align-items: center; }
-        .features li::before { content: "✔"; color: #00ff88; margin-right: 10px; font-weight: bold; }
+        /* Ikony i Nazwy Rang */
+        .rank-icon { 
+            font-size: 4rem; 
+            margin-bottom: 20px; 
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));
+            transition: transform 0.3s ease;
+        }
+        .shop-item:hover .rank-icon { transform: scale(1.2) rotate(5deg); }
 
-        .buy-btn {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            background: var(--primary);
-            color: white;
-            text-decoration: none;
-            border-radius: 12px;
+        .rank-name { font-weight: 900; font-size: 2rem; margin-bottom: 5px; text-transform: uppercase; }
+        
+        .price-tag {
+            display: inline-block;
+            margin-bottom: 30px;
+            padding: 10px 25px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 100px;
+            font-size: 1.5rem;
             font-weight: 900;
-            transition: 0.3s;
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* Lista zalet */
+        .features { 
+            list-style: none; 
+            margin-bottom: 40px; 
+            text-align: left; 
+            background: rgba(255,255,255,0.02);
+            padding: 20px;
+            border-radius: 20px;
+        }
+        .features li { 
+            margin-bottom: 12px; 
+            display: flex; 
+            align-items: flex-start; 
+            font-size: 0.95rem; 
+            color: #ccc;
+            line-height: 1.4;
+        }
+        .features li::before { 
+            content: "✦"; 
+            color: var(--primary); 
+            margin-right: 12px; 
+            font-weight: bold; 
+        }
+
+        /* Przyciski */
+        .buy-btn {
+            width: 100%;
+            padding: 20px;
+            background: #fff;
+            color: #000;
+            text-decoration: none;
+            border-radius: 20px;
+            font-weight: 900;
+            font-size: 1rem;
+            transition: var(--transition);
             border: none;
             cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .buy-btn:hover { filter: brightness(1.2); transform: scale(1.05); }
+        /* Kolory specyficzne dla rang */
+        .item-vip:hover { box-shadow: 0 20px 50px rgba(241, 196, 15, 0.2); }
+        .item-svip:hover { box-shadow: 0 20px 50px rgba(230, 126, 34, 0.2); }
+        .item-sponsor:hover { box-shadow: 0 20px 50px rgba(231, 76, 60, 0.2); }
+
+        .item-vip .buy-btn:hover { background: var(--vip); color: #000; box-shadow: 0 0 20px var(--vip); }
+        .item-svip .buy-btn:hover { background: var(--svip); color: #fff; box-shadow: 0 0 20px var(--svip); }
+        .item-sponsor .buy-btn:hover { background: var(--sponsor); color: #fff; box-shadow: 0 0 20px var(--sponsor); }
 
         .back-home {
-            display: block;
-            text-align: center;
-            margin-top: 50px;
-            color: #444;
+            display: inline-block;
+            margin-top: 60px;
+            color: #555;
             text-decoration: none;
             font-weight: 700;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            width: 100%;
+            text-align: center;
+        }
+        .back-home:hover { color: var(--primary); transform: translateX(-5px); }
+
+        /* Różne dekoracje */
+        .badge {
+            position: absolute;
+            top: 20px; right: 20px;
+            background: var(--sponsor);
+            font-size: 0.6rem;
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-weight: 900;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .shop-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>SKLEP WWW</h1>
-    <p class="subtitle">Wybierz rangę i wesprzyj serwer</p>
+    <header>
+        <h1>SKLEP WWW</h1>
+        <p class="subtitle">Zdobądź przewagę na DuceMC.PL</p>
+    </header>
 
     <div class="shop-grid">
-        <div class="shop-item" style="border-top: 5px solid var(--vip)">
-            <span class="rank-icon">⭐</span>
-            <div class="rank-name" style="color: var(--vip)">VIP</div>
-            <span class="price">10.00 PLN</span>
-            <ul class="features">
-                <li>Prefix [VIP] na czacie</li>
-                <li>Dostęp do /kit vip</li>
-                <li>Możliwość pisania na kolorowo</li>
-                <li>Rezerwacja slotu</li>
-            </ul>
-            <button class="buy-btn" onclick="pay('VIP', 10)">KUP TERAZ</button>
+        <div class="shop-item item-vip" style="border-top: 4px solid var(--vip)">
+            <div>
+                <span class="rank-icon">⭐</span>
+                <div class="rank-name" style="color: var(--vip)">VIP</div>
+                <div class="price-tag">10.00 PLN</div>
+                <ul class="features">
+                    <li>Unikalny kolorowy prefix <b>[VIP]</b></li>
+                    <li>Dostęp do zestawu startowego <b>/kit vip</b></li>
+                    <li>Możliwość pisania na kolorowo na czacie</li>
+                    <li>Priorytetowe wejście na serwer (Slot)</li>
+                </ul>
+            </div>
+            <button class="buy-btn" onclick="pay('VIP', 10)">ODBLOKUJ RANGĘ</button>
         </div>
 
-        <div class="shop-item" style="border-top: 5px solid var(--svip)">
-            <span class="rank-icon">🌟</span>
-            <div class="rank-name" style="color: var(--svip)">SVIP</div>
-            <span class="price">20.00 PLN</span>
-            <ul class="features">
-                <li>Wszystko co VIP</li>
-                <li>Dostęp do /fly</li>
-                <li>Unikalny efekt cząsteczkowy</li>
-                <li>3 dodatkowe /sethome</li>
-            </ul>
-            <button class="buy-btn" onclick="pay('SVIP', 20)">KUP TERAZ</button>
+        <div class="shop-item item-svip" style="border-top: 4px solid var(--svip)">
+            <div class="badge">NAJCZĘSTSZY WYBÓR</div>
+            <div>
+                <span class="rank-icon">🌟</span>
+                <div class="rank-name" style="color: var(--svip)">SVIP</div>
+                <div class="price-tag">25.00 PLN</div>
+                <ul class="features">
+                    <li>Wszystkie przywileje rangi <b>VIP</b></li>
+                    <li>Możliwość latania komendą <b>/fly</b></li>
+                    <li>Aż <b>5 domów</b> pod komendą /sethome</li>
+                    <li>Specjalny efekt dymu pod nogami</li>
+                </ul>
+            </div>
+            <button class="buy-btn" onclick="pay('SVIP', 25)">ODBLOKUJ RANGĘ</button>
         </div>
 
-        <div class="shop-item" style="border-top: 5px solid var(--sponsor)">
-            <span class="rank-icon">💎</span>
-            <div class="rank-name" style="color: var(--sponsor)">SPONSOR</div>
-            <span class="price">50.00 PLN</span>
-            <ul class="features">
-                <li>Wszystko co SVIP</li>
-                <li>Pisanie na czacie ogólnym /bc</li>
-                <li>Prefix [SPONSOR]</li>
-                <li>Dostęp do tajnego kanału DC</li>
-            </ul>
-            <button class="buy-btn" onclick="pay('SPONSOR', 50)">KUP TERAZ</button>
+        <div class="shop-item item-sponsor" style="border-top: 4px solid var(--sponsor)">
+            <div>
+                <span class="rank-icon">💎</span>
+                <div class="rank-name" style="color: var(--sponsor)">SPONSOR</div>
+                <div class="price-tag">50.00 PLN</div>
+                <ul class="features">
+                    <li>Wszystkie przywileje rangi <b>SVIP</b></li>
+                    <li>Pisanie ogłoszeń na ekranie <b>/bc</b></li>
+                    <li>Dostęp do prywatnego kanału <b>Zarządu</b></li>
+                    <li>Nielimitowane /sethome i specjalne kity</li>
+                </ul>
+            </div>
+            <button class="buy-btn" onclick="pay('SPONSOR', 50)">ODBLOKUJ RANGĘ</button>
         </div>
     </div>
 
-    <a href="index.html" class="back-home">← POWRÓT DO STRONY GŁÓWNEJ</a>
+    <a href="index.html" class="back-home">← Wróć do strony głównej</a>
 </div>
 
 <script>
     function pay(item, price) {
-        const nick = prompt("Podaj swój nick z Minecraft:");
-        if(nick) {
-            alert("Przekierowanie do płatności dla gracza: " + nick + "\nProdukt: " + item + "\nCena: " + price + " PLN");
-            // Tutaj wstawisz link do swojej bramki płatności
-            // window.location.href = "https://twoja-bramka.pl/pay?user=" + nick;
+        // Elegancki prompt
+        const nick = prompt("Wpisz swój dokładny nick z gry:");
+        
+        if (nick && nick.trim().length > 2) {
+            // Animacja ładowania w przycisku (opcjonalnie)
+            alert("✅ PRZYGOTOWYWANIE ZAMÓWIENIA\n--------------------------\nGracz: " + nick + "\nProdukt: " + item + "\nKwota: " + price + " PLN\n\nZaraz nastąpi przekierowanie...");
+            
+            // Tutaj możesz dodać przekierowanie do płatności
+            // window.location.href = `https://twoja-platnosc.pl/checkout?nick=${nick}&ranga=${item}`;
+        } else if (nick !== null) {
+            alert("❌ Błąd: Podany nick jest za krótki!");
         }
     }
+
+    // Dodatkowy efekt poruszania kartami
+    document.querySelectorAll('.shop-item').forEach(item => {
+        item.addEventListener('mousemove', (e) => {
+            let rect = item.getBoundingClientRect();
+            let x = e.clientX - rect.left;
+            let y = e.clientY - rect.top;
+            
+            item.style.setProperty('--x', x + 'px');
+            item.style.setProperty('--y', y + 'px');
+        });
+    });
 </script>
 
 </body>
