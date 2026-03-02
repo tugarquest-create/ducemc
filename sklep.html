@@ -3,19 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DuceMC.PL | Doładuj Portfel</title>
+    <title>DuceMC.PL | Sklep Rang</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #00d2ff;
-            --accent: #3a7bd5;
             --bg-dark: #03080f;
             --glass: rgba(10, 25, 47, 0.95);
-            --border: rgba(0, 210, 255, 0.2);
-            --success: #00ff88;
+            --border: rgba(255, 255, 255, 0.1);
+            /* Kolory rang z Twojego LPC */
+            --color-vip: #ffb015;
+            --color-rekin: #3080e9;
+            --color-gangster: #6b5ad0;
+            --color-magnat: #d0c02c;
+            --color-raiot: #2fd007;
+            --color-empire: #8611e2;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; cursor: default; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         
         body {
             font-family: 'Montserrat', sans-serif;
@@ -23,9 +27,9 @@
             color: white;
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            padding: 20px;
+            padding: 40px 20px;
         }
 
         .bg-image {
@@ -34,122 +38,200 @@
             z-index: -2;
         }
 
-        .container {
-            display: grid;
-            grid-template-columns: 350px 1fr;
-            gap: 30px;
-            width: 100%;
-            max-width: 1100px;
-            z-index: 10;
-        }
+        .header { text-align: center; margin-bottom: 50px; }
+        .header h1 { font-size: 3rem; font-weight: 900; letter-spacing: -2px; }
+        .header p { opacity: 0.6; letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem; }
 
-        .glass-card {
+        .nick-box {
             background: var(--glass);
-            backdrop-filter: blur(25px);
+            padding: 25px;
+            border-radius: 25px;
             border: 1px solid var(--border);
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .nick-box input {
+            background: rgba(0,0,0,0.5);
+            border: 2px solid var(--border);
+            padding: 15px;
+            border-radius: 15px;
+            color: white;
+            font-family: 'JetBrains Mono';
+            width: 100%;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+        .ranks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .rank-card {
+            background: var(--glass);
             border-radius: 35px;
-            padding: 40px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.7);
+            padding: 35px;
+            border: 1px solid var(--border);
+            text-align: center;
+            transition: 0.4s;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
         }
 
-        .nick-input {
-            width: 100%; background: rgba(0,0,0,0.5); border: 2px solid var(--border);
-            padding: 18px; border-radius: 20px; color: white;
-            font-weight: 800; font-family: 'JetBrains Mono', monospace;
-            text-align: center; font-size: 1.1rem; cursor: text;
+        .rank-card:hover { transform: translateY(-10px); border-color: white; }
+
+        .rank-name { font-size: 2.2rem; font-weight: 900; margin-bottom: 10px; }
+        .rank-price { font-size: 1.5rem; font-weight: 800; opacity: 0.9; margin-bottom: 25px; }
+
+        .features { text-align: left; margin-bottom: 30px; flex-grow: 1; }
+        .features li { list-style: none; padding: 8px 0; font-size: 0.9rem; opacity: 0.8; display: flex; align-items: center; gap: 10px; }
+        .features li::before { content: '✔'; }
+
+        .buy-btn {
+            width: 100%;
+            padding: 18px;
+            border-radius: 15px;
+            border: none;
+            font-weight: 900;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: 0.3s;
         }
 
-        .avatar-preview {
-            width: 120px; height: 120px; border-radius: 20px;
-            border: 3px solid var(--primary); background: #050a14;
-            display: block; margin: 20px auto; padding: 5px;
-        }
+        /* Stylizacja poszczególnych rang */
+        .vip { border-top: 6px solid var(--color-vip); }
+        .vip .rank-name { color: var(--color-vip); }
+        .vip .buy-btn { background: var(--color-vip); color: black; }
 
-        .wallet-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
-        .wallet-option {
-            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 15px; border-radius: 15px; text-align: center; cursor: pointer;
-        }
-        .wallet-option.active { border-color: var(--primary); background: rgba(0, 210, 255, 0.1); }
+        .rekin { border-top: 6px solid var(--color-rekin); }
+        .rekin .rank-name { color: var(--color-rekin); }
+        .rekin .buy-btn { background: var(--color-rekin); color: white; }
 
-        .btn-pay {
-            width: 100%; background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: white; padding: 20px; border-radius: 18px; border: none;
-            font-weight: 900; font-size: 1.1rem; cursor: pointer; margin-top: 20px;
-        }
+        .gangster { border-top: 6px solid var(--color-gangster); }
+        .gangster .rank-name { color: var(--color-gangster); }
+        .gangster .buy-btn { background: var(--color-gangster); color: white; }
 
-        @media (max-width: 900px) { .container { grid-template-columns: 1fr; } }
+        .magnat { border-top: 6px solid var(--color-magnat); }
+        .magnat .rank-name { color: var(--color-magnat); }
+        .magnat .buy-btn { background: var(--color-magnat); color: black; }
+
+        .raiot { border-top: 6px solid var(--color-raiot); }
+        .raiot .rank-name { color: var(--color-raiot); }
+        .raiot .buy-btn { background: var(--color-raiot); color: white; }
+
+        .empire { border-top: 6px solid var(--color-empire); box-shadow: 0 0 30px rgba(134, 17, 226, 0.2); }
+        .empire .rank-name { color: var(--color-empire); }
+        .empire .buy-btn { background: var(--color-empire); color: white; }
+
+        .buy-btn:hover { filter: brightness(1.2); transform: scale(1.02); }
     </style>
 </head>
 <body>
 
     <div class="bg-image"></div>
 
-    <div class="container">
-        <div class="glass-card">
-            <p style="font-size: 0.7rem; font-weight: 900; color: var(--primary); letter-spacing: 2px;">IDENTYFIKACJA</p>
-            <input type="text" class="nick-input" id="player-nick" placeholder="NICK Z MC" oninput="updateAvatar(this.value)">
-            <img id="avatar" src="https://cravatar.eu/avatar/MHF_Steve/128.png" class="avatar-preview">
-            <h2 id="display-nick" style="text-align: center; font-weight: 900;">GRACZ</h2>
-            <a href="index.html" style="display: block; text-align: center; margin-top: 30px; color: var(--primary); text-decoration: none; font-size: 0.8rem; font-weight: 800;">← POWRÓT</a>
+    <div class="header">
+        <h1>SKLEP DUCEMC</h1>
+        <p>Wybierz rangę i zdominuj serwer</p>
+    </div>
+
+    <div class="nick-box">
+        <img id="avatar" src="https://cravatar.eu/avatar/MHF_Steve/64.png" style="width: 50px; border-radius: 10px;">
+        <input type="text" id="player-nick" placeholder="WPISZ SWÓJ NICK" oninput="document.getElementById('avatar').src='https://cravatar.eu/avatar/'+this.value+'/64.png'">
+    </div>
+
+    <div class="ranks-grid">
+        
+        <div class="rank-card vip">
+            <div class="rank-name">VIP</div>
+            <div class="rank-price">10.00 PLN</div>
+            <ul class="features">
+                <li>Pisanie na kolorowo</li>
+                <li>Dostęp do /kit vip</li>
+                <li>Rezerwacja slotu</li>
+            </ul>
+            <button class="buy-btn" onclick="goToShop('VIP', 10)">KUPUJĘ</button>
         </div>
 
-        <div class="glass-card">
-            <h2 style="font-size: 2rem; font-weight: 900;">Doładuj Portfel</h2>
-            <p style="opacity: 0.5; margin-bottom: 20px;">Środki zostaną dodane automatycznie po płatności.</p>
-            
-            <div class="wallet-grid">
-                <div class="wallet-option" onclick="selectFixed(10, this)">10 PLN</div>
-                <div class="wallet-option active" onclick="selectFixed(25, this)">25 PLN</div>
-                <div class="wallet-option" onclick="selectFixed(50, this)">50 PLN</div>
-            </div>
-
-            <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 20px; margin-top: 20px;">
-                <p style="font-size: 0.8rem; font-weight: 800; color: var(--primary);">PODSUMOWANIE</p>
-                <p style="font-size: 2rem; font-weight: 900;"><span id="final-price">25.00</span> PLN</p>
-            </div>
-
-            <button class="btn-pay" onclick="processPayment()">ZAPŁAĆ TERAZ</button>
-            <p style="text-align: center; font-size: 0.6rem; opacity: 0.3; margin-top: 15px;">Płatność obsługiwana przez IceHost.pl</p>
+        <div class="rank-card rekin">
+            <div class="rank-name">REKIN</div>
+            <div class="rank-price">20.00 PLN</div>
+            <ul class="features">
+                <li>Wszystko co VIP</li>
+                <li>Dostęp do /fly na lobby</li>
+                <li>Specjalny zestaw /kit rekin</li>
+            </ul>
+            <button class="buy-btn" onclick="goToShop('REKIN', 20)">KUPUJĘ</button>
         </div>
+
+        <div class="rank-card gangster">
+            <div class="rank-name">GANGSTER</div>
+            <div class="rank-price">35.00 PLN</div>
+            <ul class="features">
+                <li>Wszystko co REKIN</li>
+                <li>Dostęp do /nick</li>
+                <li>Pisanie na kolorowo (Hex)</li>
+            </ul>
+            <button class="buy-btn" onclick="goToShop('GANGSTER', 35)">KUPUJĘ</button>
+        </div>
+
+        <div class="rank-card magnat">
+            <div class="rank-name">MAGNAT</div>
+            <div class="rank-price">50.00 PLN</div>
+            <ul class="features">
+                <li>Pakiety premium /kit</li>
+                <li>Dostęp do unikalnych cząsteczek</li>
+                <li>Pierwszeństwo w eventach</li>
+            </ul>
+            <button class="buy-btn" onclick="goToShop('MAGNAT', 50)">KUPUJĘ</button>
+        </div>
+
+        <div class="rank-card raiot">
+            <div class="rank-name">RAIOT</div>
+            <div class="rank-price">75.00 PLN</div>
+            <ul class="features">
+                <li>Unikalny prefiks RAIOT</li>
+                <li>Zestaw mistrzowski eq</li>
+                <li>Prywatny kanał na Discord</li>
+            </ul>
+            <button class="buy-btn" onclick="goToShop('RAIOT', 75)">KUPUJĘ</button>
+        </div>
+
+        <div class="rank-card empire">
+            <div class="rank-name">EMPIRE</div>
+            <div class="rank-price">100.00 PLN</div>
+            <ul class="features">
+                <li>NAJLEPSZA RANGA</li>
+                <li>Wszystkie możliwe uprawnienia</li>
+                <li>Status Legendy na serwerze</li>
+            </ul>
+            <button class="buy-btn" onclick="goToShop('EMPIRE', 100)">KUPUJĘ</button>
+        </div>
+
     </div>
 
     <script>
-        let currentAmount = 25;
-
-        function updateAvatar(nick) {
-            const avatar = document.getElementById('avatar');
-            const displayNick = document.getElementById('display-nick');
-            if(nick.length > 2) {
-                avatar.src = `https://cravatar.eu/avatar/${nick}/128.png`;
-                displayNick.innerText = nick.toUpperCase();
-            }
-        }
-
-        function selectFixed(val, el) {
-            document.querySelectorAll('.wallet-option').forEach(item => item.classList.remove('active'));
-            el.classList.add('active');
-            currentAmount = val;
-            document.getElementById('final-price').innerText = val + ".00";
-        }
-
-        function processPayment() {
+        function goToShop(rank, price) {
             const nick = document.getElementById('player-nick').value;
-            
             if(nick.length < 3) {
-                alert("❌ Najpierw wpisz swój nick z Minecraft!");
+                alert("❌ Musisz podać swój nick!");
                 return;
             }
-
-            // DOKŁADNY LINK DO TWOJEGO SKLEPU
-            const icehostLink = `https://dash.icehost.pl/t/nRcpQxBTdK?nick=${nick}&amount=${currentAmount}`;
-            
-            const btn = document.querySelector('.btn-pay');
-            btn.innerText = "PRZEKIEROWYWANIE...";
-            btn.style.opacity = "0.5";
-            
-            window.location.href = icehostLink;
+            // TWÓJ LINK DO ICEHOST
+            const url = `https://dash.icehost.pl/t/nRcpQxBTdK?nick=${nick}&rank=${rank}&price=${price}`;
+            window.location.href = url;
         }
     </script>
+
 </body>
 </html>
