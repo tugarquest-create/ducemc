@@ -3,7 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DuceMC.PL | Elite Minecraft Network</title>
+    
+    <title>DuceMC.PL | Dobry Server Minecraft</title>
+    <meta name="description" content="DuceMC.PL - Najlepszy polski serwer Minecraft! Unikalne tryby, niskie pingi i świetna społeczność. Dołącz do nas już teraz!">
+    <meta name="keywords" content="minecraft, serwer minecraft, ducemc, ducemc.pl, survival, polski serwer mc">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ducemc.pl/">
+    <meta property="og:title" content="DuceMC.PL | Dobry Server Minecraft">
+    <meta property="og:description" content="Najlepszy polski serwer Minecraft. Unikalne systemy, stałe 20 TPS i epicka zabawa!">
+    <meta property="og:image" content="https://ducemc.pl/logo.png">
+
+    <link rel="icon" type="image/png" href="logo.png">
+
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -27,7 +39,7 @@
             justify-content: center;
             padding: 20px;
             overflow: hidden;
-            perspective: 2000px; /* Zwiększona perspektywa dla stabilności */
+            perspective: 2000px;
         }
 
         #hero-canvas {
@@ -52,10 +64,9 @@
             position: relative;
             transform-style: preserve-3d;
             will-change: transform;
-            transition: transform 0.4s cubic-bezier(0.03, 0.98, 0.52, 0.99); /* Bardzo płynne wygaszanie ruchu */
+            transition: transform 0.4s cubic-bezier(0.03, 0.98, 0.52, 0.99);
         }
 
-        /* Dekoracyjne ramki */
         .corner {
             position: absolute; width: 20px; height: 20px;
             border: 2px solid var(--primary); pointer-events: none; opacity: 0.6;
@@ -63,7 +74,6 @@
         .top-l { top: 20px; left: 20px; border-right: 0; border-bottom: 0; }
         .bot-r { bottom: 20px; right: 20px; border-left: 0; border-top: 0; }
 
-        /* LEWA STRONA */
         .left-side { border-right: 1px solid rgba(255,255,255,0.05); padding-right: 30px; }
         .server-logo { max-width: 160px; filter: drop-shadow(0 0 25px var(--primary-glow)); margin-bottom: 10px; }
         h1 { font-size: 2.8rem; color: var(--primary); font-weight: 900; letter-spacing: -1px; margin-bottom: 15px; }
@@ -76,7 +86,6 @@
         }
         .copy-ip:hover { background: var(--primary); box-shadow: 0 0 25px var(--primary-glow); }
 
-        /* NOWA SEKCJA OBOK WŁAŚCICIELI - PERFORMANCE */
         .perf-panel {
             margin-top: 20px; background: rgba(255,255,255,0.02);
             padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05);
@@ -94,21 +103,17 @@
         .avatar { width: 30px; height: 30px; border-radius: 5px; border: 1px solid var(--primary); }
         .admin-info p { font-size: 0.75rem; font-weight: 800; }
 
-        /* PRAWA STRONA */
         .right-side { display: flex; flex-direction: column; gap: 20px; }
 
-        /* STATUS PULSE */
         .status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .status-box { background: rgba(30,144,255,0.05); padding: 12px; border-radius: 12px; border: 1px solid rgba(30,144,255,0.1); }
         .pulse { display: inline-block; width: 8px; height: 8px; background: var(--accent-green); border-radius: 50%; margin-right: 5px; animation: blink 1.5s infinite; }
         @keyframes blink { 0% { opacity: 1; box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.7); } 70% { opacity: 0.5; box-shadow: 0 0 0 10px rgba(0, 255, 136, 0); } 100% { opacity: 1; } }
 
-        /* TRYBY */
         .modes-wrap { display: flex; gap: 10px; }
         .mode { flex: 1; padding: 15px; border-radius: 12px; font-weight: 900; text-align: center; font-size: 0.7rem; border: 1px solid rgba(255,255,255,0.1); }
         .m-duels { border-color: var(--accent-red); color: var(--accent-red); background: rgba(255,77,77,0.05); }
 
-        /* ULEPSZONY REGULAMIN */
         .rules-list { display: flex; flex-direction: column; gap: 8px; }
         .rule-item { 
             display: flex; align-items: center; gap: 12px; 
@@ -252,9 +257,8 @@
             requestAnimationFrame(draw);
         }
 
-        // POPRAWIONY, STABILNY RUCH GUI
         window.addEventListener('mousemove', (e) => {
-            let xAxis = (window.innerWidth / 2 - e.pageX) / 120; // Zmniejszona czułość
+            let xAxis = (window.innerWidth / 2 - e.pageX) / 120;
             let yAxis = (window.innerHeight / 2 - e.pageY) / 120;
             card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
         });
