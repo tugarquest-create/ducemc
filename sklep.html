@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DuceMC.PL | Sklep Rang</title>
+    <title>DuceMC.PL | Sklep Serwerowy</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #03080f;
-            --glass: rgba(10, 25, 47, 0.95);
-            --border: rgba(255, 255, 255, 0.1);
-            /* Kolory rang z Twojego LPC */
-            --color-vip: #ffb015;
-            --color-rekin: #3080e9;
-            --color-gangster: #6b5ad0;
-            --color-magnat: #d0c02c;
-            --color-raiot: #2fd007;
-            --color-empire: #8611e2;
+            --bg-dark: #02060a;
+            --glass: rgba(10, 25, 47, 0.9);
+            --border: rgba(255, 255, 255, 0.08);
+            /* Kolory z Twojego LuckPerms */
+            --vip: #ffb015;
+            --rekin: #3080e9;
+            --gangster: #6b5ad0;
+            --magnat: #d0c02c;
+            --raiot: #2fd007;
+            --empire: #8611e2;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -29,111 +29,115 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 40px 20px;
+            padding: 50px 20px;
         }
 
         .bg-image {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(3, 8, 15, 0.9), rgba(3, 8, 15, 0.9)), url('pobrane (1).jpg') center/cover;
+            background: linear-gradient(rgba(2, 6, 10, 0.9), rgba(2, 6, 10, 0.9)), url('pobrane (1).jpg') center/cover;
             z-index: -2;
         }
 
-        .header { text-align: center; margin-bottom: 50px; }
-        .header h1 { font-size: 3rem; font-weight: 900; letter-spacing: -2px; }
-        .header p { opacity: 0.6; letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem; }
+        .header { text-align: center; margin-bottom: 40px; }
+        .header h1 { font-size: 3.5rem; font-weight: 900; letter-spacing: -2px; text-transform: uppercase; }
+        .header span { color: var(--rekin); }
 
-        .nick-box {
+        /* BOX NICKU */
+        .nick-section {
             background: var(--glass);
-            padding: 25px;
-            border-radius: 25px;
+            padding: 30px;
+            border-radius: 30px;
             border: 1px solid var(--border);
-            margin-bottom: 40px;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
+            margin-bottom: 50px;
             width: 100%;
-            max-width: 500px;
+            max-width: 450px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
 
-        .nick-box input {
-            background: rgba(0,0,0,0.5);
+        .nick-section input {
+            width: 100%;
+            background: rgba(0,0,0,0.4);
             border: 2px solid var(--border);
             padding: 15px;
             border-radius: 15px;
             color: white;
             font-family: 'JetBrains Mono';
-            width: 100%;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             text-align: center;
+            transition: 0.3s;
         }
 
-        .ranks-grid {
+        .nick-section input:focus { border-color: var(--rekin); outline: none; background: rgba(0,0,0,0.6); }
+
+        /* SIATKA RANG */
+        .ranks-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
             width: 100%;
             max-width: 1200px;
         }
 
         .rank-card {
             background: var(--glass);
-            border-radius: 35px;
-            padding: 35px;
+            border-radius: 40px;
+            padding: 40px;
             border: 1px solid var(--border);
             text-align: center;
-            transition: 0.4s;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: flex;
             flex-direction: column;
             position: relative;
-            overflow: hidden;
         }
 
-        .rank-card:hover { transform: translateY(-10px); border-color: white; }
+        .rank-card:hover { transform: translateY(-15px); border-color: rgba(255,255,255,0.3); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
 
-        .rank-name { font-size: 2.2rem; font-weight: 900; margin-bottom: 10px; }
-        .rank-price { font-size: 1.5rem; font-weight: 800; opacity: 0.9; margin-bottom: 25px; }
+        .rank-title { font-size: 2.5rem; font-weight: 900; margin-bottom: 5px; }
+        .rank-price { font-size: 1.8rem; font-weight: 800; margin-bottom: 30px; opacity: 0.9; }
+        .rank-price span { font-size: 1rem; opacity: 0.5; }
 
-        .features { text-align: left; margin-bottom: 30px; flex-grow: 1; }
-        .features li { list-style: none; padding: 8px 0; font-size: 0.9rem; opacity: 0.8; display: flex; align-items: center; gap: 10px; }
-        .features li::before { content: '✔'; }
+        .features { text-align: left; margin-bottom: 40px; flex-grow: 1; }
+        .features li { list-style: none; padding: 10px 0; font-size: 0.95rem; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 10px; }
+        .features li::before { content: '★'; color: inherit; font-weight: 900; }
 
         .buy-btn {
             width: 100%;
-            padding: 18px;
-            border-radius: 15px;
+            padding: 22px;
+            border-radius: 20px;
             border: none;
             font-weight: 900;
+            font-size: 1.1rem;
             text-transform: uppercase;
             cursor: pointer;
             transition: 0.3s;
         }
 
-        /* Stylizacja poszczególnych rang */
-        .vip { border-top: 6px solid var(--color-vip); }
-        .vip .rank-name { color: var(--color-vip); }
-        .vip .buy-btn { background: var(--color-vip); color: black; }
+        /* KOLORYSTYKA RANG */
+        .r-vip { border-top: 8px solid var(--vip); color: var(--vip); }
+        .r-vip .buy-btn { background: var(--vip); color: black; }
 
-        .rekin { border-top: 6px solid var(--color-rekin); }
-        .rekin .rank-name { color: var(--color-rekin); }
-        .rekin .buy-btn { background: var(--color-rekin); color: white; }
+        .r-rekin { border-top: 8px solid var(--rekin); color: var(--rekin); }
+        .r-rekin .buy-btn { background: var(--rekin); color: white; }
 
-        .gangster { border-top: 6px solid var(--color-gangster); }
-        .gangster .rank-name { color: var(--color-gangster); }
-        .gangster .buy-btn { background: var(--color-gangster); color: white; }
+        .r-gangster { border-top: 8px solid var(--gangster); color: var(--gangster); }
+        .r-gangster .buy-btn { background: var(--gangster); color: white; }
 
-        .magnat { border-top: 6px solid var(--color-magnat); }
-        .magnat .rank-name { color: var(--color-magnat); }
-        .magnat .buy-btn { background: var(--color-magnat); color: black; }
+        .r-magnat { border-top: 8px solid var(--magnat); color: var(--magnat); }
+        .r-magnat .buy-btn { background: var(--magnat); color: black; }
 
-        .raiot { border-top: 6px solid var(--color-raiot); }
-        .raiot .rank-name { color: var(--color-raiot); }
-        .raiot .buy-btn { background: var(--color-raiot); color: white; }
+        .r-raiot { border-top: 8px solid var(--raiot); color: var(--raiot); }
+        .r-raiot .buy-btn { background: var(--raiot); color: white; }
 
-        .empire { border-top: 6px solid var(--color-empire); box-shadow: 0 0 30px rgba(134, 17, 226, 0.2); }
-        .empire .rank-name { color: var(--color-empire); }
-        .empire .buy-btn { background: var(--color-empire); color: white; }
+        .r-empire { border-top: 8px solid var(--empire); color: var(--empire); box-shadow: inset 0 0 20px rgba(134, 17, 226, 0.1); }
+        .r-empire .buy-btn { background: var(--empire); color: white; }
 
-        .buy-btn:hover { filter: brightness(1.2); transform: scale(1.02); }
+        .buy-btn:hover { transform: scale(1.05); filter: brightness(1.2); }
+
+        .footer { margin-top: 80px; opacity: 0.4; font-size: 0.8rem; text-align: center; line-height: 2; }
     </style>
 </head>
 <body>
@@ -141,95 +145,101 @@
     <div class="bg-image"></div>
 
     <div class="header">
-        <h1>SKLEP DUCEMC</h1>
-        <p>Wybierz rangę i zdominuj serwer</p>
+        <h1>Duce<span>MC</span>.PL</h1>
+        <p>Oficjalny sklep z rangami</p>
     </div>
 
-    <div class="nick-box">
-        <img id="avatar" src="https://cravatar.eu/avatar/MHF_Steve/64.png" style="width: 50px; border-radius: 10px;">
-        <input type="text" id="player-nick" placeholder="WPISZ SWÓJ NICK" oninput="document.getElementById('avatar').src='https://cravatar.eu/avatar/'+this.value+'/64.png'">
+    <div class="nick-section">
+        <img id="avatar" src="https://cravatar.eu/avatar/MHF_Steve/80.png" style="width: 80px; border-radius: 20px; border: 2px solid var(--border);">
+        <input type="text" id="player-nick" placeholder="TWÓJ NICK Z GRY" oninput="document.getElementById('avatar').src='https://cravatar.eu/avatar/'+this.value+'/80.png'">
+        <p style="font-size: 0.7rem; font-weight: 700; opacity: 0.5;">PODAJ NICK, ABY PRZYPISAĆ ZAKUP</p>
     </div>
 
-    <div class="ranks-grid">
+    <div class="ranks-container">
         
-        <div class="rank-card vip">
-            <div class="rank-name">VIP</div>
-            <div class="rank-price">10.00 PLN</div>
+        <div class="rank-card r-vip">
+            <div class="rank-title">VIP</div>
+            <div class="rank-price">14.99 <span>PLN</span></div>
             <ul class="features">
                 <li>Pisanie na kolorowo</li>
-                <li>Dostęp do /kit vip</li>
-                <li>Rezerwacja slotu</li>
+                <li>Zestaw /kit vip</li>
+                <li>Prefiks [VIP] na czacie</li>
             </ul>
-            <button class="buy-btn" onclick="goToShop('VIP', 10)">KUPUJĘ</button>
+            <button class="buy-btn" onclick="pay('VIP')">DO KOSZYKA</button>
         </div>
 
-        <div class="rank-card rekin">
-            <div class="rank-name">REKIN</div>
-            <div class="rank-price">20.00 PLN</div>
+        <div class="rank-card r-rekin">
+            <div class="rank-title">REKIN</div>
+            <div class="rank-price">34.99 <span>PLN</span></div>
             <ul class="features">
                 <li>Wszystko co VIP</li>
-                <li>Dostęp do /fly na lobby</li>
-                <li>Specjalny zestaw /kit rekin</li>
+                <li>Latanie na lobby (/fly)</li>
+                <li>Zestaw /kit rekin</li>
             </ul>
-            <button class="buy-btn" onclick="goToShop('REKIN', 20)">KUPUJĘ</button>
+            <button class="buy-btn" onclick="pay('REKIN')">DO KOSZYKA</button>
         </div>
 
-        <div class="rank-card gangster">
-            <div class="rank-name">GANGSTER</div>
-            <div class="rank-price">35.00 PLN</div>
+        <div class="rank-card r-gangster">
+            <div class="rank-title">GANGSTER</div>
+            <div class="rank-price">59.99 <span>PLN</span></div>
             <ul class="features">
                 <li>Wszystko co REKIN</li>
                 <li>Dostęp do /nick</li>
-                <li>Pisanie na kolorowo (Hex)</li>
+                <li>Zmiana koloru nicku</li>
             </ul>
-            <button class="buy-btn" onclick="goToShop('GANGSTER', 35)">KUPUJĘ</button>
+            <button class="buy-btn" onclick="pay('GANGSTER')">DO KOSZYKA</button>
         </div>
 
-        <div class="rank-card magnat">
-            <div class="rank-name">MAGNAT</div>
-            <div class="rank-price">50.00 PLN</div>
+        <div class="rank-card r-magnat">
+            <div class="rank-title">MAGNAT</div>
+            <div class="rank-price">89.99 <span>PLN</span></div>
             <ul class="features">
                 <li>Pakiety premium /kit</li>
-                <li>Dostęp do unikalnych cząsteczek</li>
-                <li>Pierwszeństwo w eventach</li>
+                <li>Dostęp do cząsteczek</li>
+                <li>Slot na pełnym serwerze</li>
             </ul>
-            <button class="buy-btn" onclick="goToShop('MAGNAT', 50)">KUPUJĘ</button>
+            <button class="buy-btn" onclick="pay('MAGNAT')">DO KOSZYKA</button>
         </div>
 
-        <div class="rank-card raiot">
-            <div class="rank-name">RAIOT</div>
-            <div class="rank-price">75.00 PLN</div>
+        <div class="rank-card r-raiot">
+            <div class="rank-title">RAIOT</div>
+            <div class="rank-price">119.99 <span>PLN</span></div>
             <ul class="features">
                 <li>Unikalny prefiks RAIOT</li>
-                <li>Zestaw mistrzowski eq</li>
-                <li>Prywatny kanał na Discord</li>
+                <li>Zestaw mistrzowski</li>
+                <li>Dostęp do ukrytych kanałów</li>
             </ul>
-            <button class="buy-btn" onclick="goToShop('RAIOT', 75)">KUPUJĘ</button>
+            <button class="buy-btn" onclick="pay('RAIOT')">DO KOSZYKA</button>
         </div>
 
-        <div class="rank-card empire">
-            <div class="rank-name">EMPIRE</div>
-            <div class="rank-price">100.00 PLN</div>
+        <div class="rank-card r-empire">
+            <div class="rank-title">EMPIRE</div>
+            <div class="rank-price">149.99 <span>PLN</span></div>
             <ul class="features">
                 <li>NAJLEPSZA RANGA</li>
-                <li>Wszystkie możliwe uprawnienia</li>
-                <li>Status Legendy na serwerze</li>
+                <li>Wszystkie przywileje</li>
+                <li>Status Legendy</li>
             </ul>
-            <button class="buy-btn" onclick="goToShop('EMPIRE', 100)">KUPUJĘ</button>
+            <button class="buy-btn" onclick="pay('EMPIRE')">DO KOSZYKA</button>
         </div>
 
     </div>
 
+    <div class="footer">
+        DUCEMC.PL &copy; 2026 | Płatności obsługiwane przez IceHost.pl<br>
+        Ta strona wykorzystuje pliki cookies. Korzystając z niej akceptujesz politykę prywatności.
+    </div>
+
     <script>
-        function goToShop(rank, price) {
+        function pay(rankName) {
             const nick = document.getElementById('player-nick').value;
             if(nick.length < 3) {
-                alert("❌ Musisz podać swój nick!");
+                alert("❌ Musisz wpisać swój nick z gry, aby kontynuować!");
                 return;
             }
-            // TWÓJ LINK DO ICEHOST
-            const url = `https://dash.icehost.pl/t/nRcpQxBTdK?nick=${nick}&rank=${rank}&price=${price}`;
-            window.location.href = url;
+            // Link do Twojego sklepu z parametrami
+            const baseUrl = "https://dash.icehost.pl/t/nRcpQxBTdK";
+            window.location.href = `${baseUrl}?nick=${nick}&item=${rankName}`;
         }
     </script>
 
