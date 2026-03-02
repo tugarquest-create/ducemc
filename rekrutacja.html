@@ -8,13 +8,16 @@
     
     <style>
         :root {
-            --primary: #00bcd4;
-            --bg-dark: #020205;
-            --card-bg: rgba(10, 10, 15, 0.95);
-            --transition: all 0.3s ease;
+            --primary: #00e5ff;
+            --primary-glow: rgba(0, 229, 255, 0.3);
+            --bg-dark: #050508;
+            --card-bg: rgba(10, 10, 18, 0.9);
+            --input-bg: rgba(255, 255, 255, 0.03);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        
         body {
             font-family: 'Montserrat', sans-serif;
             background: var(--bg-dark);
@@ -24,88 +27,104 @@
             align-items: center;
             min-height: 100vh;
             padding: 40px 20px;
+            overflow-x: hidden;
         }
 
-        #hero-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        /* Tło animowane */
+        #hero-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.6; }
 
         .rec-card {
             background: var(--card-bg);
-            border: 1px solid rgba(0, 188, 212, 0.2);
-            border-radius: 30px;
-            padding: 40px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 40px;
+            padding: 50px;
             width: 100%;
-            max-width: 700px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            position: relative;
+            max-width: 850px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+            animation: slideUp 0.8s ease-out;
         }
 
-        h2 { font-weight: 900; font-size: 2.2rem; color: var(--primary); margin-bottom: 10px; text-align: center; letter-spacing: 2px; }
-        p.subtitle { text-align: center; color: #777; font-size: 0.8rem; margin-bottom: 35px; text-transform: uppercase; font-weight: 700; }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        h2 { font-weight: 900; font-size: 2.8rem; color: var(--primary); text-align: center; margin-bottom: 5px; text-shadow: 0 0 20px var(--primary-glow); }
+        .subtitle { text-align: center; color: #555; font-size: 0.85rem; margin-bottom: 40px; text-transform: uppercase; letter-spacing: 4px; font-weight: 700; }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
         .full-width { grid-column: span 2; }
 
-        .form-group { margin-bottom: 20px; }
-        label { display: block; font-size: 0.7rem; font-weight: 900; margin-bottom: 8px; color: #aaa; text-transform: uppercase; }
+        .form-group { position: relative; }
+        label { display: block; font-size: 0.65rem; font-weight: 900; margin-bottom: 10px; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
         
         input, textarea, select {
             width: 100%;
-            padding: 15px;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
+            padding: 18px;
+            background: var(--input-bg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
             color: white;
             font-family: inherit;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             transition: var(--transition);
         }
 
         input:focus, textarea:focus, select:focus {
             border-color: var(--primary);
-            background: rgba(0, 188, 212, 0.05);
+            background: rgba(0, 229, 255, 0.03);
+            box-shadow: 0 0 20px var(--primary-glow);
             outline: none;
+            transform: scale(1.01);
         }
 
-        select option { background: #111; color: white; }
-
-        textarea { resize: vertical; min-height: 120px; }
+        textarea { min-height: 140px; line-height: 1.6; }
 
         .submit-btn {
             width: 100%;
-            padding: 20px;
+            padding: 22px;
             background: var(--primary);
             border: none;
-            border-radius: 15px;
-            color: white;
+            border-radius: 20px;
+            color: #000;
             font-weight: 900;
             text-transform: uppercase;
             cursor: pointer;
             transition: var(--transition);
-            margin-top: 10px;
-            letter-spacing: 1px;
+            margin-top: 20px;
+            letter-spacing: 2px;
+            font-size: 1rem;
         }
 
         .submit-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0, 188, 212, 0.4);
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 20px 40px var(--primary-glow);
             filter: brightness(1.1);
         }
+
+        .submit-btn:active { transform: scale(0.98); }
 
         .back-link {
             display: block;
             text-align: center;
-            margin-top: 25px;
-            color: #555;
+            margin-top: 30px;
+            color: #444;
             text-decoration: none;
             font-size: 0.8rem;
-            font-weight: 700;
-            transition: var(--transition);
+            font-weight: 800;
+            transition: 0.3s;
         }
-        .back-link:hover { color: white; }
+        .back-link:hover { color: var(--primary); }
 
-        @media (max-width: 600px) {
+        /* Loader podczas wysyłania */
+        .loading { pointer-events: none; opacity: 0.6; filter: grayscale(1); }
+
+        @media (max-width: 768px) {
             .form-grid { grid-template-columns: 1fr; }
             .full-width { grid-column: span 1; }
+            .rec-card { padding: 30px 20px; }
+            h2 { font-size: 2rem; }
         }
     </style>
 </head>
@@ -113,25 +132,25 @@
 
     <canvas id="hero-canvas"></canvas>
 
-    <div class="rec-card">
+    <div class="rec-card" id="form-container">
         <h2>REKRUTACJA</h2>
-        <p class="subtitle">Zasil szeregi administracji DuceMC.PL</p>
+        <p class="subtitle">Aplikuj do Ekipy DuceMC</p>
 
         <form id="rec-form">
             <div class="form-grid">
                 <div class="form-group">
-                    <label>Nick z Minecraft</label>
-                    <input type="text" id="mc_nick" placeholder="Twój nick" required>
+                    <label>Nick Minecraft</label>
+                    <input type="text" id="nick" placeholder="Twój nick" required>
                 </div>
 
                 <div class="form-group">
-                    <label>Imię i Wiek</label>
-                    <input type="text" id="age" placeholder="Np. Marek, 16 lat" required>
+                    <label>Wiek</label>
+                    <input type="number" id="age" placeholder="Ile masz lat?" required>
                 </div>
 
                 <div class="form-group">
-                    <label>Discord (Tag)</label>
-                    <input type="text" id="dc_tag" placeholder="nick#0000 lub nick" required>
+                    <label>Discord Tag</label>
+                    <input type="text" id="discord" placeholder="np. nazwa_uzytkownika" required>
                 </div>
 
                 <div class="form-group">
@@ -146,50 +165,48 @@
                 </div>
 
                 <div class="form-group full-width">
-                    <label>Od kiedy grasz na naszym serwerze?</label>
-                    <input type="text" id="since_when" placeholder="Np. od startu edycji, od miesiąca..." required>
+                    <label>Doświadczenie i Komendy</label>
+                    <textarea id="experience" placeholder="Opisz gdzie wcześniej pełniłeś funkcje i jak oceniasz znajomość komend (1-10)..." required></textarea>
                 </div>
 
                 <div class="form-group full-width">
-                    <label>Dlaczego Ty powinieneś otrzymać tę rangę?</label>
-                    <textarea id="why_me" placeholder="Napisz coś o sobie, swoim doświadczeniu i dlaczego to właśnie Ciebie mamy wybrać..." required></textarea>
+                    <label>Dlaczego Ty? (Napisz minimum 3 zdania)</label>
+                    <textarea id="why" placeholder="Przekonaj nas, że to Ty jesteś najlepszym kandydatem..." required></textarea>
                 </div>
 
                 <div class="form-group full-width">
-                    <label>Znajomość komend administracyjnych (1-10)</label>
-                    <input type="number" id="commands" min="1" max="10" placeholder="Oceń swoje umiejętności" required>
-                </div>
-
-                <div class="form-group full-width">
-                    <label>Ile czasu dziennie możesz poświęcić na serwer?</label>
-                    <input type="text" id="time" placeholder="Np. Pon-Pt: 3h, Weekendy: 6h" required>
-                </div>
-
-                <div class="form-group full-width">
-                    <label>Czy pełniłeś już kiedyś podobną funkcję?</label>
-                    <textarea id="experience" placeholder="Wymień serwery lub opisz nabyte doświadczenie..." required></textarea>
+                    <label>Czas wolny</label>
+                    <input type="text" id="time" placeholder="Ile godzin dziennie możesz poświęcić?" required>
                 </div>
             </div>
 
-            <button type="submit" class="submit-btn">WYŚLIJ MOJE ZGŁOSZENIE</button>
+            <button type="submit" class="submit-btn" id="submit-text">WYŚLIJ APLIKACJĘ</button>
         </form>
 
-        <a href="index.html" class="back-link">← WRÓĆ DO STRONY GŁÓWNEJ</a>
+        <a href="index.html" class="back-link">← POWRÓT NA STRONĘ GŁÓWNĄ</a>
     </div>
 
     <script>
+        // Animowane gwiazdy w tle (ulepszone)
         const canvas = document.getElementById('hero-canvas');
         const ctx = canvas.getContext('2d');
         let stars = [];
         function init() {
             canvas.width = window.innerWidth; canvas.height = window.innerHeight;
             stars = [];
-            for(let i=0; i<100; i++) stars.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, size: Math.random()*2});
+            for(let i=0; i<120; i++) stars.push({
+                x: Math.random()*canvas.width, 
+                y: Math.random()*canvas.height, 
+                size: Math.random()*2,
+                speed: Math.random()*0.5 + 0.2
+            });
         }
         function draw() {
             ctx.clearRect(0,0,canvas.width, canvas.height);
-            ctx.fillStyle = "rgba(0, 188, 212, 0.2)";
+            ctx.fillStyle = "rgba(0, 229, 255, 0.4)";
             stars.forEach(s => {
+                s.y -= s.speed;
+                if(s.y < 0) s.y = canvas.height;
                 ctx.beginPath();
                 ctx.arc(s.x, s.y, s.size, 0, Math.PI*2);
                 ctx.fill();
@@ -199,12 +216,55 @@
         window.addEventListener('resize', init);
         init(); draw();
 
-        // Obsługa wysyłania
-        document.getElementById('rec-form').addEventListener('submit', (e) => {
+        // INTEGRACJA Z WEBHOOKIEM DISCORD
+        const WEBHOOK_URL = "https://discordapp.com/api/webhooks/1477803640394747964/mmTOxJH5FI-LMHci111VUdsjqFF5oxhbNRJw94OR-w5PvXk0jPsIh5HRfWyPit1k6in6"; // <--- TUTAJ WKLEJ LINK!
+
+        document.getElementById('rec-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            // Tutaj w przyszłości dodamy kod wysyłający na Discord Webhook
-            alert("Zgłoszenie zostało wysłane pomyślnie! Czekaj na kontakt na Discordzie.");
-            window.location.href = "index.html";
+            const btn = document.getElementById('submit-text');
+            const container = document.getElementById('form-container');
+            
+            btn.innerText = "WYSYŁANIE...";
+            container.classList.add('loading');
+
+            const data = {
+                username: "System Rekrutacji DuceMC",
+                avatar_url: "https://ducemc.pl/logo.png", // Twoje logo
+                embeds: [{
+                    title: "📥 NOWE PODANIE O RANGĘ!",
+                    color: 5814783, // Kolor błękitny
+                    fields: [
+                        { name: "👤 Nick Minecraft", value: `\`${document.getElementById('nick').value}\``, inline: true },
+                        { name: "🎂 Wiek", value: `\`${document.getElementById('age').value}\``, inline: true },
+                        { name: "🎮 Ranga", value: `**${document.getElementById('rank').value}**`, inline: true },
+                        { name: "📱 Discord", value: document.getElementById('discord').value, inline: true },
+                        { name: "⏳ Czas wolny", value: document.getElementById('time').value, inline: true },
+                        { name: "🧠 Doświadczenie", value: document.getElementById('experience').value },
+                        { name: "📝 Dlaczego on?", value: document.getElementById('why').value }
+                    ],
+                    footer: { text: "DuceMC.PL • System Rekrutacji" },
+                    timestamp: new Date()
+                }]
+            };
+
+            try {
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    alert("✅ Sukces! Twoje podanie zostało dostarczone do administracji.");
+                    window.location.href = "index.html";
+                } else {
+                    throw new Error();
+                }
+            } catch (err) {
+                alert("❌ Błąd podczas wysyłania. Upewnij się, że Webhook jest poprawny lub spróbuj później.");
+                btn.innerText = "WYŚLIJ APLIKACJĘ";
+                container.classList.remove('loading');
+            }
         });
     </script>
 </body>
