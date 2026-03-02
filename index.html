@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DuceMC.PL | Elite Duels Network</title>
+    <title>DuceMC.PL | Oficjalna Strona</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -188,11 +188,11 @@
             <p style="font-size: 0.6rem; letter-spacing: 4px; opacity: 0.4; margin-bottom: 20px;">NAWIGACJA</p>
             <div class="nav-buttons">
                 <a href="sklep.html" class="nav-link"><b>SKLEP</b><span>ItemShop & Portfel</span></a>
-                <a href="#" class="nav-link"><b>REGULAMIN</b><span>Zasady gry</span></a>
-                <a href="#" class="nav-link"><b>VOUCHERY</b><span>Odbierz nagrodę</span></a>
                 <a href="https://dc.ducemc.pl" class="nav-link" style="border-left: 3px solid #5865f2;">
                     <b style="color: #5865f2;">DISCORD</b><span>Społeczność</span>
                 </a>
+                <a href="regulamin.html" class="nav-link"><b>REGULAMIN</b><span>Zasady gry</span></a>
+                <a href="rekrutacja.html" class="nav-link"><b>REKRUTACJA</b><span>Dołącz do ekipy</span></a>
             </div>
             
             <a href="#" class="nav-link" style="margin-top: 15px; text-align: center; border: 1px solid var(--primary);">
@@ -219,7 +219,6 @@
     <div id="notif">SKOPIOWANO DUCEMC.PL</div>
 
     <script>
-        // --- LICZNIK GRACZY ---
         async function updatePlayers() {
             try {
                 const response = await fetch('https://api.minecraft-lista.pl/v1/players/ducemc.pl');
@@ -234,7 +233,6 @@
         setInterval(updatePlayers, 30000);
         updatePlayers();
 
-        // --- BĄBELKI ---
         const canvas = document.getElementById('bubbles');
         const ctx = canvas.getContext('2d');
         let bubbles = [];
@@ -257,7 +255,6 @@
         window.addEventListener('resize', init);
         init(); animate();
 
-        // --- EFEKT TILT (POCHYLENIE) ---
         const scene = document.getElementById('tilt-scene');
         window.addEventListener('mousemove', (e) => {
             let x = (window.innerWidth / 2 - e.pageX) / 150;
