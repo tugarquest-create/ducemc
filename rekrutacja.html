@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rekrutacja | DuceMC.PL</title>
+    <title>Rekrutacja Premium | DuceMC.PL</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     
     <style>
         :root {
             --primary: #00e5ff;
-            --primary-glow: rgba(0, 229, 255, 0.3);
-            --bg-dark: #050508;
-            --card-bg: rgba(10, 10, 18, 0.9);
-            --input-bg: rgba(255, 255, 255, 0.03);
-            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --primary-rgb: 0, 229, 255;
+            --bg-dark: #030305;
+            --card-bg: rgba(8, 8, 12, 0.95);
+            --error: #ff3e3e;
+            --success: #00ff88;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
         
         body {
             font-family: 'Montserrat', sans-serif;
@@ -30,240 +31,328 @@
             overflow-x: hidden;
         }
 
-        /* Tło animowane */
-        #hero-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.6; }
+        #bg-canvas {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at center, #0a1a1f 0%, #030305 100%);
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 6px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 40px 40px 0 0;
+            overflow: hidden;
+        }
+        #progress-fill {
+            width: 0%; height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--success));
+            transition: width 0.5s ease;
+            box-shadow: 0 0 15px var(--primary);
+        }
 
         .rec-card {
             background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 40px;
-            padding: 50px;
+            padding: 60px;
             width: 100%;
-            max-width: 850px;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
-            animation: slideUp 0.8s ease-out;
+            max-width: 900px;
+            position: relative;
+            transform-style: preserve-3d;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.8);
         }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
+        h2 { 
+            font-weight: 900; font-size: 3.2rem; 
+            background: linear-gradient(to bottom, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center; margin-bottom: 5px; 
+            letter-spacing: -1px;
         }
 
-        h2 { font-weight: 900; font-size: 2.8rem; color: var(--primary); text-align: center; margin-bottom: 5px; text-shadow: 0 0 20px var(--primary-glow); }
-        .subtitle { text-align: center; color: #555; font-size: 0.85rem; margin-bottom: 40px; text-transform: uppercase; letter-spacing: 4px; font-weight: 700; }
+        .subtitle { 
+            text-align: center; color: #555; font-size: 0.9rem; 
+            margin-bottom: 50px; text-transform: uppercase; 
+            letter-spacing: 6px; font-weight: 700; 
+        }
 
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
         .full-width { grid-column: span 2; }
 
-        .form-group { position: relative; }
-        label { display: block; font-size: 0.65rem; font-weight: 900; margin-bottom: 10px; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
+        .form-group { position: relative; transition: var(--transition); }
         
+        label { 
+            display: block; font-size: 0.7rem; font-weight: 900; 
+            margin-bottom: 12px; color: #888; 
+            text-transform: uppercase; letter-spacing: 2px;
+        }
+
         input, textarea, select {
             width: 100%;
-            padding: 18px;
-            background: var(--input-bg);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 15px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 2px solid rgba(255, 255, 255, 0.05);
+            border-radius: 18px;
             color: white;
             font-family: inherit;
-            font-size: 0.95rem;
+            font-size: 1rem;
             transition: var(--transition);
         }
 
         input:focus, textarea:focus, select:focus {
+            background: rgba(var(--primary-rgb), 0.05);
             border-color: var(--primary);
-            background: rgba(0, 229, 255, 0.03);
-            box-shadow: 0 0 20px var(--primary-glow);
-            outline: none;
-            transform: scale(1.01);
+            box-shadow: 0 0 25px rgba(var(--primary-rgb), 0.2);
+            transform: translateY(-2px);
         }
 
-        textarea { min-height: 140px; line-height: 1.6; }
+        /* Status walidacji */
+        input:valid:not(:placeholder-shown) { border-color: var(--success); }
+
+        textarea { min-height: 160px; resize: none; }
 
         .submit-btn {
             width: 100%;
-            padding: 22px;
+            padding: 25px;
             background: var(--primary);
             border: none;
-            border-radius: 20px;
+            border-radius: 22px;
             color: #000;
             font-weight: 900;
             text-transform: uppercase;
             cursor: pointer;
             transition: var(--transition);
-            margin-top: 20px;
-            letter-spacing: 2px;
-            font-size: 1rem;
+            margin-top: 30px;
+            letter-spacing: 3px;
+            font-size: 1.1rem;
+            position: relative;
+            overflow: hidden;
         }
 
         .submit-btn:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 20px 40px var(--primary-glow);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(var(--primary-rgb), 0.4);
             filter: brightness(1.1);
         }
 
-        .submit-btn:active { transform: scale(0.98); }
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: 0.5s;
+        }
+
+        .submit-btn:hover::before { left: 100%; }
 
         .back-link {
-            display: block;
-            text-align: center;
-            margin-top: 30px;
-            color: #444;
-            text-decoration: none;
-            font-size: 0.8rem;
-            font-weight: 800;
+            display: block; text-align: center; margin-top: 40px;
+            color: #444; text-decoration: none; font-size: 0.8rem;
+            font-weight: 800; text-transform: uppercase; letter-spacing: 2px;
             transition: 0.3s;
         }
-        .back-link:hover { color: var(--primary); }
+        .back-link:hover { color: var(--primary); letter-spacing: 4px; }
 
-        /* Loader podczas wysyłania */
-        .loading { pointer-events: none; opacity: 0.6; filter: grayscale(1); }
+        .loading-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); border-radius: 40px;
+            display: none; justify-content: center; align-items: center;
+            z-index: 100; backdrop-filter: blur(10px);
+        }
 
-        @media (max-width: 768px) {
+        @media (max-width: 800px) {
             .form-grid { grid-template-columns: 1fr; }
             .full-width { grid-column: span 1; }
-            .rec-card { padding: 30px 20px; }
-            h2 { font-size: 2rem; }
+            .rec-card { padding: 40px 20px; }
+            h2 { font-size: 2.2rem; }
         }
     </style>
 </head>
 <body>
 
-    <canvas id="hero-canvas"></canvas>
+    <canvas id="bg-canvas"></canvas>
 
-    <div class="rec-card" id="form-container">
+    <div class="rec-card" id="card">
+        <div class="progress-container"><div id="progress-fill"></div></div>
+        
+        <div class="loading-overlay" id="loader">
+            <div style="text-align: center;">
+                <div class="submit-btn" style="background: none; border: 3px solid var(--primary); color: var(--primary);">AUTORYZACJA...</div>
+            </div>
+        </div>
+
         <h2>REKRUTACJA</h2>
-        <p class="subtitle">Aplikuj do Ekipy DuceMC</p>
+        <p class="subtitle">Join the Elite</p>
 
         <form id="rec-form">
             <div class="form-grid">
                 <div class="form-group">
                     <label>Nick Minecraft</label>
-                    <input type="text" id="nick" placeholder="Twój nick" required>
+                    <input type="text" id="nick" placeholder=" " required>
                 </div>
 
                 <div class="form-group">
-                    <label>Wiek</label>
-                    <input type="number" id="age" placeholder="Ile masz lat?" required>
+                    <label>Wiek (min. 14 lat)</label>
+                    <input type="number" id="age" min="10" max="99" placeholder=" " required>
                 </div>
 
                 <div class="form-group">
-                    <label>Discord Tag</label>
-                    <input type="text" id="discord" placeholder="np. nazwa_uzytkownika" required>
+                    <label>Discord</label>
+                    <input type="text" id="discord" placeholder="nazwa#0000" required>
                 </div>
 
                 <div class="form-group">
-                    <label>Stanowisko</label>
-                    <select id="rank">
-                        <option value="Admin">Admin</option>
-                        <option value="Moderator">Moderator</option>
+                    <label>Preferowana Ranga</label>
+                    <select id="rank" required>
                         <option value="Helper">Helper</option>
+                        <option value="Moderator">Moderator</option>
+                        <option value="Admin">Admin</option>
                         <option value="Budowniczy">Budowniczy</option>
-                        <option value="Trial">Trial (Testowy)</option>
+                        <option value="Trial">Trial</option>
                     </select>
                 </div>
 
                 <div class="form-group full-width">
-                    <label>Doświadczenie i Komendy</label>
-                    <textarea id="experience" placeholder="Opisz gdzie wcześniej pełniłeś funkcje i jak oceniasz znajomość komend (1-10)..." required></textarea>
+                    <label>Doświadczenie (Serwery, Komendy, Staż)</label>
+                    <textarea id="experience" placeholder="Opisz swoje poprzednie projekty..." required></textarea>
                 </div>
 
                 <div class="form-group full-width">
-                    <label>Dlaczego Ty? (Napisz minimum 3 zdania)</label>
-                    <textarea id="why" placeholder="Przekonaj nas, że to Ty jesteś najlepszym kandydatem..." required></textarea>
+                    <label>Dlaczego mamy wybrać właśnie Ciebie?</label>
+                    <textarea id="why" placeholder="Wymień swoje mocne strony..." required></textarea>
                 </div>
 
                 <div class="form-group full-width">
-                    <label>Czas wolny</label>
-                    <input type="text" id="time" placeholder="Ile godzin dziennie możesz poświęcić?" required>
+                    <label>Dyspozycyjność tygodniowa</label>
+                    <input type="text" id="time" placeholder="Np. Pon-Pt 16-20, Weekendy 10-22" required>
                 </div>
             </div>
 
-            <button type="submit" class="submit-btn" id="submit-text">WYŚLIJ APLIKACJĘ</button>
+            <button type="submit" class="submit-btn">WYŚLIJ APLIKACJĘ</button>
         </form>
 
-        <a href="index.html" class="back-link">← POWRÓT NA STRONĘ GŁÓWNĄ</a>
+        <a href="index.html" class="back-link">← Przerwij proces</a>
     </div>
 
     <script>
-        // Animowane gwiazdy w tle (ulepszone)
-        const canvas = document.getElementById('hero-canvas');
+        // --- INTERAKTYWNE TŁO CZĄSTECZKOWE ---
+        const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
-        let stars = [];
-        function init() {
-            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            stars = [];
-            for(let i=0; i<120; i++) stars.push({
-                x: Math.random()*canvas.width, 
-                y: Math.random()*canvas.height, 
-                size: Math.random()*2,
-                speed: Math.random()*0.5 + 0.2
-            });
-        }
-        function draw() {
-            ctx.clearRect(0,0,canvas.width, canvas.height);
-            ctx.fillStyle = "rgba(0, 229, 255, 0.4)";
-            stars.forEach(s => {
-                s.y -= s.speed;
-                if(s.y < 0) s.y = canvas.height;
+        let particles = [];
+        const mouse = { x: null, y: null, radius: 150 };
+
+        window.addEventListener('mousemove', e => { mouse.x = e.x; mouse.y = e.y; });
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.vx = Math.random() * 1 - 0.5;
+                this.vy = Math.random() * 1 - 0.5;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if (this.x > canvas.width || this.x < 0) this.vx *= -1;
+                if (this.y > canvas.height || this.y < 0) this.vy *= -1;
+
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx*dx + dy*dy);
+                if (distance < mouse.radius) {
+                    if (mouse.x < this.x && this.x < canvas.width - this.size * 10) this.x += 2;
+                    if (mouse.x > this.x && this.x > this.size * 10) this.x -= 2;
+                    if (mouse.y < this.y && this.y < canvas.height - this.size * 10) this.y += 2;
+                    if (mouse.y > this.y && this.y > this.size * 10) this.y -= 2;
+                }
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(0, 229, 255, 0.5)';
                 ctx.beginPath();
-                ctx.arc(s.x, s.y, s.size, 0, Math.PI*2);
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
                 ctx.fill();
-            });
-            requestAnimationFrame(draw);
+            }
         }
-        window.addEventListener('resize', init);
-        init(); draw();
 
-        // INTEGRACJA Z WEBHOOKIEM DISCORD
-        const WEBHOOK_URL = "https://discordapp.com/api/webhooks/1477803640394747964/mmTOxJH5FI-LMHci111VUdsjqFF5oxhbNRJw94OR-w5PvXk0jPsIh5HRfWyPit1k6in6"; // <--- TUTAJ WKLEJ LINK!
+        function initBg() {
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            particles = [];
+            for(let i=0; i<100; i++) particles.push(new Particle());
+        }
 
-        document.getElementById('rec-form').addEventListener('submit', async (e) => {
+        function animate() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        initBg(); animate();
+
+        // --- PROGRESS BAR & 3D EFFECT ---
+        const form = document.getElementById('rec-form');
+        const inputs = form.querySelectorAll('input, textarea, select');
+        const progress = document.getElementById('progress-fill');
+
+        inputs.forEach(input => {
+            input.addEventListener('input', () => {
+                let filled = 0;
+                inputs.forEach(i => { if(i.value.length > 2) filled++; });
+                progress.style.width = (filled / inputs.length) * 100 + "%";
+            });
+        });
+
+        const card = document.getElementById('card');
+        window.addEventListener('mousemove', e => {
+            let x = (window.innerWidth / 2 - e.pageX) / 50;
+            let y = (window.innerHeight / 2 - e.pageY) / 50;
+            card.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+        });
+
+        // --- WEBHOOK LOGIC ---
+        const WEBHOOK_URL = "https://discordapp.com/api/webhooks/1477803640394747964/mmTOxJH5FI-LMHci111VUdsjqFF5oxhbNRJw94OR-w5PvXk0jPsIh5HRfWyPit1k6in6";
+
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const btn = document.getElementById('submit-text');
-            const container = document.getElementById('form-container');
-            
-            btn.innerText = "WYSYŁANIE...";
-            container.classList.add('loading');
+            document.getElementById('loader').style.display = 'flex';
 
-            const data = {
-                username: "System Rekrutacji DuceMC",
-                avatar_url: "https://ducemc.pl/logo.png", // Twoje logo
+            const payload = {
+                username: "DuceMC Security",
                 embeds: [{
-                    title: "📥 NOWE PODANIE O RANGĘ!",
-                    color: 5814783, // Kolor błękitny
+                    title: "🚀 NOWA KANDYDATURA",
+                    color: 0x00e5ff,
+                    thumbnail: { url: `https://minotar.net/armor/body/${document.getElementById('nick').value}/100.png` },
                     fields: [
-                        { name: "👤 Nick Minecraft", value: `\`${document.getElementById('nick').value}\``, inline: true },
-                        { name: "🎂 Wiek", value: `\`${document.getElementById('age').value}\``, inline: true },
-                        { name: "🎮 Ranga", value: `**${document.getElementById('rank').value}**`, inline: true },
-                        { name: "📱 Discord", value: document.getElementById('discord').value, inline: true },
-                        { name: "⏳ Czas wolny", value: document.getElementById('time').value, inline: true },
-                        { name: "🧠 Doświadczenie", value: document.getElementById('experience').value },
-                        { name: "📝 Dlaczego on?", value: document.getElementById('why').value }
+                        { name: "👤 Gracz", value: `**${document.getElementById('nick').value}**`, inline: true },
+                        { name: "🎂 Wiek", value: `${document.getElementById('age').value}`, inline: true },
+                        { name: "👑 Ranga", value: `${document.getElementById('rank').value}`, inline: true },
+                        { name: "👾 Discord", value: `${document.getElementById('discord').value}`, inline: false },
+                        { name: "🛠 Doświadczenie", value: `\`\`\`${document.getElementById('experience').value}\`\`\`` },
+                        { name: "💡 Dlaczego?", value: `\`\`\`${document.getElementById('why').value}\`\`\`` },
+                        { name: "⏰ Czas", value: `${document.getElementById('time').value}`, inline: true }
                     ],
-                    footer: { text: "DuceMC.PL • System Rekrutacji" },
+                    footer: { text: "System Rekrutacji DuceMC.PL" },
                     timestamp: new Date()
                 }]
             };
 
             try {
-                const response = await fetch(WEBHOOK_URL, {
+                const res = await fetch(WEBHOOK_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
+                    body: JSON.stringify(payload)
                 });
 
-                if (response.ok) {
-                    alert("✅ Sukces! Twoje podanie zostało dostarczone do administracji.");
+                if(res.ok) {
+                    alert("TRANSMAKSCJA ZAKOŃCZONA: Podanie wysłane pomyślnie.");
                     window.location.href = "index.html";
-                } else {
-                    throw new Error();
-                }
-            } catch (err) {
-                alert("❌ Błąd podczas wysyłania. Upewnij się, że Webhook jest poprawny lub spróbuj później.");
-                btn.innerText = "WYŚLIJ APLIKACJĘ";
-                container.classList.remove('loading');
+                } else { throw new Error(); }
+            } catch {
+                alert("KRYTYCZNY BŁĄD: Nie udało się połączyć z serwerem Discord.");
+                document.getElementById('loader').style.display = 'none';
             }
         });
     </script>
