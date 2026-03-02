@@ -3,233 +3,297 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DuceMC.PL | Sklep Rang</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+    <title>DuceMC.PL | ELITE STORE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Montserrat:wght@300;400;700;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #02060a;
-            --glass: rgba(10, 25, 47, 0.9);
-            --border: rgba(255, 255, 255, 0.08);
-            --vip: #ffb015;
-            --rekin: #3080e9;
-            --gangster: #6b5ad0;
-            --magnat: #d0c02c;
-            --raiot: #2fd007;
-            --empire: #8611e2;
+            --bg: #050505;
+            --card-bg: rgba(15, 15, 25, 0.8);
+            --vip: #ffb015; --rekin: #3080e9; --gangster: #6b5ad0;
+            --magnat: #d0c02c; --raiot: #2fd007; --empire: #8611e2;
+            --glow: rgba(0, 210, 255, 0.3);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; cursor: crosshair; }
         
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: var(--bg-dark);
+            background: var(--bg);
             color: white;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 50px 20px;
+            overflow-x: hidden;
+            perspective: 1000px;
         }
 
-        .bg-image {
+        /* Animowane tło AI */
+        #hero-canvas {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(2, 6, 10, 0.9), rgba(2, 6, 10, 0.9)), url('pobrane (1).jpg') center/cover;
-            z-index: -2;
+            z-index: -1; filter: blur(2px);
         }
 
-        .header { text-align: center; margin-bottom: 40px; }
-        .header h1 { font-size: 3.5rem; font-weight: 900; letter-spacing: -2px; text-transform: uppercase; }
-        .header span { color: var(--rekin); }
+        .container { max-width: 1400px; margin: 0 auto; padding: 60px 20px; }
 
-        .nick-section {
-            background: var(--glass);
-            padding: 30px;
-            border-radius: 30px;
-            border: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 50px;
-            width: 100%;
-            max-width: 450px;
+        /* Nagłówek w stylu Cyberpunk */
+        .header {
+            text-align: center; margin-bottom: 80px;
+            animation: fadeInDown 1s ease-out;
+        }
+        .header h1 {
+            font-family: 'Syncopate', sans-serif;
+            font-size: clamp(2rem, 8vw, 5rem);
+            background: linear-gradient(90deg, #fff, #555);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 15px;
+            margin-bottom: 10px;
         }
 
-        .nick-section input {
-            width: 100%;
-            background: rgba(0,0,0,0.4);
-            border: 2px solid var(--border);
-            padding: 15px;
-            border-radius: 15px;
-            color: white;
-            font-family: 'JetBrains Mono';
-            font-size: 1.2rem;
-            text-align: center;
-        }
-
-        .ranks-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
-            width: 100%;
-            max-width: 1200px;
-        }
-
-        .rank-card {
-            background: var(--glass);
-            border-radius: 40px;
+        /* Panel Gracza */
+        .player-identity {
+            background: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(20px);
             padding: 40px;
-            border: 1px solid var(--border);
-            text-align: center;
-            transition: 0.4s;
+            border-radius: 40px;
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 100px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            transform-style: preserve-3d;
         }
 
-        .rank-card:hover { transform: translateY(-10px); border-color: rgba(255,255,255,0.2); }
-
-        .rank-title { font-size: 2.5rem; font-weight: 900; margin-bottom: 5px; }
-        .rank-price { font-size: 1.8rem; font-weight: 800; margin-bottom: 30px; }
-
-        .features { text-align: left; margin-bottom: 40px; flex-grow: 1; }
-        .features li { list-style: none; padding: 10px 0; font-size: 0.95rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
-
-        .buy-btn {
-            width: 100%;
-            padding: 22px;
+        .player-head {
+            width: 100px; height: 100px;
             border-radius: 20px;
-            border: none;
-            font-weight: 900;
-            font-size: 1.1rem;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: 0.3s;
+            border: 3px solid var(--rekin);
+            box-shadow: 0 0 20px var(--rekin);
+            transition: 0.5s;
         }
 
-        /* KOLORY RANG */
-        .r-vip { border-top: 8px solid var(--vip); color: var(--vip); }
-        .r-vip .buy-btn { background: var(--vip); color: black; }
+        #player-nick {
+            background: none; border: none; border-bottom: 2px solid #333;
+            color: white; font-size: 2rem; font-family: 'JetBrains Mono';
+            padding: 10px; width: 300px; transition: 0.3s;
+        }
+        #player-nick:focus { border-color: var(--rekin); outline: none; width: 350px; }
 
-        .r-rekin { border-top: 8px solid var(--rekin); color: var(--rekin); }
-        .r-rekin .buy-btn { background: var(--rekin); color: white; }
+        /* Karty Rangi 2.0 */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+        }
 
-        .r-gangster { border-top: 8px solid var(--gangster); color: var(--gangster); }
-        .r-gangster .buy-btn { background: var(--gangster); color: white; }
+        .card {
+            background: var(--card-bg);
+            border-radius: 50px;
+            padding: 50px 30px;
+            position: relative;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            border: 1px solid rgba(255,255,255,0.05);
+            overflow: hidden;
+            display: flex; flex-direction: column;
+        }
 
-        .r-magnat { border-top: 8px solid var(--magnat); color: var(--magnat); }
-        .r-magnat .buy-btn { background: var(--magnat); color: black; }
+        .card::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, var(--glow-color) 0%, transparent 70%);
+            opacity: 0; transition: 0.5s; pointer-events: none;
+        }
 
-        .r-raiot { border-top: 8px solid var(--raiot); color: var(--raiot); }
-        .r-raiot .buy-btn { background: var(--raiot); color: white; }
+        .card:hover { transform: translateY(-20px) scale(1.02); border-color: var(--glow-color); }
+        .card:hover::before { opacity: 0.2; }
 
-        .r-empire { border-top: 8px solid var(--empire); color: var(--empire); }
-        .r-empire .buy-btn { background: var(--empire); color: white; }
+        .rank-label { font-family: 'Syncopate'; font-size: 2.5rem; margin-bottom: 10px; }
+        .price-tag { font-size: 2rem; font-weight: 900; margin-bottom: 40px; }
+        .price-tag span { font-size: 1rem; opacity: 0.5; }
 
-        .footer { margin-top: 80px; opacity: 0.4; font-size: 0.8rem; text-align: center; }
+        .benefits { list-style: none; margin-bottom: 50px; flex-grow: 1; }
+        .benefits li { 
+            padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.03);
+            font-size: 0.9rem; display: flex; align-items: center; gap: 10px;
+        }
+        .benefits li::before { content: '◈'; color: var(--glow-color); }
+
+        .btn-action {
+            width: 100%; padding: 25px; border-radius: 25px; border: none;
+            font-weight: 900; font-size: 1.2rem; cursor: pointer;
+            background: white; color: black; transition: 0.3s;
+            text-transform: uppercase; letter-spacing: 2px;
+        }
+        .btn-action:hover { letter-spacing: 5px; transform: scale(0.95); }
+
+        /* Konfiguracja kolorów AI */
+        .c-vip { --glow-color: var(--vip); } .c-vip .rank-label { color: var(--vip); }
+        .c-rekin { --glow-color: var(--rekin); } .c-rekin .rank-label { color: var(--rekin); }
+        .c-gangster { --glow-color: var(--gangster); } .c-gangster .rank-label { color: var(--gangster); }
+        .c-magnat { --glow-color: var(--magnat); } .c-magnat .rank-label { color: var(--magnat); }
+        .c-raiot { --glow-color: var(--raiot); } .c-raiot .rank-label { color: var(--raiot); }
+        .c-empire { --glow-color: var(--empire); border: 1px solid var(--empire); } .c-empire .rank-label { color: var(--empire); }
+
+        /* Powiadomienie Live */
+        .live-notif {
+            position: fixed; bottom: 30px; left: 30px;
+            background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);
+            padding: 15px 25px; border-radius: 20px; border-left: 4px solid var(--raiot);
+            display: flex; align-items: center; gap: 15px; animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-50px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideIn { from { transform: translateX(-100%); } to { transform: translateX(0); } }
     </style>
 </head>
 <body>
 
-    <div class="bg-image"></div>
+    <canvas id="hero-canvas"></canvas>
 
-    <div class="header">
-        <h1>Duce<span>MC</span>.PL</h1>
-        <p>Wybierz rangę i wspieraj serwer</p>
+    <div class="container">
+        <header class="header">
+            <p>SYSTEM ZASILANIA KRÓLESTWA</p>
+            <h1>DUCEMC</h1>
+        </header>
+
+        <section class="player-identity">
+            <img id="avatar" src="https://cravatar.eu/avatar/MHF_Steve/100.png" class="player-head">
+            <input type="text" id="player-nick" placeholder="TWÓJ NICK..." maxlength="16" oninput="updateUI(this.value)">
+        </section>
+
+        <div class="grid">
+            <div class="card c-vip">
+                <div class="rank-label">VIP</div>
+                <div class="price-tag">14.99 <span>PLN</span></div>
+                <ul class="benefits">
+                    <li>Kolorowy prefiks [VIP]</li>
+                    <li>Unikalny /kit vip</li>
+                    <li>Dostęp do komendy /feed</li>
+                </ul>
+                <button class="btn-action" onclick="buy('https://pay.cashbill.pl/pl/pay/hdz6zna9zu?token=0cb07dd6a615c4dda16649176a1c3bb577459f4f')">Inicjuj zakup</button>
+            </div>
+
+            <div class="card c-rekin">
+                <div class="rank-label">REKIN</div>
+                <div class="price-tag">34.99 <span>PLN</span></div>
+                <ul class="benefits">
+                    <li>Wszystko co VIP</li>
+                    <li>Latanie na lobby (/fly)</li>
+                    <li>Zestaw /kit rekin (OP)</li>
+                </ul>
+                <button class="btn-action" onclick="buy('https://pay.cashbill.pl/pl/pay/hdz6znaerw?token=aacc11517652f478c33892d2116091275b4c1d95')">Inicjuj zakup</button>
+            </div>
+
+            <div class="card c-gangster">
+                <div class="rank-label">GANGSTER</div>
+                <div class="price-tag">59.99 <span>PLN</span></div>
+                <ul class="benefits">
+                    <li>Pisanie barwami HEX</li>
+                    <li>Zmiana tożsamości /nick</li>
+                    <li>3 sloty na /home</li>
+                </ul>
+                <button class="buy-btn btn-action" onclick="buy('https://pay.cashbill.pl/pl/pay/hdz6znah9a?token=020c9334dee69dfaedb095b60c6a9517fa07994a')">Inicjuj zakup</button>
+            </div>
+
+            <div class="card c-magnat">
+                <div class="rank-label">MAGNAT</div>
+                <div class="price-tag">89.99 <span>PLN</span></div>
+                <ul class="benefits">
+                    <li>Wejście na pełny serwer</li>
+                    <li>Efekt cząsteczek MAGNAT</li>
+                    <li>Zniżka -10% na kolejne pakiety</li>
+                </ul>
+                <button class="btn-action" onclick="buy('https://pay.cashbill.pl/pl/pay/hdz6znakof?token=e4547204e53edf5909d6d65a4d57918b65c826f3')">Inicjuj zakup</button>
+            </div>
+
+            <div class="card c-raiot">
+                <div class="rank-label">RAIOT</div>
+                <div class="price-tag">119.99 <span>PLN</span></div>
+                <ul class="benefits">
+                    <li>Specjalna ranga na Discord</li>
+                    <li>Możliwość pisania ogłoszeń</li>
+                    <li>Zestaw RAIOT Tools</li>
+                </ul>
+                <button class="btn-action" onclick="buy('https://pay.cashbill.pl/pl/pay/hdz6znam7p?token=7ccad60bf19c69b7addfe043735cff8234393f57')">Inicjuj zakup</button>
+            </div>
+
+            <div class="card c-empire">
+                <div class="rank-label">EMPIRE</div>
+                <div class="price-tag">149.99 <span>PLN</span></div>
+                <ul class="benefits">
+                    <li>STATUS LEGENDY</li>
+                    <li>Wszystkie zestawy /kit</li>
+                    <li>Unikalny efekt przy wejściu</li>
+                </ul>
+                <button class="btn-action" onclick="buy('https://pay.cashbill.pl/pl/pay/hdz6znanc4?token=fd51d28b5218f605f7fedf255b0351aa0743b116')">Inicjuj zakup</button>
+            </div>
+        </div>
     </div>
 
-    <div class="nick-section">
-        <img id="avatar" src="https://cravatar.eu/avatar/MHF_Steve/80.png" style="width: 80px; border-radius: 20px;">
-        <input type="text" id="player-nick" placeholder="TWÓJ NICK Z MC" oninput="document.getElementById('avatar').src='https://cravatar.eu/avatar/'+this.value+'/80.png'">
-        <p style="font-size: 0.7rem; font-weight: 700; opacity: 0.5;">NA TEN NICK OTRZYMASZ RANGĘ</p>
-    </div>
-
-    <div class="ranks-container">
-        
-        <div class="rank-card r-vip">
-            <div class="rank-title">VIP</div>
-            <div class="rank-price">14.99 PLN</div>
-            <ul class="features">
-                <li>Pisanie na kolorowo</li>
-                <li>Dostęp do /kit vip</li>
-                <li>Specjalny prefiks czatu</li>
-            </ul>
-            <button class="buy-btn" onclick="pay('https://pay.cashbill.pl/pl/pay/hdz6zna9zu?token=0cb07dd6a615c4dda16649176a1c3bb577459f4f')">ZAKUP VIP</button>
-        </div>
-
-        <div class="rank-card r-rekin">
-            <div class="rank-title">REKIN</div>
-            <div class="rank-price">34.99 PLN</div>
-            <ul class="features">
-                <li>Wszystkie bonusy VIP</li>
-                <li>Latanie na Lobby</li>
-                <li>Dostęp do /kit rekin</li>
-            </ul>
-            <button class="buy-btn" onclick="pay('https://pay.cashbill.pl/pl/pay/hdz6znaerw?token=aacc11517652f478c33892d2116091275b4c1d95')">ZAKUP REKIN</button>
-        </div>
-
-        <div class="rank-card r-gangster">
-            <div class="rank-title">GANGSTER</div>
-            <div class="rank-price">59.99 PLN</div>
-            <ul class="features">
-                <li>Wszystkie bonusy REKIN</li>
-                <li>Możliwość zmiany /nick</li>
-                <li>Pisanie kolorami HEX</li>
-            </ul>
-            <button class="buy-btn" onclick="pay('https://pay.cashbill.pl/pl/pay/hdz6znah9a?token=020c9334dee69dfaedb095b60c6a9517fa07994a')">ZAKUP GANGSTER</button>
-        </div>
-
-        <div class="rank-card r-magnat">
-            <div class="rank-title">MAGNAT</div>
-            <div class="rank-price">89.99 PLN</div>
-            <ul class="features">
-                <li>Ekskluzywne pakiety /kit</li>
-                <li>Efekty cząsteczkowe</li>
-                <li>Dostęp do pełnego serwera</li>
-            </ul>
-            <button class="buy-btn" onclick="pay('https://pay.cashbill.pl/pl/pay/hdz6znakof?token=e4547204e53edf5909d6d65a4d57918b65c826f3')">ZAKUP MAGNAT</button>
-        </div>
-
-        <div class="rank-card r-raiot">
-            <div class="rank-title">RAIOT</div>
-            <div class="rank-price">119.99 PLN</div>
-            <ul class="features">
-                <li>Unikalny prefiks RAIOT</li>
-                <li>Topowe zestawy eq</li>
-                <li>Ranga na Discordzie</li>
-            </ul>
-            <button class="buy-btn" onclick="pay('https://pay.cashbill.pl/pl/pay/hdz6znam7p?token=7ccad60bf19c69b7addfe043735cff8234393f57')">ZAKUP RAIOT</button>
-        </div>
-
-        <div class="rank-card r-empire">
-            <div class="rank-title">EMPIRE</div>
-            <div class="rank-price">149.99 PLN</div>
-            <ul class="features">
-                <li>NAJWYŻSZA RANGA</li>
-                <li>Wszystkie możliwe opcje</li>
-                <li>Status Legendy DuceMC</li>
-            </ul>
-            <button class="buy-btn" onclick="pay('https://pay.cashbill.pl/pl/pay/hdz6znanc4?token=fd51d28b5218f605f7fedf255b0351aa0743b116')">ZAKUP EMPIRE</button>
-        </div>
-
-    </div>
-
-    <div class="footer">
-        DUCEMC.PL &copy; 2026 | Płatności CashBill<br>
-        Wszystkie transakcje są bezpieczne i szyfrowane.
+    <div class="live-notif" id="notif">
+        <div style="width: 10px; height: 10px; border-radius: 50%; background: var(--raiot); box-shadow: 0 0 10px var(--raiot);"></div>
+        <div id="notif-text">Gracz <b>Tugarek</b> właśnie kupił <b>VIP</b>!</div>
     </div>
 
     <script>
-        function pay(url) {
+        // AI Background Particles
+        const canvas = document.getElementById('hero-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function init() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            for(let i=0; i<100; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2,
+                    speed: Math.random() * 0.5
+                });
+            }
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "rgba(255,255,255,0.1)";
+            particles.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
+                ctx.fill();
+                p.y -= p.speed;
+                if(p.y < 0) p.y = canvas.height;
+            });
+            requestAnimationFrame(draw);
+        }
+
+        function updateUI(nick) {
+            const avatar = document.getElementById('avatar');
+            if(nick.length > 2) {
+                avatar.src = `https://cravatar.eu/avatar/${nick}/100.png`;
+                avatar.style.borderColor = "var(--raiot)";
+                avatar.style.boxShadow = "0 0 30px var(--raiot)";
+            }
+        }
+
+        function buy(url) {
             const nick = document.getElementById('player-nick').value;
             if(nick.length < 3) {
-                alert("❌ Najpierw wpisz swój nick z Minecraft!");
+                alert("SYSTEM: BŁĄD IDENTYFIKACJI. Wpisz nick gracza.");
                 return;
             }
-            // Ponieważ CashBill ma tokeny w URL, wysyłamy gracza bezpośrednio tam.
-            // Uwaga: Gracz musi wpisać nick w formularzu płatności jeśli go o to poproszą.
             window.location.href = url;
         }
-    </script>
 
+        // Symulacja zakupów Live
+        const names = ["Xenon", "Marek22", "PolskaGurom", "Dragon_PL", "Vixon"];
+        const ranks = ["VIP", "REKIN", "GANGSTER", "EMPIRE"];
+        setInterval(() => {
+            const n = names[Math.floor(Math.random()*names.length)];
+            const r = ranks[Math.floor(Math.random()*ranks.length)];
+            document.getElementById('notif-text').innerHTML = `Gracz <b>${n}</b> właśnie kupił <b>${r}</b>!`;
+            document.getElementById('notif').style.display = 'flex';
+        }, 15000);
+
+        init(); draw();
+    </script>
 </body>
 </html>
