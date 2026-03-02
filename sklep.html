@@ -12,6 +12,7 @@
             --primary-glow: rgba(30, 144, 255, 0.5);
             --bg-dark: #020205;
             --card-bg: rgba(7, 7, 10, 0.94);
+            --gold: #ffd700;
             --transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
@@ -54,14 +55,14 @@
         .back-btn:hover { background: var(--primary); box-shadow: 0 0 15px var(--primary-glow); }
 
         /* --- KONTENER SKLEPU --- */
-        .shop-container { max-width: 1200px; width: 90%; margin: 50px 0; text-align: center; }
+        .shop-container { max-width: 1200px; width: 95%; margin: 50px 0; text-align: center; }
         h2 { font-size: 3rem; font-weight: 900; margin-bottom: 10px; text-shadow: 0 0 20px var(--primary-glow); }
         .subtitle { color: #888; margin-bottom: 40px; text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; }
 
         .category-label { font-size: 1.2rem; font-weight: 900; color: var(--primary); text-align: left; margin: 40px 0 20px 0; border-left: 4px solid var(--primary); padding-left: 15px; }
 
         /* --- SIATKA PRZEDMIOTÓW --- */
-        .items-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .items-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
 
         .item-card {
             background: var(--card-bg);
@@ -72,14 +73,13 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            position: relative;
         }
 
         .item-card:hover { transform: translateY(-8px); border-color: var(--primary); box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
 
-        .item-badge { position: absolute; top: 10px; right: 10px; background: var(--primary); font-size: 0.6rem; padding: 4px 8px; border-radius: 5px; font-weight: 900; }
-
-        .item-icon { font-size: 2.5rem; margin-bottom: 15px; }
-        .item-name { font-size: 1.3rem; font-weight: 900; margin-bottom: 5px; }
+        .item-icon { font-size: 2.2rem; margin-bottom: 15px; }
+        .item-name { font-size: 1.2rem; font-weight: 900; margin-bottom: 5px; text-transform: uppercase; }
         .item-price { color: #00ff88; font-size: 1.1rem; font-weight: 700; margin-bottom: 15px; }
         
         .buy-btn {
@@ -92,15 +92,21 @@
             font-weight: 900;
             border-radius: 10px;
             transition: var(--transition);
-            font-size: 0.8rem;
+            font-size: 0.75rem;
         }
 
         .buy-btn:hover { filter: brightness(1.2); box-shadow: 0 5px 15px rgba(255, 152, 0, 0.4); }
 
-        /* Kolory specjalne dla rang */
-        .rank-vip { color: #ffb015; }
-        .rank-rekin { color: #3080e9; }
-        .rank-empire { color: #8611e2; }
+        /* Kolory z Twojego LPC */
+        .c-vip { color: #ffb015; }
+        .c-rekin { color: #3080e9; }
+        .c-gangster { color: #6b5ad0; }
+        .c-magnat { color: #d0c02c; }
+        .c-raiot { color: #2fd007; }
+        .c-empire { color: #8611e2; }
+
+        .special-card { border: 2px solid var(--gold) !important; background: rgba(255, 215, 0, 0.05); }
+        .special-card .item-name { color: var(--gold); }
     </style>
 </head>
 <body>
@@ -114,55 +120,39 @@
 
     <div class="shop-container">
         <h2>SKLEP SERWEROWY</h2>
-        <p class="subtitle">Wszystkie fundusze wspierają maszynę i rozwój serwera</p>
+        <p class="subtitle">Wybierz rangę lub pakiet specjalny</p>
 
-        <div class="category-label">RANGI SERWEROWE</div>
+        <div class="category-label">DOSTĘPNE RANGI</div>
         <div class="items-grid">
-            <div class="item-card">
-                <span class="item-icon">⭐</span>
-                <div class="item-name rank-vip">VIP</div>
-                <div class="item-price">7.00 PLN</div>
-                <a href="#" class="buy-btn">WYBIERZ PAKIET</a>
-            </div>
-            <div class="item-card">
-                <span class="item-icon">🦈</span>
-                <div class="item-name rank-rekin">REKIN</div>
-                <div class="item-price">15.00 PLN</div>
-                <a href="#" class="buy-btn">WYBIERZ PAKIET</a>
-            </div>
-            <div class="item-card">
-                <span class="item-icon">🎭</span>
-                <div class="item-name" style="color: #6b5ad0;">GANGSTER</div>
-                <div class="item-price">25.00 PLN</div>
-                <a href="#" class="buy-btn">WYBIERZ PAKIET</a>
-            </div>
-            <div class="item-card" style="border: 1px solid #8611e2;">
-                <span class="item-icon">🛡️</span>
-                <div class="item-name rank-empire">EMPIRE</div>
-                <div class="item-price">50.00 PLN</div>
-                <a href="#" class="buy-btn">WYBIERZ PAKIET</a>
-            </div>
+            <div class="item-card"><span class="item-icon">⭐</span><div class="item-name c-vip">Vip</div><div class="item-price">5.00 PLN</div><a href="#" class="buy-btn">KUP TERAZ</a></div>
+            <div class="item-card"><span class="item-icon">🦈</span><div class="item-name c-rekin">Rekin</div><div class="item-price">10.00 PLN</div><a href="#" class="buy-btn">KUP TERAZ</a></div>
+            <div class="item-card"><span class="item-icon">🎭</span><div class="item-name c-gangster">GangSter</div><div class="item-price">15.00 PLN</div><a href="#" class="buy-btn">KUP TERAZ</a></div>
+            <div class="item-card"><span class="item-icon">💰</span><div class="item-name c-magnat">Magnat</div><div class="item-price">20.00 PLN</div><a href="#" class="buy-btn">KUP TERAZ</a></div>
+            <div class="item-card"><span class="item-icon">⚡</span><div class="item-name c-raiot">Raiot</div><div class="item-price">30.00 PLN</div><a href="#" class="buy-btn">KUP TERAZ</a></div>
+            <div class="item-card"><span class="item-icon">🛡️</span><div class="item-name c-empire">Empire</div><div class="item-price">50.00 PLN</div><a href="#" class="buy-btn">KUP TERAZ</a></div>
         </div>
 
-        <div class="category-label">INNE / DODATKI</div>
+        <div class="category-label">PAKIETY SPECJALNE</div>
         <div class="items-grid">
+            <div class="item-card special-card">
+                <span class="item-icon">👑</span>
+                <div class="item-name">Pakiet Empire</div>
+                <div class="item-price">75.00 PLN</div>
+                <p style="font-size: 0.7rem; color: #ccc; margin-bottom: 10px;">Ranga Empire + Zestaw Case + 50k Monety</p>
+                <a href="#" class="buy-btn">WYBIERZ</a>
+            </div>
+            <div class="item-card special-card" style="background: rgba(0, 255, 136, 0.05); border-color: #00ff88 !important;">
+                <span class="item-icon">💎</span>
+                <div class="item-name" style="color: #00ff88;">Pakiet Bogacza</div>
+                <div class="item-price">100.00 PLN</div>
+                <p style="font-size: 0.7rem; color: #ccc; margin-bottom: 10px;">Największa ilość waluty + Unikalny Prefix</p>
+                <a href="#" class="buy-btn">WYBIERZ</a>
+            </div>
             <div class="item-card">
                 <span class="item-icon">📦</span>
-                <div class="item-name">Zestaw Case'ów</div>
+                <div class="item-name">Zestaw Case</div>
                 <div class="item-price">10.00 PLN</div>
-                <a href="#" class="buy-btn">ZOBACZ WIĘCEJ</a>
-            </div>
-            <div class="item-card">
-                <span class="item-icon">🔓</span>
-                <div class="item-name">UNBAN</div>
-                <div class="item-price">15.00 PLN</div>
-                <a href="#" class="buy-btn">KUP UNBANA</a>
-            </div>
-            <div class="item-card">
-                <span class="item-icon">💰</span>
-                <div class="item-name">Waluta Serwerowa</div>
-                <div class="item-price">od 5.00 PLN</div>
-                <a href="#" class="buy-btn">DOŁADUJ</a>
+                <a href="#" class="buy-btn">KUP TERAZ</a>
             </div>
         </div>
     </div>
