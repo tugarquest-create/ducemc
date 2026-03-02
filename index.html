@@ -4,31 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>DuceMC.PL | Dobry Server Minecraft</title>
+    <title>DuceMC.PL | Najlepszy Serwer Minecraft</title>
     <meta name="description" content="DuceMC.PL - Najlepszy polski serwer Minecraft! Unikalne tryby, niskie pingi i świetna społeczność. Dołącz do nas już teraz!">
-    <meta name="keywords" content="minecraft, serwer minecraft, ducemc, ducemc.pl, survival, polski serwer mc">
-
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://ducemc.pl/">
-    <meta property="og:title" content="DuceMC.PL | Dobry Server Minecraft">
-    <meta property="og:description" content="Najlepszy polski serwer Minecraft. Unikalne systemy, stałe 20 TPS i epicka zabawa!">
-    <meta property="og:image" content="https://ducemc.pl/logo.png">
-
+    
     <link rel="icon" type="image/png" href="logo.png">
-
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    
     <style>
         :root {
             --primary: #1e90ff;
-            --primary-glow: rgba(30, 144, 255, 0.4);
+            --primary-glow: rgba(30, 144, 255, 0.5);
             --bg-dark: #020205;
-            --card-bg: rgba(7, 7, 10, 0.92);
+            --card-bg: rgba(7, 7, 10, 0.94);
             --accent-green: #00ff88;
             --accent-red: #ff4d4d;
+            --transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; cursor: default; }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
         body {
             font-family: 'Montserrat', sans-serif;
             background: var(--bg-dark);
@@ -40,6 +34,7 @@
             padding: 20px;
             overflow: hidden;
             perspective: 2000px;
+            cursor: default;
         }
 
         #hero-canvas {
@@ -48,117 +43,141 @@
             z-index: -1;
         }
 
-        /* --- STABILNE GUI --- */
+        /* --- GŁÓWNA KARTA --- */
         .main-card {
             background: var(--card-bg);
-            backdrop-filter: blur(50px);
+            backdrop-filter: blur(40px);
             border: 1px solid rgba(30, 144, 255, 0.2);
-            border-radius: 35px;
-            padding: 45px;
+            border-radius: 40px;
+            padding: 50px;
             width: 100%;
-            max-width: 1150px;
+            max-width: 1100px;
             display: grid;
-            grid-template-columns: 1.3fr 1.7fr;
-            gap: 45px;
-            box-shadow: 0 0 100px rgba(0,0,0,1);
+            grid-template-columns: 1.2fr 1.8fr;
+            gap: 50px;
+            box-shadow: 0 0 80px rgba(0,0,0,0.8), inset 0 0 20px rgba(30, 144, 255, 0.05);
             position: relative;
             transform-style: preserve-3d;
-            will-change: transform;
-            transition: transform 0.2s ease-out; /* Szybsza reakcja na myszkę */
+            transition: transform 0.15s ease-out;
         }
 
         .corner {
-            position: absolute; width: 20px; height: 20px;
-            border: 2px solid var(--primary); pointer-events: none; opacity: 0.6;
+            position: absolute; width: 25px; height: 25px;
+            border: 3px solid var(--primary); pointer-events: none; opacity: 0.5;
         }
-        .top-l { top: 20px; left: 20px; border-right: 0; border-bottom: 0; }
-        .bot-r { bottom: 20px; right: 20px; border-left: 0; border-top: 0; }
+        .top-l { top: 25px; left: 25px; border-right: 0; border-bottom: 0; }
+        .bot-r { bottom: 25px; right: 25px; border-left: 0; border-top: 0; }
 
-        .left-side { border-right: 1px solid rgba(255,255,255,0.05); padding-right: 30px; }
-        .server-logo { max-width: 160px; filter: drop-shadow(0 0 25px var(--primary-glow)); margin-bottom: 10px; }
-        h1 { font-size: 2.8rem; color: var(--primary); font-weight: 900; letter-spacing: -1px; margin-bottom: 15px; text-align: center; }
+        /* --- LEWA STRONA --- */
+        .left-side { border-right: 1px solid rgba(255,255,255,0.08); padding-right: 20px; }
+        
+        .server-logo { 
+            max-width: 170px; 
+            filter: drop-shadow(0 0 20px var(--primary-glow)); 
+            margin-bottom: 15px;
+            transition: var(--transition);
+        }
+        .server-logo:hover { transform: scale(1.05) rotate(3deg); }
+
+        h1 { font-size: 3rem; color: var(--primary); font-weight: 900; letter-spacing: -2px; text-align: center; margin-bottom: 20px; }
 
         .copy-ip {
             background: rgba(30, 144, 255, 0.1);
-            border: 1px solid var(--primary);
-            color: white; padding: 15px; border-radius: 12px; font-weight: 900; 
-            cursor: pointer; transition: 0.3s; text-align: center;
-            margin-bottom: 10px;
+            border: 2px solid var(--primary);
+            color: white; padding: 18px; border-radius: 15px; font-weight: 900; 
+            cursor: pointer; text-align: center;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
-        .copy-ip:hover { background: var(--primary); box-shadow: 0 0 25px var(--primary-glow); transform: scale(1.02); }
+        .copy-ip:hover { 
+            background: var(--primary); 
+            box-shadow: 0 0 30px var(--primary-glow); 
+            transform: scale(1.03); 
+        }
+        .copy-ip:active { transform: scale(0.97); }
+
+        .section-label { font-size: 0.7rem; color: #666; letter-spacing: 3px; text-transform: uppercase; font-weight: 900; margin: 30px 0 12px 0; }
 
         .perf-panel {
-            margin-top: 20px; background: rgba(255,255,255,0.02);
-            padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05);
+            background: rgba(255,255,255,0.03);
+            padding: 15px; border-radius: 18px; border: 1px solid rgba(255,255,255,0.05);
         }
-        .perf-bar { height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-top: 5px; overflow: hidden; }
-        .perf-fill { height: 100%; background: var(--primary); box-shadow: 0 0 10px var(--primary); transition: width 1s ease-in-out; }
+        .perf-row { display: flex; justify-content: space-between; font-size: 0.65rem; font-weight: 800; margin-bottom: 6px; }
+        .perf-bar { height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-bottom: 12px; overflow: hidden; }
+        .perf-fill { height: 100%; background: var(--primary); box-shadow: 0 0 10px var(--primary); transition: width 1.5s ease-in-out; }
 
-        .section-label { font-size: 0.65rem; color: #555; letter-spacing: 2px; text-transform: uppercase; font-weight: 900; margin: 25px 0 10px 0; }
-        
-        .admins-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .admins-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .admin-card {
-            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 8px; border-radius: 12px; display: flex; align-items: center; gap: 8px;
-            transition: 0.3s;
+            background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 10px; border-radius: 14px; display: flex; align-items: center; gap: 10px;
+            transition: var(--transition); cursor: pointer;
         }
-        .admin-card:hover { background: rgba(255, 255, 255, 0.08); border-color: var(--primary); }
-        .avatar { width: 30px; height: 30px; border-radius: 5px; border: 1px solid var(--primary); }
-        .admin-info p { font-size: 0.75rem; font-weight: 800; }
+        .admin-card:hover { 
+            background: rgba(30, 144, 255, 0.1); 
+            border-color: var(--primary); 
+            transform: translateY(-3px);
+        }
+        .avatar { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--primary); }
+        .admin-info p { font-size: 0.8rem; font-weight: 800; }
 
+        /* --- PRAWA STRONA --- */
         .right-side { display: flex; flex-direction: column; gap: 20px; }
 
-        .status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .status-box { background: rgba(30,144,255,0.05); padding: 12px; border-radius: 12px; border: 1px solid rgba(30,144,255,0.1); display: flex; align-items: center; }
+        .status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .status-box { 
+            background: rgba(30,144,255,0.06); padding: 15px; border-radius: 15px; 
+            border: 1px solid rgba(30,144,255,0.15); display: flex; align-items: center; justify-content: center;
+        }
         
         .pulse { 
-            display: inline-block; width: 10px; height: 10px; 
-            background: var(--accent-green); border-radius: 50%; 
-            margin-right: 8px; 
-            animation: blinker 1.5s cubic-bezier(.45, 0, .55, 1) infinite; 
+            width: 10px; height: 10px; background: var(--accent-green); border-radius: 50%; 
+            margin-right: 10px; animation: blinker 1.5s infinite; 
         }
-        
         @keyframes blinker { 
-            0% { opacity: 1; box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.7); } 
-            70% { opacity: 0.5; box-shadow: 0 0 0 8px rgba(0, 255, 136, 0); } 
-            100% { opacity: 1; } 
+            0% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.7); } 
+            70% { transform: scale(1.2); opacity: 0.5; box-shadow: 0 0 0 10px rgba(0, 255, 136, 0); } 
+            100% { transform: scale(1); opacity: 1; } 
         }
 
-        .modes-wrap { display: flex; gap: 10px; }
-        .mode { flex: 1; padding: 15px; border-radius: 12px; font-weight: 900; text-align: center; font-size: 0.7rem; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; }
+        .modes-wrap { display: flex; gap: 12px; }
+        .mode { 
+            flex: 1; padding: 18px; border-radius: 15px; font-weight: 900; text-align: center; 
+            font-size: 0.75rem; border: 1px solid rgba(255,255,255,0.1); transition: var(--transition); cursor: pointer;
+        }
         .m-duels { border-color: var(--accent-red); color: var(--accent-red); background: rgba(255,77,77,0.05); }
-        .m-duels:hover { background: rgba(255,77,77,0.15); transform: translateY(-3px); }
+        .mode:hover { transform: translateY(-5px); background: rgba(255,255,255,0.05); border-color: var(--primary); }
 
-        .rules-list { display: flex; flex-direction: column; gap: 8px; }
         .rule-item { 
-            display: flex; align-items: center; gap: 12px; 
-            background: rgba(255,255,255,0.02); padding: 12px 15px; 
-            border-radius: 12px; border: 1px solid rgba(255,255,255,0.03);
-            font-size: 0.8rem; transition: 0.3s;
+            display: flex; align-items: center; gap: 15px; 
+            background: rgba(255,255,255,0.03); padding: 15px 20px; 
+            border-radius: 15px; border: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.85rem; transition: var(--transition); margin-bottom: 8px;
         }
-        .rule-item:hover { background: rgba(255,255,255,0.05); border-color: var(--primary); transform: translateX(5px); }
-        .rule-icon { color: var(--primary); font-weight: 900; }
+        .rule-item:hover { background: rgba(255,255,255,0.07); border-color: var(--primary); transform: translateX(8px); }
+        .rule-icon { color: var(--primary); font-weight: 900; font-size: 1rem; }
 
-        .btn-row { display: flex; gap: 10px; }
-        .btn { flex: 1; text-decoration: none; color: white; padding: 18px; border-radius: 15px; font-weight: 900; text-align: center; transition: 0.3s; font-size: 0.8rem; text-transform: uppercase; }
-        .btn-dc { background: #5865F2; box-shadow: 0 4px 15px rgba(88, 101, 242, 0.3); }
-        .btn-dc:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(88, 101, 242, 0.5); }
-        .btn-shop { background: #ff9800; box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3); }
-        .btn-shop:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(255, 152, 0, 0.5); }
+        .btn-row { display: flex; gap: 15px; margin-top: 10px; }
+        .btn { 
+            flex: 1; text-decoration: none; color: white; padding: 20px; border-radius: 18px; 
+            font-weight: 900; text-align: center; transition: var(--transition); 
+            font-size: 0.85rem; text-transform: uppercase; cursor: pointer;
+        }
+        .btn-dc { background: #5865F2; box-shadow: 0 6px 20px rgba(88, 101, 242, 0.3); }
+        .btn-shop { background: #ff9800; box-shadow: 0 6px 20px rgba(255, 152, 0, 0.3); }
+        .btn:hover { transform: translateY(-6px) scale(1.02); filter: brightness(1.1); box-shadow: 0 10px 25px rgba(0,0,0,0.4); }
 
         #notif {
-            position: fixed; bottom: 30px; background: var(--primary); color: white;
-            padding: 12px 30px; border-radius: 40px; font-weight: 900; display: none;
-            box-shadow: 0 0 30px var(--primary-glow); z-index: 1000;
-            animation: slideIn 0.3s ease-out;
+            position: fixed; top: 30px; background: var(--primary); color: white;
+            padding: 15px 40px; border-radius: 50px; font-weight: 900; display: none;
+            box-shadow: 0 10px 30px var(--primary-glow); z-index: 1000;
+            animation: slideDown 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
+        @keyframes slideDown { from { transform: translateY(-100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-        @keyframes slideIn { from { transform: translateY(100px); } to { transform: translateY(0); } }
-
-        @media (max-width: 900px) {
-            .main-card { grid-template-columns: 1fr; max-height: 90vh; overflow-y: auto; padding: 25px; }
+        @media (max-width: 950px) {
+            body { overflow-y: auto; padding: 40px 20px; }
+            .main-card { grid-template-columns: 1fr; padding: 30px; max-width: 500px; }
             .left-side { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 0 0 30px 0; }
-            body { overflow-y: auto; }
         }
     </style>
 </head>
@@ -173,27 +192,21 @@
         <div class="left-side">
             <center><img src="logo.png" alt="Logo" class="server-logo"></center>
             <h1>DuceMC.PL</h1>
-            <div class="copy-ip" onclick="copyIP()">KOPIUJ ADRES IP</div>
+            <div class="copy-ip" onclick="copyIP()">SKOPIUJ ADRES IP</div>
             
-            <p class="section-label">LIVE PERFORMANCE</p>
+            <p class="section-label">WYDAJNOŚĆ MASZYNY</p>
             <div class="perf-panel">
-                <div style="display: flex; justify-content: space-between; font-size: 0.6rem; font-weight: 800; margin-bottom: 5px;">
-                    <span>CPU USAGE</span><span>12%</span>
-                </div>
+                <div class="perf-row"><span>PROCESOR (AMD)</span><span>12%</span></div>
                 <div class="perf-bar"><div class="perf-fill" style="width: 12%;"></div></div>
                 
-                <div style="display: flex; justify-content: space-between; font-size: 0.6rem; font-weight: 800; margin: 10px 0 5px 0;">
-                    <span>RAM ALLOCATED</span><span>4.2GB</span>
-                </div>
+                <div class="perf-row"><span>PAMIĘĆ RAM</span><span>4.2GB / 16GB</span></div>
                 <div class="perf-bar"><div class="perf-fill" style="width: 35%;"></div></div>
 
-                <div style="display: flex; justify-content: space-between; font-size: 0.6rem; font-weight: 800; margin: 10px 0 5px 0;">
-                    <span>NETWORK PING</span><span>18ms</span>
-                </div>
+                <div class="perf-row"><span>OPÓŹNIENIE (PING)</span><span>18ms</span></div>
                 <div class="perf-bar"><div class="perf-fill" style="width: 15%; background: var(--accent-green);"></div></div>
             </div>
 
-            <p class="section-label">ZARZĄD</p>
+            <p class="section-label">ADMINISTRACJA</p>
             <div class="admins-grid">
                 <div class="admin-card"><img src="https://cravatar.eu/avatar/RdstoneBrilliant/64.png" class="avatar"><div class="admin-info"><p>Rdstone</p></div></div>
                 <div class="admin-card"><img src="https://cravatar.eu/avatar/TugareK/64.png" class="avatar"><div class="admin-info"><p>TugareK</p></div></div>
@@ -203,43 +216,42 @@
         </div>
 
         <div class="right-side">
-            <p class="section-label">STATUS SYSTEMU</p>
+            <p class="section-label">INFORMACJE O SERWERZE</p>
             <div class="status-grid">
-                <div class="status-box"><span class="pulse"></span> <span style="font-size: 0.75rem; font-weight: 800;">STATUS: ONLINE</span></div>
-                <div class="status-box"><span style="font-size: 0.75rem; font-weight: 800; color: var(--primary);">VER: 1.8 - 1.21</span></div>
+                <div class="status-box"><span class="pulse"></span> <span style="font-size: 0.8rem; font-weight: 800;">STATUS: ONLINE</span></div>
+                <div class="status-box"><span style="font-size: 0.8rem; font-weight: 800; color: var(--primary);">WERSJA: 1.8 - 1.21</span></div>
             </div>
 
-            <p class="section-label">DOSTĘPNE TRYBY</p>
+            <p class="section-label">TRYBY GRY</p>
             <div class="modes-wrap">
-                <div class="mode m-duels">⚔️ DUELS 1VS1 (LIVE)</div>
+                <div class="mode m-duels">⚔️ DUELS 1VS1</div>
                 <div class="mode">WKRÓTCE...</div>
             </div>
 
-            <p class="section-label">KODEKS POSTĘPOWANIA</p>
+            <p class="section-label">ZASADY PANUJĄCE NA SERWERZE</p>
             <div class="rules-list">
                 <div class="rule-item">
                     <span class="rule-icon">01</span>
-                    <span>Całkowity zakaz wspomagaczy (Cheaty/Makra).</span>
+                    <span>Brak wspomagaczy i nieuczciwej przewagi.</span>
                 </div>
                 <div class="rule-item">
                     <span class="rule-icon">02</span>
-                    <span>Szanuj przeciwnika – toksyczność = kara.</span>
+                    <span>Kultura na czacie – szanuj innych graczy.</span>
                 </div>
                 <div class="rule-item">
                     <span class="rule-icon">03</span>
-                    <span>Reklamowanie innych sieci jest zabronione.</span>
+                    <span>Zakaz reklamowania innych serwerów.</span>
                 </div>
             </div>
 
-            <p class="section-label">ODNOŚNIKI</p>
             <div class="btn-row">
                 <a href="https://dc.ducemc.pl" target="_blank" class="btn btn-dc">DISCORD</a>
-                <a href="https://sklep.ducemc.pl" target="_blank" class="btn btn-shop">ITEMSHOP</a>
+                <a href="https://sklep.ducemc.pl" target="_blank" class="btn btn-shop">SKLEP WWW</a>
             </div>
         </div>
     </div>
 
-    <div id="notif">IP SKOPIOWANE!</div>
+    <div id="notif">Pomyślnie skopiowano IP!</div>
 
     <script>
         const canvas = document.getElementById('hero-canvas');
@@ -251,7 +263,7 @@
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             stars = [];
-            for(let i=0; i<150; i++) {
+            for(let i=0; i<180; i++) {
                 stars.push({
                     x: Math.random() * canvas.width - canvas.width/2,
                     y: Math.random() * canvas.height - canvas.height/2,
@@ -263,14 +275,16 @@
         function draw() {
             ctx.fillStyle = '#020205';
             ctx.fillRect(0,0,canvas.width, canvas.height);
-            ctx.save(); ctx.translate(canvas.width/2, canvas.height/2);
+            ctx.save(); 
+            ctx.translate(canvas.width/2, canvas.height/2);
             for(let s of stars) {
-                s.z -= 0.8;
+                s.z -= 1.2;
                 if(s.z <= 0) s.z = canvas.width;
                 let px = s.x / (s.z / canvas.width);
                 let py = s.y / (s.z / canvas.width);
-                let size = (1 - s.z / canvas.width) * 1.5;
-                ctx.beginPath(); ctx.arc(px, py, size, 0, Math.PI*2);
+                let size = (1 - s.z / canvas.width) * 1.8;
+                ctx.beginPath(); 
+                ctx.arc(px, py, size, 0, Math.PI*2);
                 ctx.fillStyle = `rgba(30, 144, 255, ${0.8 - s.z/canvas.width})`;
                 ctx.fill();
             }
@@ -278,19 +292,25 @@
             requestAnimationFrame(draw);
         }
 
+        // Ulepszony obrót karty
         window.addEventListener('mousemove', (e) => {
-            let xAxis = (window.innerWidth / 2 - e.pageX) / 80; // Zwiększona czułość dla lepszego efektu
-            let yAxis = (window.innerHeight / 2 - e.pageY) / 80;
+            let xAxis = (window.innerWidth / 2 - e.pageX) / 60;
+            let yAxis = (window.innerHeight / 2 - e.pageY) / 60;
             card.style.transform = `rotateY(${xAxis}deg) rotateX(${-yAxis}deg)`;
+        });
+
+        // Reset pozycji karty po wyjechaniu myszką
+        window.addEventListener('mouseleave', () => {
+            card.style.transform = `rotateY(0deg) rotateX(0deg)`;
         });
 
         function copyIP() {
             navigator.clipboard.writeText("DUCEMC.PL");
             const n = document.getElementById('notif');
             n.style.display = 'block';
-            setTimeout(() => {
-                n.style.display = 'none';
-            }, 2500);
+            setTimeout(() => { n.style.opacity = '0'; 
+                setTimeout(() => { n.style.display = 'none'; n.style.opacity = '1'; }, 400); 
+            }, 3000);
         }
 
         window.addEventListener('resize', init);
