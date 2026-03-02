@@ -4,17 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rekrutacja Premium | DuceMC.PL</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800;900&display=swap" rel="stylesheet">
     
     <style>
         :root {
             --primary: #00e5ff;
             --primary-rgb: 0, 229, 255;
             --bg-dark: #030305;
-            --card-bg: rgba(8, 8, 12, 0.95);
-            --error: #ff3e3e;
+            --card-bg: rgba(8, 8, 12, 0.9);
             --success: #00ff88;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --step-inactive: rgba(255,255,255,0.1);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
@@ -27,7 +26,7 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 40px 20px;
+            padding: 20px;
             overflow-x: hidden;
         }
 
@@ -35,141 +34,109 @@
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1;
-            background: radial-gradient(circle at center, #0a1a1f 0%, #030305 100%);
+            background: radial-gradient(circle at center, #0a1e24 0%, #030305 100%);
         }
 
-        /* Progress Bar */
-        .progress-container {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 6px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 40px 40px 0 0;
-            overflow: hidden;
-        }
-        #progress-fill {
-            width: 0%; height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--success));
-            transition: width 0.5s ease;
-            box-shadow: 0 0 15px var(--primary);
+        /* Steps Indicator */
+        .steps-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            position: relative;
         }
 
+        .step-item {
+            z-index: 2;
+            background: var(--bg-dark);
+            border: 2px solid var(--step-inactive);
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 900; color: var(--step-inactive);
+            transition: 0.4s;
+        }
+
+        .step-item.active {
+            border-color: var(--primary);
+            color: var(--primary);
+            box-shadow: 0 0 15px rgba(var(--primary-rgb), 0.4);
+        }
+
+        .step-item.done {
+            background: var(--success);
+            border-color: var(--success);
+            color: black;
+        }
+
+        /* Card & Animation */
         .rec-card {
             background: var(--card-bg);
             backdrop-filter: blur(30px);
             border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 40px;
-            padding: 60px;
+            padding: 50px;
             width: 100%;
-            max-width: 900px;
+            max-width: 800px;
             position: relative;
-            transform-style: preserve-3d;
             box-shadow: 0 50px 100px rgba(0,0,0,0.8);
         }
 
-        h2 { 
-            font-weight: 900; font-size: 3.2rem; 
-            background: linear-gradient(to bottom, #fff, var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-align: center; margin-bottom: 5px; 
-            letter-spacing: -1px;
+        .form-step { display: none; animation: fadeIn 0.5s ease forwards; }
+        .form-step.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .subtitle { 
-            text-align: center; color: #555; font-size: 0.9rem; 
-            margin-bottom: 50px; text-transform: uppercase; 
-            letter-spacing: 6px; font-weight: 700; 
-        }
-
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
-        .full-width { grid-column: span 2; }
-
-        .form-group { position: relative; transition: var(--transition); }
+        h2 { font-weight: 900; font-size: 2.5rem; text-align: center; margin-bottom: 30px; letter-spacing: -1px; }
+        
+        .input-wrapper { position: relative; margin-bottom: 25px; }
         
         label { 
-            display: block; font-size: 0.7rem; font-weight: 900; 
-            margin-bottom: 12px; color: #888; 
+            display: block; font-size: 0.65rem; font-weight: 900; 
+            margin-bottom: 8px; color: #666; 
             text-transform: uppercase; letter-spacing: 2px;
         }
 
         input, textarea, select {
-            width: 100%;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.02);
-            border: 2px solid rgba(255, 255, 255, 0.05);
-            border-radius: 18px;
-            color: white;
-            font-family: inherit;
-            font-size: 1rem;
-            transition: var(--transition);
-        }
-
-        input:focus, textarea:focus, select:focus {
-            background: rgba(var(--primary-rgb), 0.05);
-            border-color: var(--primary);
-            box-shadow: 0 0 25px rgba(var(--primary-rgb), 0.2);
-            transform: translateY(-2px);
-        }
-
-        /* Status walidacji */
-        input:valid:not(:placeholder-shown) { border-color: var(--success); }
-
-        textarea { min-height: 160px; resize: none; }
-
-        .submit-btn {
-            width: 100%;
-            padding: 25px;
-            background: var(--primary);
-            border: none;
-            border-radius: 22px;
-            color: #000;
-            font-weight: 900;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: var(--transition);
-            margin-top: 30px;
-            letter-spacing: 3px;
-            font-size: 1.1rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(var(--primary-rgb), 0.4);
-            filter: brightness(1.1);
-        }
-
-        .submit-btn::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: 0.5s;
-        }
-
-        .submit-btn:hover::before { left: 100%; }
-
-        .back-link {
-            display: block; text-align: center; margin-top: 40px;
-            color: #444; text-decoration: none; font-size: 0.8rem;
-            font-weight: 800; text-transform: uppercase; letter-spacing: 2px;
+            width: 100%; padding: 18px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 255, 255, 0.07);
+            border-radius: 15px;
+            color: white; font-family: inherit; font-size: 1rem;
             transition: 0.3s;
         }
-        .back-link:hover { color: var(--primary); letter-spacing: 4px; }
 
-        .loading-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); border-radius: 40px;
-            display: none; justify-content: center; align-items: center;
-            z-index: 100; backdrop-filter: blur(10px);
+        input:focus, textarea:focus {
+            border-color: var(--primary);
+            background: rgba(var(--primary-rgb), 0.05);
         }
 
-        @media (max-width: 800px) {
-            .form-grid { grid-template-columns: 1fr; }
-            .full-width { grid-column: span 1; }
-            .rec-card { padding: 40px 20px; }
-            h2 { font-size: 2.2rem; }
+        .skin-preview {
+            position: absolute; right: 15px; top: 35px;
+            width: 40px; height: 40px;
+            border-radius: 8px; border: 1px solid var(--primary);
+            display: none;
+        }
+
+        .btn-row { display: flex; gap: 15px; margin-top: 30px; }
+
+        .btn {
+            flex: 1; padding: 20px; border-radius: 15px;
+            font-weight: 900; text-transform: uppercase; letter-spacing: 2px;
+            cursor: pointer; transition: 0.3s; border: none;
+        }
+
+        .btn-next { background: var(--primary); color: #000; }
+        .btn-back { background: rgba(255,255,255,0.05); color: #fff; }
+        .btn:hover { transform: translateY(-3px); filter: brightness(1.1); }
+
+        .char-count { font-size: 0.7rem; color: #444; text-align: right; margin-top: 5px; }
+
+        @media (max-width: 600px) {
+            .rec-card { padding: 30px 20px; }
+            h2 { font-size: 1.8rem; }
         }
     </style>
 </head>
@@ -177,184 +144,165 @@
 
     <canvas id="bg-canvas"></canvas>
 
-    <div class="rec-card" id="card">
-        <div class="progress-container"><div id="progress-fill"></div></div>
-        
-        <div class="loading-overlay" id="loader">
-            <div style="text-align: center;">
-                <div class="submit-btn" style="background: none; border: 3px solid var(--primary); color: var(--primary);">AUTORYZACJA...</div>
-            </div>
+    <div class="rec-card">
+        <div class="steps-nav">
+            <div class="step-item active" id="s1">1</div>
+            <div class="step-item" id="s2">2</div>
+            <div class="step-item" id="s3">3</div>
         </div>
 
         <h2>REKRUTACJA</h2>
-        <p class="subtitle">Join the Elite</p>
 
         <form id="rec-form">
-            <div class="form-grid">
-                <div class="form-group">
-                    <label>Nick Minecraft</label>
-                    <input type="text" id="nick" placeholder=" " required>
+            <div class="form-step active" id="step1">
+                <div class="input-wrapper">
+                    <label>Twój Nick Minecraft</label>
+                    <input type="text" id="nick" placeholder="Podaj nick..." required>
+                    <img id="head-view" class="skin-preview">
                 </div>
-
-                <div class="form-group">
-                    <label>Wiek (min. 14 lat)</label>
-                    <input type="number" id="age" min="10" max="99" placeholder=" " required>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="input-wrapper">
+                        <label>Wiek</label>
+                        <input type="number" id="age" min="13" max="50" required>
+                    </div>
+                    <div class="input-wrapper">
+                        <label>Ranga</label>
+                        <select id="rank">
+                            <option>Helper</option>
+                            <option>Moderator</option>
+                            <option>Budowniczy</option>
+                        </select>
+                    </div>
                 </div>
-
-                <div class="form-group">
-                    <label>Discord</label>
-                    <input type="text" id="discord" placeholder="nazwa#0000" required>
+                <div class="input-wrapper">
+                    <label>Discord (np. nazwa#0000)</label>
+                    <input type="text" id="discord" required>
                 </div>
+                <button type="button" class="btn btn-next" onclick="nextStep(2)">Dalej →</button>
+            </div>
 
-                <div class="form-group">
-                    <label>Preferowana Ranga</label>
-                    <select id="rank" required>
-                        <option value="Helper">Helper</option>
-                        <option value="Moderator">Moderator</option>
-                        <option value="Admin">Admin</option>
-                        <option value="Budowniczy">Budowniczy</option>
-                        <option value="Trial">Trial</option>
-                    </select>
+            <div class="form-step" id="step2">
+                <div class="input-wrapper">
+                    <label>Doświadczenie i komendy</label>
+                    <textarea id="exp" minlength="50" placeholder="Napisz coś o sobie..." oninput="updateCount(this, 'c1')" required></textarea>
+                    <div class="char-count" id="c1">0 / 50 min. znaków</div>
                 </div>
-
-                <div class="form-group full-width">
-                    <label>Doświadczenie (Serwery, Komendy, Staż)</label>
-                    <textarea id="experience" placeholder="Opisz swoje poprzednie projekty..." required></textarea>
+                <div class="input-wrapper">
+                    <label>Dlaczego Ty?</label>
+                    <textarea id="why" minlength="50" placeholder="Przekonaj nas!" oninput="updateCount(this, 'c2')" required></textarea>
+                    <div class="char-count" id="c2">0 / 50 min. znaków</div>
                 </div>
-
-                <div class="form-group full-width">
-                    <label>Dlaczego mamy wybrać właśnie Ciebie?</label>
-                    <textarea id="why" placeholder="Wymień swoje mocne strony..." required></textarea>
-                </div>
-
-                <div class="form-group full-width">
-                    <label>Dyspozycyjność tygodniowa</label>
-                    <input type="text" id="time" placeholder="Np. Pon-Pt 16-20, Weekendy 10-22" required>
+                <div class="btn-row">
+                    <button type="button" class="btn btn-back" onclick="nextStep(1)">← Wróć</button>
+                    <button type="button" class="btn btn-next" onclick="nextStep(3)">Ostatni krok</button>
                 </div>
             </div>
 
-            <button type="submit" class="submit-btn">WYŚLIJ APLIKACJĘ</button>
+            <div class="form-step" id="step3">
+                <div class="input-wrapper">
+                    <label>Ile czasu dziennie poświęcisz?</label>
+                    <input type="text" id="time" placeholder="np. 3-4 godziny" required>
+                </div>
+                <p style="font-size: 0.8rem; color: #666; text-align: center; margin: 20px 0;">
+                    Klikając wyślij, potwierdzasz prawdziwość danych oraz znajomość regulaminu DuceMC.PL.
+                </p>
+                <div class="btn-row">
+                    <button type="button" class="btn btn-back" onclick="nextStep(2)">← Wróć</button>
+                    <button type="submit" class="btn btn-next" style="background: var(--success);">Wyślij Podanie</button>
+                </div>
+            </div>
         </form>
-
-        <a href="index.html" class="back-link">← Przerwij proces</a>
+        <a href="index.html" style="display:block; text-align:center; margin-top:30px; color:#444; text-decoration:none; font-size:0.7rem; font-weight:800;">POWRÓT DO STRONY GŁÓWNEJ</a>
     </div>
 
     <script>
-        // --- INTERAKTYWNE TŁO CZĄSTECZKOWE ---
-        const canvas = document.getElementById('bg-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        const mouse = { x: null, y: null, radius: 150 };
-
-        window.addEventListener('mousemove', e => { mouse.x = e.x; mouse.y = e.y; });
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2 + 1;
-                this.vx = Math.random() * 1 - 0.5;
-                this.vy = Math.random() * 1 - 0.5;
-            }
-            update() {
-                this.x += this.vx; this.y += this.vy;
-                if (this.x > canvas.width || this.x < 0) this.vx *= -1;
-                if (this.y > canvas.height || this.y < 0) this.vy *= -1;
-
-                let dx = mouse.x - this.x;
-                let dy = mouse.y - this.y;
-                let distance = Math.sqrt(dx*dx + dy*dy);
-                if (distance < mouse.radius) {
-                    if (mouse.x < this.x && this.x < canvas.width - this.size * 10) this.x += 2;
-                    if (mouse.x > this.x && this.x > this.size * 10) this.x -= 2;
-                    if (mouse.y < this.y && this.y < canvas.height - this.size * 10) this.y += 2;
-                    if (mouse.y > this.y && this.y > this.size * 10) this.y -= 2;
-                }
-            }
-            draw() {
-                ctx.fillStyle = 'rgba(0, 229, 255, 0.5)';
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
-                ctx.fill();
-            }
-        }
-
-        function initBg() {
-            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            particles = [];
-            for(let i=0; i<100; i++) particles.push(new Particle());
-        }
-
-        function animate() {
-            ctx.clearRect(0,0,canvas.width, canvas.height);
-            particles.forEach(p => { p.update(); p.draw(); });
-            requestAnimationFrame(animate);
-        }
-        initBg(); animate();
-
-        // --- PROGRESS BAR & 3D EFFECT ---
-        const form = document.getElementById('rec-form');
-        const inputs = form.querySelectorAll('input, textarea, select');
-        const progress = document.getElementById('progress-fill');
-
-        inputs.forEach(input => {
-            input.addEventListener('input', () => {
-                let filled = 0;
-                inputs.forEach(i => { if(i.value.length > 2) filled++; });
-                progress.style.width = (filled / inputs.length) * 100 + "%";
+        // --- LOGIKA KROKÓW ---
+        function nextStep(step) {
+            document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step' + step).classList.add('active');
+            
+            // Update kropek
+            document.querySelectorAll('.step-item').forEach((item, idx) => {
+                item.classList.remove('active', 'done');
+                if (idx + 1 < step) item.classList.add('done');
+                if (idx + 1 === step) item.classList.add('active');
             });
+        }
+
+        // --- PODGLĄD SKINA ---
+        const nickInput = document.getElementById('nick');
+        const headView = document.getElementById('head-view');
+        nickInput.addEventListener('input', () => {
+            if(nickInput.value.length > 2) {
+                headView.src = `https://minotar.net/avatar/${nickInput.value}/40`;
+                headView.style.display = 'block';
+            } else {
+                headView.style.display = 'none';
+            }
         });
 
-        const card = document.getElementById('card');
-        window.addEventListener('mousemove', e => {
-            let x = (window.innerWidth / 2 - e.pageX) / 50;
-            let y = (window.innerHeight / 2 - e.pageY) / 50;
-            card.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
-        });
+        // --- LICZNIK ZNAKÓW ---
+        function updateCount(el, targetId) {
+            const count = el.value.length;
+            document.getElementById(targetId).innerText = `${count} / 50 min. znaków`;
+            document.getElementById(targetId).style.color = count >= 50 ? '#00ff88' : '#ff3e3e';
+        }
 
-        // --- WEBHOOK LOGIC ---
-        const WEBHOOK_URL = "https://discordapp.com/api/webhooks/1477803640394747964/mmTOxJH5FI-LMHci111VUdsjqFF5oxhbNRJw94OR-w5PvXk0jPsIh5HRfWyPit1k6in6";
-
-        form.addEventListener('submit', async (e) => {
+        // --- WEBHOOK ---
+        document.getElementById('rec-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            document.getElementById('loader').style.display = 'flex';
+            const btn = e.target.querySelector('button[type="submit"]');
+            btn.innerText = "WYSYŁANIE...";
+            btn.disabled = true;
 
-            const payload = {
-                username: "DuceMC Security",
+            const webhook = "https://discordapp.com/api/webhooks/1477803640394747964/mmTOxJH5FI-LMHci111VUdsjqFF5oxhbNRJw94OR-w5PvXk0jPsIh5HRfWyPit1k6in6";
+            
+            const data = {
                 embeds: [{
-                    title: "🚀 NOWA KANDYDATURA",
+                    title: "🔔 NOWA REKRUTACJA: " + document.getElementById('nick').value,
                     color: 0x00e5ff,
                     thumbnail: { url: `https://minotar.net/armor/body/${document.getElementById('nick').value}/100.png` },
                     fields: [
-                        { name: "👤 Gracz", value: `**${document.getElementById('nick').value}**`, inline: true },
-                        { name: "🎂 Wiek", value: `${document.getElementById('age').value}`, inline: true },
-                        { name: "👑 Ranga", value: `${document.getElementById('rank').value}`, inline: true },
-                        { name: "👾 Discord", value: `${document.getElementById('discord').value}`, inline: false },
-                        { name: "🛠 Doświadczenie", value: `\`\`\`${document.getElementById('experience').value}\`\`\`` },
-                        { name: "💡 Dlaczego?", value: `\`\`\`${document.getElementById('why').value}\`\`\`` },
-                        { name: "⏰ Czas", value: `${document.getElementById('time').value}`, inline: true }
+                        { name: "👤 Nick", value: document.getElementById('nick').value, inline: true },
+                        { name: "🎂 Wiek", value: document.getElementById('age').value, inline: true },
+                        { name: "👑 Ranga", value: document.getElementById('rank').value, inline: true },
+                        { name: "👾 Discord", value: document.getElementById('discord').value },
+                        { name: "🛠 Doświadczenie", value: document.getElementById('exp').value },
+                        { name: "💡 Dlaczego On?", value: document.getElementById('why').value },
+                        { name: "⏰ Czas pracy", value: document.getElementById('time').value }
                     ],
-                    footer: { text: "System Rekrutacji DuceMC.PL" },
+                    footer: { text: "System DuceMC.PL" },
                     timestamp: new Date()
                 }]
             };
 
             try {
-                const res = await fetch(WEBHOOK_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if(res.ok) {
-                    alert("TRANSMAKSCJA ZAKOŃCZONA: Podanie wysłane pomyślnie.");
-                    window.location.href = "index.html";
-                } else { throw new Error(); }
-            } catch {
-                alert("KRYTYCZNY BŁĄD: Nie udało się połączyć z serwerem Discord.");
-                document.getElementById('loader').style.display = 'none';
+                await fetch(webhook, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data) });
+                alert("Podanie zostało wysłane! Powodzenia.");
+                window.location.href = "index.html";
+            } catch (err) {
+                alert("Błąd wysyłania. Sprawdź połączenie.");
+                btn.innerText = "Wyślij Podanie";
+                btn.disabled = false;
             }
         });
+
+        // Tło cząsteczkowe (uproszczone dla wydajności)
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        let p = [];
+        for(let i=0; i<50; i++) p.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, s: Math.random()*2});
+        function draw() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            ctx.fillStyle = "rgba(0, 229, 255, 0.2)";
+            p.forEach(i => {
+                ctx.beginPath(); ctx.arc(i.x, i.y, i.s, 0, 7); ctx.fill();
+                i.y -= 0.5; if(i.y < 0) i.y = canvas.height;
+            });
+            requestAnimationFrame(draw);
+        }
+        draw();
     </script>
 </body>
 </html>
