@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DuceMC.PL | Najlepszy Serwer Duels</title>
-    <link rel="icon" type="image/png" href="logo.png">
+    <title>DuceMC.PL | Home of Duels</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     
     <style>
@@ -12,11 +11,11 @@
             --primary: #00d2ff;
             --primary-glow: rgba(0, 210, 255, 0.4);
             --bg-dark: #020205;
-            --card-bg: rgba(7, 7, 15, 0.9);
+            --card-bg: rgba(7, 7, 15, 0.95);
             --accent-green: #00ff88;
             --accent-red: #ff4d4d;
             --accent-cyan: #00bcd4;
-            --transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -29,193 +28,138 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 40px 20px;
             overflow-x: hidden;
-            perspective: 2000px;
+            perspective: 1500px;
         }
 
-        #hero-canvas {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            pointer-events: none;
-        }
+        #hero-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
 
-        /* --- GŁÓWNA KARTA Z EFEKTEM GLASSMORPHISM --- */
+        /* --- GŁÓWNY PANEL --- */
         .main-card {
             background: var(--card-bg);
-            backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 50px;
-            padding: 60px;
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 40px;
+            padding: 50px;
             width: 100%;
-            max-width: 1200px;
+            max-width: 1100px;
             display: grid;
-            grid-template-columns: 1.2fr 1.8fr;
-            gap: 60px;
-            box-shadow: 0 50px 150px rgba(0,0,0,0.9), inset 0 0 20px rgba(255,255,255,0.02);
-            position: relative;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 50px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
             transform-style: preserve-3d;
-            transition: transform 0.2s ease-out;
+            transition: transform 0.1s ease-out;
         }
 
-        /* Dekoracyjne ruszające się paski (Flowing Lines) */
-        .main-card::before {
-            content: '';
-            position: absolute;
-            top: -2px; left: -2px; right: -2px; bottom: -2px;
-            background: linear-gradient(45deg, transparent, var(--primary), transparent, var(--accent-cyan), transparent);
-            background-size: 400% 400%;
-            z-index: -1;
-            border-radius: 52px;
-            animation: borderFlow 8s linear infinite;
-            opacity: 0.3;
-        }
-
-        @keyframes borderFlow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* --- LEWA STRONA --- */
-        .left-side { border-right: 1px solid rgba(255,255,255,0.05); padding-right: 30px; text-align: center; }
+        /* --- LEWA STRONA (BRANDING) --- */
+        .left-side { border-right: 1px solid rgba(255,255,255,0.05); padding-right: 20px; }
         
-        .logo-container { position: relative; display: inline-block; margin-bottom: 20px; }
+        .logo-box { text-align: center; margin-bottom: 30px; position: relative; }
         .server-logo { 
-            max-width: 170px; 
-            filter: drop-shadow(0 0 25px var(--primary-glow)); 
-            animation: float 4s ease-in-out infinite;
+            max-width: 140px; 
+            filter: drop-shadow(0 0 20px var(--primary-glow));
+            animation: float 5s ease-in-out infinite;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-        }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-        h1 { font-size: 3.2rem; background: linear-gradient(to bottom, #fff, #666); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; letter-spacing: -2px; margin-bottom: 25px; }
+        h1 { font-size: 2.8rem; font-weight: 900; letter-spacing: -2px; text-align: center; margin-bottom: 15px; background: linear-gradient(to bottom, #fff, #888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        .copy-ip {
-            background: linear-gradient(135deg, var(--primary), #0055ff);
-            color: white; padding: 22px; border-radius: 20px; font-weight: 900; 
-            cursor: pointer; text-align: center;
-            transition: var(--transition);
-            box-shadow: 0 10px 30px rgba(0, 210, 255, 0.3);
-            border: none;
-            width: 100%;
-            margin-bottom: 25px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .copy-ip:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 15px 40px var(--primary-glow); }
-        
-        /* Połysk na przycisku */
-        .copy-ip::after {
-            content: '';
-            position: absolute;
-            top: -50%; left: -50%; width: 200%; height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
-            transform: rotate(45deg);
-            animation: shine 3s infinite;
-        }
-
-        @keyframes shine {
-            0% { left: -100%; }
-            100% { left: 100%; }
-        }
-
-        .section-label { font-size: 0.7rem; color: #444; letter-spacing: 4px; text-transform: uppercase; font-weight: 900; margin: 30px 0 15px 0; text-align: left; border-left: 3px solid var(--primary); padding-left: 10px; }
-
-        /* --- DYNAMICZNE PASKI PERF --- */
-        .perf-panel { background: rgba(0,0,0,0.3); padding: 20px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.03); }
-        .perf-row { display: flex; justify-content: space-between; font-size: 0.65rem; font-weight: 900; margin-bottom: 8px; color: #888; }
-        .perf-bar { height: 6px; background: rgba(255,255,255,0.03); border-radius: 10px; margin-bottom: 18px; overflow: hidden; position: relative; }
-        .perf-fill { 
-            height: 100%; 
-            background: linear-gradient(90deg, var(--primary), var(--accent-cyan)); 
-            box-shadow: 0 0 15px var(--primary);
-            transition: width 2s cubic-bezier(0.17, 0.67, 0.83, 0.67);
-            position: relative;
-        }
-
-        /* --- ADMINI - NOWY WYGLĄD --- */
-        .admins-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .admin-card {
-            background: rgba(255, 255, 255, 0.02); 
-            padding: 12px; 
-            border-radius: 18px; 
-            display: flex; 
-            align-items: center; 
-            gap: 12px; 
-            transition: var(--transition);
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-        .admin-card:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: var(--primary);
-            transform: translateX(5px);
-        }
-        .avatar { 
-            width: 40px; height: 40px; border-radius: 12px; 
-            background: #000; padding: 2px; border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        /* --- PRAWA STRONA --- */
-        .status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .status-box { 
-            background: rgba(255,255,255,0.02); padding: 25px; border-radius: 25px; 
-            border: 1px solid rgba(255,255,255,0.05); font-size: 0.9rem; font-weight: 900;
+        .ip-container {
+            background: rgba(255,255,255,0.03);
+            border: 2px dashed rgba(0, 210, 255, 0.3);
+            padding: 20px;
+            border-radius: 20px;
             text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
         }
-        
-        .pulse { width: 10px; height: 10px; background: var(--accent-green); border-radius: 50%; display: inline-block; margin-right: 10px; box-shadow: 0 0 15px var(--accent-green); }
+        .ip-container:hover { background: rgba(0, 210, 255, 0.1); border-color: var(--primary); transform: scale(1.02); }
+        .ip-text { display: block; font-weight: 900; font-size: 1.2rem; color: var(--primary); letter-spacing: 2px; }
+        .ip-sub { font-size: 0.6rem; color: #555; text-transform: uppercase; margin-top: 5px; }
 
-        .mode-box { 
-            padding: 30px; border-radius: 25px; font-weight: 900; text-align: center; 
-            background: linear-gradient(135deg, rgba(255,77,77,0.1), rgba(255,0,0,0.05));
-            border: 1px solid rgba(255,77,77,0.3); color: var(--accent-red);
-            font-size: 1.2rem; letter-spacing: 1px;
-            position: relative; overflow: hidden;
-        }
+        .section-title { font-size: 0.65rem; font-weight: 900; color: #444; text-transform: uppercase; letter-spacing: 3px; margin: 30px 0 15px 0; display: flex; align-items: center; gap: 10px; }
+        .section-title::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.05); }
 
-        .rule-item { 
-            display: flex; align-items: center; gap: 20px; 
-            background: rgba(255,255,255,0.01); padding: 18px 25px; border-radius: 20px; 
-            margin-bottom: 12px; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.03);
+        /* --- ADMINI --- */
+        .admins { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .admin-item {
+            background: rgba(255,255,255,0.02);
+            padding: 10px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid transparent;
             transition: 0.3s;
         }
-        .rule-item:hover { background: rgba(255,255,255,0.04); transform: scale(1.02); }
-        .rule-icon { color: var(--primary); font-size: 1.1rem; font-weight: 900; opacity: 0.5; }
+        .admin-item:hover { border-color: var(--primary); background: rgba(0, 210, 255, 0.05); }
+        .admin-item img { width: 32px; height: 32px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); }
+        .admin-item span { font-size: 0.7rem; font-weight: 900; color: #ccc; }
 
-        /* --- PRZYCISKI MODERNE --- */
-        .btn-row { display: flex; gap: 15px; margin-top: 30px; }
-        .btn { 
-            flex: 1; text-decoration: none; color: white; padding: 20px; border-radius: 20px; 
-            font-weight: 900; text-align: center; transition: var(--transition); font-size: 0.75rem;
-            text-transform: uppercase; letter-spacing: 1px; border: 1px solid rgba(255,255,255,0.1);
+        /* --- PRAWA STRONA (INFO) --- */
+        .status-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+        .stat-card {
+            background: rgba(255,255,255,0.02);
+            padding: 20px;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.05);
         }
-        .btn-dc { background: #5865F2; }
-        .btn-shop { background: #ff9800; }
-        .btn-rec { background: var(--accent-cyan); }
+        .stat-card .val { display: block; font-size: 1.2rem; font-weight: 900; color: var(--accent-green); }
+        .stat-card .lab { font-size: 0.6rem; color: #555; text-transform: uppercase; }
+
+        .mode-preview {
+            background: linear-gradient(45deg, rgba(0, 210, 255, 0.1), transparent);
+            border-radius: 25px;
+            padding: 30px;
+            border: 1px solid rgba(0, 210, 255, 0.2);
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .mode-preview h3 { font-size: 1.5rem; color: var(--primary); margin-bottom: 5px; }
+
+        /* --- PRZYCISKI --- */
+        .nav-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .btn {
+            padding: 18px;
+            border-radius: 18px;
+            text-decoration: none;
+            color: white;
+            font-weight: 900;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            text-align: center;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .btn-rules { background: rgba(255,255,255,0.05); grid-column: span 2; border: 1px solid var(--primary); color: var(--primary); }
+        .btn-rules:hover { background: var(--primary); color: #000; }
         
-        .btn:hover { transform: translateY(-7px); box-shadow: 0 15px 30px rgba(0,0,0,0.5); border-color: rgba(255,255,255,0.3); }
+        .btn-shop { background: #ff9800; }
+        .btn-dc { background: #5865f2; }
+        .btn-rec { background: var(--accent-cyan); }
+        .btn-vote { background: #e91e63; }
 
+        .btn:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.4); }
+
+        /* NOTYFIKACJA */
         #notif {
-            position: fixed; bottom: 40px; background: var(--accent-green); color: #000;
-            padding: 15px 40px; border-radius: 50px; font-weight: 900; display: none; 
-            z-index: 1000; box-shadow: 0 10px 40px rgba(0,255,136,0.4);
-            animation: slideIn 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: var(--primary); color: #000; padding: 12px 30px;
+            border-radius: 50px; font-weight: 900; font-size: 0.8rem;
+            display: none; animation: pop 0.3s ease; z-index: 9999;
         }
+        @keyframes pop { from { bottom: 0; opacity: 0; } to { bottom: 30px; opacity: 1; } }
 
-        @keyframes slideIn { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-
-        @media (max-width: 950px) {
-            .main-card { grid-template-columns: 1fr; padding: 30px; border-radius: 30px; }
-            .left-side { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 40px; padding-right: 0; }
-            h1 { font-size: 2.5rem; }
+        @media (max-width: 850px) {
+            .main-card { grid-template-columns: 1fr; padding: 30px; }
+            .left-side { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 30px; padding-right: 0; }
         }
     </style>
 </head>
@@ -225,80 +169,77 @@
 
     <div class="main-card" id="card">
         <div class="left-side">
-            <div class="logo-container">
-                <img src="logo.png" alt="Logo" class="server-logo">
+            <div class="logo-box">
+                <img src="logo.png" alt="DuceMC" class="server-logo">
             </div>
-            <h1>DuceMC.PL</h1>
-            <button class="copy-ip" onclick="copyIP()" id="ipBtn">SKOPIUJ IP SERWERA</button>
+            <h1>DuceMC</h1>
             
-            <p class="section-label">SYSTEM PERFORMANCE</p>
-            <div class="perf-panel">
-                <div class="perf-row"><span>CPU USAGE</span><span id="cpu-val">12%</span></div>
-                <div class="perf-bar"><div class="perf-fill" id="cpu-bar" style="width: 12%;"></div></div>
-                <div class="perf-row"><span>MEMORY</span><span id="ram-val">2.4GB</span></div>
-                <div class="perf-bar"><div class="perf-fill" id="ram-bar" style="width: 45%; background: var(--accent-cyan);"></div></div>
+            <div class="ip-container" onclick="copyIP()">
+                <span class="ip-text">DUCEMC.PL</span>
+                <span class="ip-sub">Kliknij, aby skopiować IP</span>
             </div>
 
-            <p class="section-label">CORE ADMINISTRATION</p>
-            <div class="admins-grid">
-                <div class="admin-card">
-                    <img src="https://cravatar.eu/avatar/RdstoneBrilliant/64.png" class="avatar">
-                    <div class="admin-info"><span>WŁAŚCICIEL</span><p>Rdstone</p></div>
+            <p class="section-title">Team Management</p>
+            <div class="admins">
+                <div class="admin-item">
+                    <img src="https://cravatar.eu/avatar/RdstoneBrilliant/64.png">
+                    <span>Rdstone</span>
                 </div>
-                <div class="admin-card">
-                    <img src="https://cravatar.eu/avatar/TugareK/64.png" class="avatar">
-                    <div class="admin-info"><span>WŁAŚCICIEL</span><p>TugareK</p></div>
+                <div class="admin-item">
+                    <img src="https://cravatar.eu/avatar/TugareK/64.png">
+                    <span>TugareK</span>
                 </div>
-                <div class="admin-card">
-                    <img src="https://cravatar.eu/avatar/xGwiazdek15/64.png" class="avatar">
-                    <div class="admin-info"><span>ADMIN</span><p>xGwiazdek</p></div>
+                <div class="admin-item">
+                    <img src="https://cravatar.eu/avatar/xGwiazdek15/64.png">
+                    <span>xGwiazdek</span>
                 </div>
-                <div class="admin-card">
-                    <img src="https://cravatar.eu/avatar/gracz900002/64.png" class="avatar">
-                    <div class="admin-info"><span>MOD</span><p>gracz900</p></div>
+                <div class="admin-item">
+                    <img src="https://cravatar.eu/avatar/gracz900002/64.png">
+                    <span>gracz900</span>
                 </div>
             </div>
         </div>
 
         <div class="right-side">
-            <p class="section-label">NETWORK STATUS</p>
-            <div class="status-grid">
-                <div class="status-box"><span class="pulse"></span> SERWER ONLINE</div>
-                <div class="status-box" style="color: var(--primary)">WERSJA 1.8 - 1.21</div>
+            <div class="status-row">
+                <div class="stat-card">
+                    <span class="val" id="player-count">42 / 100</span>
+                    <span class="lab">Graczy Online</span>
+                </div>
+                <div class="stat-card">
+                    <span class="val" style="color: var(--primary)">ONLINE</span>
+                    <span class="lab">Status Serwera</span>
+                </div>
             </div>
 
-            <p class="section-label">ACTIVE GAME MODES</p>
-            <div class="mode-box">
-                <div style="font-size: 0.7rem; opacity: 0.6; margin-bottom: 5px;">NAJBARDZIEJ DOPRACOWANE</div>
-                ⚔️ DUELS 1VS1 (BETA)
+            <div class="mode-preview">
+                <span style="font-size: 0.6rem; color: var(--primary); font-weight: 900; letter-spacing: 2px;">POLECANY TRYB</span>
+                <h3>⚔️ DUELS 1VS1</h3>
+                <p style="font-size: 0.75rem; color: #777;">Najlepszy system walki, autorskie areny i zero lagów.</p>
             </div>
 
-            <p class="section-label">SERVER GUIDELINES</p>
-            <div class="rule-item">
-                <span class="rule-icon">01</span> 
-                <span>Absolutny zakaz używania wspomagaczy (Cheaty/Makra).</span>
-            </div>
-            <div class="rule-item">
-                <span class="rule-icon">02</span> 
-                <span>Kultura osobista na czacie oraz szacunek do innych.</span>
-            </div>
-            <div class="rule-item">
-                <span class="rule-icon">03</span> 
-                <span>Wszelkie błędy zgłaszaj natychmiast administracji.</span>
+            <div class="nav-grid">
+                <a href="regulamin.html" class="btn btn-rules">📜 Zobacz Regulamin Serwera</a>
+                
+                <a href="sklep.html" class="btn btn-shop">🛒 Sklep</a>
+                <a href="https://dc.ducemc.pl" class="btn btn-dc">📱 Discord</a>
+                <a href="rekrutacja.html" class="btn btn-rec">✉️ Rekrutacja</a>
+                <a href="#" class="btn btn-vote">⭐ Zagłosuj</a>
             </div>
 
-            <div class="btn-row">
-                <a href="https://dc.ducemc.pl" target="_blank" class="btn btn-dc">Discord</a>
-                <a href="sklep.html" class="btn btn-shop">Sklep Premium</a>
-                <a href="rekrutacja.html" class="btn btn-rec">Rekrutacja</a>
+            <p class="section-title">Latest Updates</p>
+            <div style="font-size: 0.7rem; color: #555; line-height: 1.5;">
+                • Dodano system rankingowy ELO w Duels.<br>
+                • Zoptymalizowano silnik pod wersję 1.21.<br>
+                • Nowa mapa Spawn już dostępna!
             </div>
         </div>
     </div>
 
-    <div id="notif">COPIED TO CLIPBOARD!</div>
+    <div id="notif">IP SKOPIOWANE DO SCHOWKA!</div>
 
     <script>
-        // GWIAZDY 3D W TLE
+        // GWIAZDY 3D
         const canvas = document.getElementById('hero-canvas');
         const ctx = canvas.getContext('2d');
         let stars = [];
@@ -307,7 +248,7 @@
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             stars = [];
-            for(let i=0; i<200; i++) {
+            for(let i=0; i<150; i++) {
                 stars.push({
                     x: Math.random() * canvas.width - canvas.width/2,
                     y: Math.random() * canvas.height - canvas.height/2,
@@ -323,7 +264,7 @@
             ctx.save(); 
             ctx.translate(canvas.width/2, canvas.height/2);
             for(let s of stars) {
-                s.z -= 1.5;
+                s.z -= 0.8;
                 if(s.z <= 0) s.z = canvas.width;
                 let px = s.x / (s.z / canvas.width);
                 let py = s.y / (s.z / canvas.width);
@@ -337,21 +278,11 @@
             requestAnimationFrame(draw);
         }
 
-        // DYNAMICZNE STATYSTYKI (Ruszające się paski)
-        setInterval(() => {
-            const cpu = Math.floor(Math.random() * (15 - 5 + 1)) + 5;
-            const ram = (Math.random() * (2.8 - 2.1) + 2.1).toFixed(1);
-            document.getElementById('cpu-val').innerText = cpu + "%";
-            document.getElementById('cpu-bar').style.width = cpu + "%";
-            document.getElementById('ram-val').innerText = ram + "GB";
-            document.getElementById('ram-bar').style.width = (ram / 8 * 100) + "%";
-        }, 3000);
-
-        // PARALLAX EFFECT 3D
+        // PARALLAX
         const card = document.getElementById('card');
         window.addEventListener('mousemove', (e) => {
-            let xAxis = (window.innerWidth / 2 - e.pageX) / 40;
-            let yAxis = (window.innerHeight / 2 - e.pageY) / 40;
+            let xAxis = (window.innerWidth / 2 - e.pageX) / 60;
+            let yAxis = (window.innerHeight / 2 - e.pageY) / 60;
             card.style.transform = `rotateY(${xAxis}deg) rotateX(${-yAxis}deg)`;
         });
 
@@ -359,13 +290,15 @@
             navigator.clipboard.writeText("DUCEMC.PL");
             const n = document.getElementById('notif');
             n.style.display = 'block';
-            const btn = document.getElementById('ipBtn');
-            btn.innerText = "SKOPIOWANO!";
-            setTimeout(() => { 
-                n.style.display = 'none'; 
-                btn.innerText = "SKOPIUJ IP SERWERA";
-            }, 2000);
+            setTimeout(() => { n.style.display = 'none'; }, 2000);
         }
+
+        // Symulacja graczy
+        setInterval(() => {
+            const base = 40;
+            const rand = Math.floor(Math.random() * 10);
+            document.getElementById('player-count').innerText = (base + rand) + " / 100";
+        }, 5000);
 
         window.addEventListener('resize', init);
         init(); draw();
