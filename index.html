@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DuceMC.PL | Oficjalna Strona</title>
+    <title>DuceMC.PL | Strona Głowna</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -107,28 +107,43 @@
         }
         .ip-button:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(0, 210, 255, 0.4); }
 
-        .nav-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .nav-buttons { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 15px; 
+            margin-top: 10px;
+        }
+        
         .nav-link {
             background: rgba(255,255,255,0.02);
             border: 1px solid rgba(255,255,255,0.05);
-            padding: 20px;
+            padding: 25px;
             border-radius: 20px;
             text-decoration: none;
             color: white;
             transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
-        .nav-link:hover { background: rgba(0, 210, 255, 0.05); border-color: var(--primary); transform: translateX(5px); }
+        
+        .nav-link:hover { 
+            background: rgba(0, 210, 255, 0.05); 
+            border-color: var(--primary); 
+            transform: translateY(-5px); 
+        }
+        
         .nav-link b { font-size: 1.1rem; display: block; color: var(--primary); }
-        .nav-link span { font-size: 0.75rem; opacity: 0.5; }
+        .nav-link span { font-size: 0.75rem; opacity: 0.5; margin-top: 4px; }
 
         .upcoming-badge {
-            margin-top: 15px;
-            padding: 12px;
+            margin-top: 25px;
+            padding: 15px;
             background: rgba(255, 255, 255, 0.03);
             border-radius: 15px;
             border: 1px dashed rgba(255, 255, 255, 0.1);
             text-align: center;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             color: #aaa;
         }
 
@@ -158,6 +173,7 @@
             .container { grid-template-columns: 1fr; margin-bottom: 100px; }
             body { overflow-y: auto; padding: 40px 0; }
             .footer-stats { position: relative; bottom: 0; margin-top: 20px; }
+            .nav-buttons { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -185,21 +201,26 @@
         </div>
 
         <div class="glass-card">
-            <p style="font-size: 0.6rem; letter-spacing: 4px; opacity: 0.4; margin-bottom: 20px;">NAWIGACJA</p>
+            <p style="font-size: 0.6rem; letter-spacing: 4px; opacity: 0.4; margin-bottom: 20px;">NAWIGACJA SERWERA</p>
             <div class="nav-buttons">
-                <a href="sklep.html" class="nav-link"><b>SKLEP</b><span>ItemShop & Portfel</span></a>
-                <a href="https://dc.ducemc.pl" class="nav-link" style="border-left: 3px solid #5865f2;">
-                    <b style="color: #5865f2;">DISCORD</b><span>Społeczność</span>
+                <a href="sklep.html" class="nav-link">
+                    <b>SKLEP</b>
+                    <span>ItemShop & Portfel</span>
                 </a>
-                <a href="regulamin.html" class="nav-link"><b>REGULAMIN</b><span>Zasady gry</span></a>
-                <a href="rekrutacja.html" class="nav-link"><b>REKRUTACJA</b><span>Dołącz do ekipy</span></a>
+                <a href="https://dc.ducemc.pl" class="nav-link" style="border-left: 3px solid #5865f2;">
+                    <b style="color: #5865f2;">DISCORD</b>
+                    <span>Dołącz do społeczności</span>
+                </a>
+                <a href="regulamin.html" class="nav-link">
+                    <b>REGULAMIN</b>
+                    <span>Zasady serwera</span>
+                </a>
+                <a href="rekrutacja.html" class="nav-link">
+                    <b>REKRUTACJA</b>
+                    <span>Zostań członkiem ekipy</span>
+                </a>
             </div>
             
-            <a href="#" class="nav-link" style="margin-top: 15px; text-align: center; border: 1px solid var(--primary);">
-                <b>🏆 RANKING GRACZY</b>
-                <span>Najlepsi w pojedynkach</span>
-            </a>
-
             <div class="upcoming-badge">
                 🚀 Nowe tryby gry dostępne już wkrótce!
             </div>
@@ -209,9 +230,9 @@
     <div class="footer-stats">
         <div style="font-size: 0.65rem; font-weight: 800; opacity: 0.5;">OSTATNI KUPUJĄCY:</div>
         <div style="display: flex; gap: 8px;">
-            <img src="https://cravatar.eu/avatar/MHF_Steve/24.png" style="border-radius: 4px;">
-            <img src="https://cravatar.eu/avatar/MHF_Alex/24.png" style="border-radius: 4px;">
-            <img src="https://cravatar.eu/avatar/TugareK/24.png" style="border-radius: 4px;">
+            <img src="https://cravatar.eu/avatar/MHF_Steve/24.png" style="border-radius: 4px;" alt="Steve">
+            <img src="https://cravatar.eu/avatar/MHF_Alex/24.png" style="border-radius: 4px;" alt="Alex">
+            <img src="https://cravatar.eu/avatar/TugareK/24.png" style="border-radius: 4px;" alt="Tugarek">
             <span style="font-size: 0.7rem; opacity: 0.3; align-self: center; margin-left: 10px;">i inni...</span>
         </div>
     </div>
