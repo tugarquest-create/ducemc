@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DuceMC.PL | Elite Minecraft Network</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e90ff;
+            --primary-glow: rgba(30, 144, 255, 0.4);
+            --bg-dark: #020205;
+            --card-bg: rgba(7, 7, 10, 0.92);
+            --accent-green: #00ff88;
+            --accent-red: #ff4d4d;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; cursor: default; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--bg-dark);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow: hidden;
+            perspective: 2000px; /* Zwiększona perspektywa dla stabilności */
+        }
+
+        #hero-canvas {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+        }
+
+        /* --- STABILNE GUI --- */
+        .main-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(50px);
+            border: 1px solid rgba(30, 144, 255, 0.2);
+            border-radius: 35px;
+            padding: 45px;
+            width: 100%;
+            max-width: 1150px;
+            display: grid;
+            grid-template-columns: 1.3fr 1.7fr;
+            gap: 45px;
+            box-shadow: 0 0 100px rgba(0,0,0,1);
+            position: relative;
+            transform-style: preserve-3d;
+            will-change: transform;
+            transition: transform 0.4s cubic-bezier(0.03, 0.98, 0.52, 0.99); /* Bardzo płynne wygaszanie ruchu */
+        }
+
+        /* Dekoracyjne ramki */
+        .corner {
+            position: absolute; width: 20px; height: 20px;
+            border: 2px solid var(--primary); pointer-events: none; opacity: 0.6;
+        }
+        .top-l { top: 20px; left: 20px; border-right: 0; border-bottom: 0; }
+        .bot-r { bottom: 20px; right: 20px; border-left: 0; border-top: 0; }
+
+        /* LEWA STRONA */
+        .left-side { border-right: 1px solid rgba(255,255,255,0.05); padding-right: 30px; }
+        .server-logo { max-width: 160px; filter: drop-shadow(0 0 25px var(--primary-glow)); margin-bottom: 10px; }
+        h1 { font-size: 2.8rem; color: var(--primary); font-weight: 900; letter-spacing: -1px; margin-bottom: 15px; }
+
+        .copy-ip {
+            background: rgba(30, 144, 255, 0.1);
+            border: 1px solid var(--primary);
+            color: white; padding: 15px; border-radius: 12px; font-weight: 900; 
+            cursor: pointer; transition: 0.3s; text-align: center;
+        }
+        .copy-ip:hover { background: var(--primary); box-shadow: 0 0 25px var(--primary-glow); }
+
+        /* NOWA SEKCJA OBOK WŁAŚCICIELI - PERFORMANCE */
+        .perf-panel {
+            margin-top: 20px; background: rgba(255,255,255,0.02);
+            padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05);
+        }
+        .perf-bar { height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-top: 5px; overflow: hidden; }
+        .perf-fill { height: 100%; background: var(--primary); width: 45%; box-shadow: 0 0 10px var(--primary); }
+
+        .section-label { font-size: 0.65rem; color: #555; letter-spacing: 2px; text-transform: uppercase; font-weight: 900; margin: 25px 0 10px 0; }
+        
+        .admins-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .admin-card {
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 8px; border-radius: 12px; display: flex; align-items: center; gap: 8px;
+        }
+        .avatar { width: 30px; height: 30px; border-radius: 5px; border: 1px solid var(--primary); }
+        .admin-info p { font-size: 0.75rem; font-weight: 800; }
+
+        /* PRAWA STRONA */
+        .right-side { display: flex; flex-direction: column; gap: 20px; }
+
+        /* STATUS PULSE */
+        .status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .status-box { background: rgba(30,144,255,0.05); padding: 12px; border-radius: 12px; border: 1px solid rgba(30,144,255,0.1); }
+        .pulse { display: inline-block; width: 8px; height: 8px; background: var(--accent-green); border-radius: 50%; margin-right: 5px; animation: blink 1.5s infinite; }
+        @keyframes blink { 0% { opacity: 1; box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.7); } 70% { opacity: 0.5; box-shadow: 0 0 0 10px rgba(0, 255, 136, 0); } 100% { opacity: 1; } }
+
+        /* TRYBY */
+        .modes-wrap { display: flex; gap: 10px; }
+        .mode { flex: 1; padding: 15px; border-radius: 12px; font-weight: 900; text-align: center; font-size: 0.7rem; border: 1px solid rgba(255,255,255,0.1); }
+        .m-duels { border-color: var(--accent-red); color: var(--accent-red); background: rgba(255,77,77,0.05); }
+
+        /* ULEPSZONY REGULAMIN */
+        .rules-list { display: flex; flex-direction: column; gap: 8px; }
+        .rule-item { 
+            display: flex; align-items: center; gap: 12px; 
+            background: rgba(255,255,255,0.02); padding: 12px 15px; 
+            border-radius: 12px; border: 1px solid rgba(255,255,255,0.03);
+            font-size: 0.8rem; transition: 0.3s;
+        }
+        .rule-item:hover { background: rgba(255,255,255,0.05); border-color: var(--primary); transform: translateX(5px); }
+        .rule-icon { color: var(--primary); font-weight: 900; }
+
+        .btn-row { display: flex; gap: 10px; }
+        .btn { flex: 1; text-decoration: none; color: white; padding: 18px; border-radius: 15px; font-weight: 900; text-align: center; transition: 0.3s; font-size: 0.8rem; text-transform: uppercase; }
+        .btn-dc { background: #5865F2; }
+        .btn-shop { background: #ff9800; }
+
+        #notif {
+            position: fixed; bottom: 30px; background: var(--primary); color: white;
+            padding: 12px 30px; border-radius: 40px; font-weight: 900; display: none;
+            box-shadow: 0 0 30px var(--primary-glow); z-index: 1000;
+        }
+
+        @media (max-width: 900px) {
+            .main-card { grid-template-columns: 1fr; }
+            .left-side { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 0 0 30px 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="hero-canvas"></canvas>
+
+    <div class="main-card" id="card">
+        <div class="corner top-l"></div>
+        <div class="corner bot-r"></div>
+
+        <div class="left-side">
+            <center><img src="logo.png" alt="Logo" class="server-logo"></center>
+            <center><h1>DuceMC.PL</h1></center>
+            <div class="copy-ip" onclick="copyIP()">KOPIUJ ADRES IP</div>
+            
+            <p class="section-label">LIVE PERFORMANCE</p>
+            <div class="perf-panel">
+                <div style="display: flex; justify-content: space-between; font-size: 0.6rem; font-weight: 800; margin-bottom: 5px;">
+                    <span>CPU USAGE</span><span>12%</span>
+                </div>
+                <div class="perf-bar"><div class="perf-fill" style="width: 12%;"></div></div>
+                
+                <div style="display: flex; justify-content: space-between; font-size: 0.6rem; font-weight: 800; margin: 10px 0 5px 0;">
+                    <span>RAM ALLOCATED</span><span>4.2GB</span>
+                </div>
+                <div class="perf-bar"><div class="perf-fill" style="width: 35%;"></div></div>
+
+                <div style="display: flex; justify-content: space-between; font-size: 0.6rem; font-weight: 800; margin: 10px 0 5px 0;">
+                    <span>NETWORK PING</span><span>18ms</span>
+                </div>
+                <div class="perf-bar"><div class="perf-fill" style="width: 15%; background: var(--accent-green);"></div></div>
+            </div>
+
+            <p class="section-label">ZARZĄD</p>
+            <div class="admins-grid">
+                <div class="admin-card"><img src="https://cravatar.eu/avatar/RdstoneBrilliant/64.png" class="avatar"><div class="admin-info"><p>Rdstone</p></div></div>
+                <div class="admin-card"><img src="https://cravatar.eu/avatar/TugareK/64.png" class="avatar"><div class="admin-info"><p>TugareK</p></div></div>
+                <div class="admin-card"><img src="https://cravatar.eu/avatar/xGwiazdek15/64.png" class="avatar"><div class="admin-info"><p>xGwiazdek</p></div></div>
+                <div class="admin-card"><img src="https://cravatar.eu/avatar/gracz900002/64.png" class="avatar"><div class="admin-info"><p>gracz900</p></div></div>
+            </div>
+        </div>
+
+        <div class="right-side">
+            <p class="section-label">STATUS SYSTEMU</p>
+            <div class="status-grid">
+                <div class="status-box"><span class="pulse"></span> <span style="font-size: 0.75rem; font-weight: 800;">STATUS: ONLINE</span></div>
+                <div class="status-box"><span style="font-size: 0.75rem; font-weight: 800; color: var(--primary);">VER: 1.8 - 1.21</span></div>
+            </div>
+
+            <p class="section-label">DOSTĘPNE TRYBY</p>
+            <div class="modes-wrap">
+                <div class="mode m-duels">⚔️ DUELS 1VS1 (LIVE)</div>
+                <div class="mode">WKRÓTCE...</div>
+            </div>
+
+            <p class="section-label">KODEKS POSTĘPOWANIA</p>
+            <div class="rules-list">
+                <div class="rule-item">
+                    <span class="rule-icon">01</span>
+                    <span>Całkowity zakaz wspomagaczy (Cheaty/Makra).</span>
+                </div>
+                <div class="rule-item">
+                    <span class="rule-icon">02</span>
+                    <span>Szanuj przeciwnika – toksyczność = kara.</span>
+                </div>
+                <div class="rule-item">
+                    <span class="rule-icon">03</span>
+                    <span>Reklamowanie innych sieci jest zabronione.</span>
+                </div>
+            </div>
+
+            <p class="section-label">ODNOŚNIKI</p>
+            <div class="btn-row">
+                <a href="https://dc.ducemc.pl" target="_blank" class="btn btn-dc">DISCORD</a>
+                <a href="https://sklep.ducemc.pl" target="_blank" class="btn btn-shop">ITEMSHOP</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="notif">IP SKOPIOWANE!</div>
+
+    <script>
+        const canvas = document.getElementById('hero-canvas');
+        const ctx = canvas.getContext('2d');
+        const card = document.getElementById('card');
+        let stars = [];
+
+        function init() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            stars = [];
+            for(let i=0; i<150; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width - canvas.width/2,
+                    y: Math.random() * canvas.height - canvas.height/2,
+                    z: Math.random() * canvas.width
+                });
+            }
+        }
+
+        function draw() {
+            ctx.fillStyle = '#020205';
+            ctx.fillRect(0,0,canvas.width, canvas.height);
+            ctx.save(); ctx.translate(canvas.width/2, canvas.height/2);
+            for(let s of stars) {
+                s.z -= 0.8;
+                if(s.z <= 0) s.z = canvas.width;
+                let px = s.x / (s.z / canvas.width);
+                let py = s.y / (s.z / canvas.width);
+                let size = (1 - s.z / canvas.width) * 1.5;
+                ctx.beginPath(); ctx.arc(px, py, size, 0, Math.PI*2);
+                ctx.fillStyle = `rgba(30, 144, 255, ${0.8 - s.z/canvas.width})`;
+                ctx.fill();
+            }
+            ctx.restore();
+            requestAnimationFrame(draw);
+        }
+
+        // POPRAWIONY, STABILNY RUCH GUI
+        window.addEventListener('mousemove', (e) => {
+            let xAxis = (window.innerWidth / 2 - e.pageX) / 120; // Zmniejszona czułość
+            let yAxis = (window.innerHeight / 2 - e.pageY) / 120;
+            card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+        });
+
+        function copyIP() {
+            navigator.clipboard.writeText("DUCEMC.PL");
+            const n = document.getElementById('notif');
+            n.style.display = 'block';
+            setTimeout(() => n.style.display = 'none', 2500);
+        }
+
+        window.addEventListener('resize', init);
+        init(); draw();
+    </script>
+</body>
+</html>
