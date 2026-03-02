@@ -4,18 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DuceMC.PL | Doładuj Portfel</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #00d2ff;
             --accent: #3a7bd5;
             --bg-dark: #03080f;
-            --glass: rgba(10, 25, 47, 0.85);
+            --glass: rgba(10, 25, 47, 0.9);
             --border: rgba(0, 210, 255, 0.2);
+            --danger: #ff4b2b;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; cursor: default; }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Montserrat', sans-serif;
             background-color: var(--bg-dark);
@@ -24,13 +24,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow-x: hidden;
+            padding: 20px;
         }
 
         .bg-image {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: url('pobrane (1).jpg') center/cover no-repeat;
-            filter: brightness(0.2) blur(5px);
+            background: linear-gradient(rgba(3, 8, 15, 0.8), rgba(3, 8, 15, 0.8)), url('pobrane (1).jpg') center/cover;
             z-index: -2;
         }
 
@@ -38,9 +37,9 @@
 
         .container {
             display: grid;
-            grid-template-columns: 1fr 1.5fr;
+            grid-template-columns: 320px 1fr;
             gap: 25px;
-            width: 95%;
+            width: 100%;
             max-width: 1100px;
             z-index: 10;
         }
@@ -49,65 +48,103 @@
             background: var(--glass);
             backdrop-filter: blur(20px);
             border: 1px solid var(--border);
-            border-radius: 25px;
-            padding: 35px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            border-radius: 30px;
+            padding: 30px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
         }
 
-        h2 { font-weight: 900; font-size: 1.5rem; margin-bottom: 20px; color: var(--primary); text-transform: uppercase; }
+        /* PROFIL GRACZA */
+        .player-input-box { margin-bottom: 25px; }
+        .player-input-box label { display: block; font-size: 0.7rem; font-weight: 800; color: var(--primary); margin-bottom: 8px; text-transform: uppercase; }
+        .nick-input {
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            padding: 15px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            text-align: center;
+            outline: none;
+            transition: 0.3s;
+        }
+        .nick-input:focus { border-color: var(--primary); background: rgba(0,210,255,0.1); }
 
-        /* PORTFEL - GRID (Insp. CraftCube) */
+        .avatar-preview {
+            width: 80px; height: 80px;
+            border-radius: 15px;
+            border: 2px solid var(--primary);
+            margin: 15px auto;
+            display: block;
+            background: #111;
+        }
+
+        /* WYBÓR KWOTY */
+        h2 { font-weight: 900; font-size: 1.3rem; margin-bottom: 20px; color: var(--primary); }
         .wallet-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-bottom: 30px;
+            gap: 12px;
+            margin-bottom: 20px;
         }
-
         .wallet-option {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 15px;
-            padding: 20px 10px;
+            padding: 15px 5px;
             text-align: center;
             cursor: pointer;
             transition: 0.3s;
         }
-
         .wallet-option:hover, .wallet-option.active {
             border-color: var(--primary);
             background: rgba(0, 210, 255, 0.1);
-            transform: translateY(-3px);
+            transform: scale(1.05);
         }
+        .vpln-amount { font-weight: 900; font-size: 1rem; display: block; }
+        .vpln-label { font-size: 0.6rem; opacity: 0.5; font-weight: 700; }
 
-        .coin-icon { font-size: 1.8rem; display: block; margin-bottom: 10px; filter: drop-shadow(0 0 10px gold); }
-        .vpln-amount { font-weight: 900; font-size: 1.1rem; }
-
-        /* CUSTOM PRICE SECTION */
-        .custom-price-box {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 20px;
-            border-radius: 20px;
-            border: 1px solid var(--border);
+        /* PŁATNOŚCI */
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 20px;
         }
-
-        input[type=range] {
-            width: 100%;
-            margin: 20px 0;
-            accent-color: var(--primary);
-            cursor: pointer;
-        }
-
-        .price-display {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .method {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 0.6rem;
             font-weight: 800;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .method.active { border-color: #00ff88; background: rgba(0,255,136,0.1); }
+
+        /* ALERT */
+        .danger-text {
+            color: var(--danger);
+            font-size: 0.75rem;
+            font-weight: 900;
+            margin-top: 15px;
+            text-align: center;
+            text-transform: uppercase;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.4; }
+            100% { opacity: 1; }
         }
 
         .btn-pay {
             width: 100%;
-            margin-top: 25px;
+            margin-top: 15px;
             background: linear-gradient(90deg, var(--primary), var(--accent));
             color: white;
             padding: 18px;
@@ -117,11 +154,8 @@
             font-size: 1rem;
             cursor: pointer;
             text-transform: uppercase;
-            box-shadow: 0 10px 20px rgba(0, 210, 255, 0.3);
-            transition: 0.3s;
+            box-shadow: 0 10px 20px rgba(0, 210, 255, 0.2);
         }
-
-        .btn-pay:hover { filter: brightness(1.1); transform: scale(1.02); }
 
         @media (max-width: 850px) {
             .container { grid-template-columns: 1fr; }
@@ -135,85 +169,125 @@
 
     <div class="container">
         <div class="glass-card" style="text-align: center;">
-            <div style="font-size: 0.7rem; color: var(--primary); font-weight: 800; margin-bottom: 10px;">ZALOGOWANY JAKO:</div>
-            <img src="https://cravatar.eu/avatar/MHF_Steve/64.png" style="border-radius: 10px; margin-bottom: 15px; border: 2px solid var(--primary);">
-            <h1 style="font-size: 1.8rem; font-weight: 900;">GRACZ</h1>
-            <p style="opacity: 0.5; font-size: 0.8rem;">Twój balans: <b>0.00 vPLN</b></p>
+            <div class="player-input-box">
+                <label>Weryfikacja Gracza</label>
+                <input type="text" class="nick-input" id="player-nick" placeholder="TWÓJ NICK" oninput="updateAvatar(this.value)">
+            </div>
             
-            <hr style="margin: 30px 0; opacity: 0.1;">
+            <img id="avatar" src="https://cravatar.eu/avatar/MHF_Steve/64.png" class="avatar-preview">
             
-            <a href="index.html" style="color: white; text-decoration: none; font-size: 0.8rem; font-weight: 700; opacity: 0.5;">← POWRÓT DO STRONY</a>
+            <h1 id="display-nick" style="font-size: 1.4rem; font-weight: 900; margin-bottom: 5px;">GRACZ</h1>
+            <p style="opacity: 0.5; font-size: 0.75rem;">Status: <span style="color: #00ff88;">Gotowy do doładowania</span></p>
+            
+            <hr style="margin: 25px 0; opacity: 0.1;">
+            
+            <div style="text-align: left; font-size: 0.7rem; opacity: 0.6; line-height: 1.6;">
+                • Doładowanie natychmiastowe<br>
+                • Brak prowizji przy BLIK<br>
+                • Faktura dostępna na mailu
+            </div>
+
+            <a href="index.html" style="display: block; margin-top: 30px; color: white; text-decoration: none; font-size: 0.7rem; font-weight: 700; opacity: 0.4;">← POWRÓT</a>
         </div>
 
         <div class="glass-card">
-            <h2>Ile potrzebujesz doładować?</h2>
+            <h2>Wybierz pakiet vPLN</h2>
             
             <div class="wallet-grid">
-                <div class="wallet-option" onclick="selectFixed(20, this)">
-                    <span class="coin-icon">💰</span>
-                    <span class="vpln-amount">20 vPLN</span>
+                <div class="wallet-option" onclick="selectFixed(10, this)">
+                    <span class="vpln-amount">10.00</span>
+                    <span class="vpln-label">vPLN</span>
                 </div>
-                <div class="wallet-option" onclick="selectFixed(30, this)">
-                    <span class="coin-icon">💰</span>
-                    <span class="vpln-amount">30 vPLN</span>
+                <div class="wallet-option active" onclick="selectFixed(25, this)">
+                    <span class="vpln-amount">25.00</span>
+                    <span class="vpln-label">vPLN</span>
                 </div>
-                <div class="wallet-option active" onclick="selectFixed(40, this)">
-                    <span class="coin-icon">💰</span>
-                    <span class="vpln-amount">40 vPLN</span>
+                <div class="wallet-option" onclick="selectFixed(50, this)">
+                    <span class="vpln-amount">50.00</span>
+                    <span class="vpln-label">vPLN</span>
                 </div>
-            </div>
-
-            <div class="custom-price-box">
-                <div class="price-display">
-                    <span>NIESTANDARDOWA KWOTA</span>
-                    <span id="current-vpln" style="color: var(--primary); font-size: 1.2rem;">40 vPLN</span>
+                <div class="wallet-option" onclick="selectFixed(100, this)">
+                    <span class="vpln-amount">100.00</span>
+                    <span class="vpln-label">vPLN</span>
                 </div>
-                
-                <input type="range" id="price-slider" min="20" max="999" value="40" oninput="updatePrice(this.value)">
-                
-                <div style="display: flex; justify-content: space-between; font-size: 0.7rem; opacity: 0.4; font-weight: 800;">
-                    <span>MIN: 20 zł</span>
-                    <span>MAX: 999 zł</span>
+                <div class="wallet-option" onclick="selectFixed(200, this)">
+                    <span class="vpln-amount">200.00</span>
+                    <span class="vpln-label">vPLN</span>
+                </div>
+                <div class="wallet-option" onclick="selectFixed(500, this)">
+                    <span class="vpln-amount">500.00</span>
+                    <span class="vpln-label">vPLN</span>
                 </div>
             </div>
 
-            <div style="margin-top: 30px; padding: 15px; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-weight: 600; opacity: 0.7;">Do zapłaty:</span>
-                <span id="final-price" style="font-size: 1.5rem; font-weight: 900; color: #fff;">40.00 PLN</span>
+            <div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 20px; border: 1px solid var(--border);">
+                <div style="display: flex; justify-content: space-between; font-weight: 800; font-size: 0.8rem; margin-bottom: 10px;">
+                    <span>KWOTA NIESTANDARDOWA</span>
+                    <span id="current-vpln" style="color: var(--primary);">25 vPLN</span>
+                </div>
+                <input type="range" id="price-slider" min="5" max="1000" value="25" style="width: 100%; accent-color: var(--primary);" oninput="updatePrice(this.value)">
             </div>
 
-            <button class="btn-pay">Przejdź do płatności</button>
+            <h2 style="margin-top: 25px; font-size: 1rem;">Metoda płatności</h2>
+            <div class="payment-methods">
+                <div class="method active" onclick="setMethod(this)">BLIK</div>
+                <div class="method" onclick="setMethod(this)">PSC</div>
+                <div class="method" onclick="setMethod(this)">PRZELEW</div>
+                <div class="method" onclick="setMethod(this)">SMS</div>
+            </div>
+
+            <div style="margin-top: 25px; padding: 20px; background: rgba(255,255,255,0.02); border-radius: 15px; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <span style="display: block; font-size: 0.7rem; opacity: 0.5; font-weight: 800;">RAZEM DO ZAPŁATY:</span>
+                    <span id="final-price" style="font-size: 1.8rem; font-weight: 900;">25.00 PLN</span>
+                </div>
+                <button class="btn-pay" onclick="alert('Przekierowywanie do bramki płatności...')">DOŁADUJ</button>
+            </div>
+
+            <div class="danger-text">⚠️ Musisz być zalogowany na serwerze, aby dokonać zakupu! ⚠️</div>
         </div>
     </div>
 
     <script>
+        function updateAvatar(nick) {
+            const avatar = document.getElementById('avatar');
+            const displayNick = document.getElementById('display-nick');
+            if(nick.length > 2) {
+                avatar.src = `https://cravatar.eu/avatar/${nick}/64.png`;
+                displayNick.innerText = nick.toUpperCase();
+            } else {
+                avatar.src = `https://cravatar.eu/avatar/MHF_Steve/64.png`;
+                displayNick.innerText = "GRACZ";
+            }
+        }
+
         function updatePrice(val) {
             document.getElementById('current-vpln').innerText = val + " vPLN";
             document.getElementById('final-price').innerText = parseFloat(val).toFixed(2) + " PLN";
-            
-            // Odznacz pakiety jeśli używamy suwaka
             document.querySelectorAll('.wallet-option').forEach(el => el.classList.remove('active'));
         }
 
         function selectFixed(val, el) {
-            // Zaznacz wybrany pakiet
             document.querySelectorAll('.wallet-option').forEach(item => item.classList.remove('active'));
             el.classList.add('active');
-            
-            // Zaktualizuj suwak i ceny
             document.getElementById('price-slider').value = val;
             updatePrice(val);
         }
 
-        // --- BĄBELKI (Ten sam styl co na głównej) ---
+        function setMethod(el) {
+            document.querySelectorAll('.method').forEach(m => m.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        // BĄBELKI
         const canvas = document.getElementById('bubbles');
         const ctx = canvas.getContext('2d');
         let bubbles = [];
         function init() {
             canvas.width = window.innerWidth; canvas.height = window.innerHeight;
             bubbles = [];
-            for(let i=0; i<30; i++) {
-                bubbles.push({ x: Math.random()*canvas.width, y: canvas.height+50, r: Math.random()*2+1, v: Math.random()*1+0.5, o: Math.random()*0.2 });
+            for(let i=0; i<40; i++) {
+                bubbles.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, r: Math.random()*2+1, v: Math.random()*0.5+0.2, o: Math.random()*0.3 });
             }
         }
         function animate() {
