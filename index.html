@@ -7,13 +7,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #1e90ff;
-            --primary-glow: rgba(30, 144, 255, 0.6);
-            --bg-dark: #020205;
-            --card-bg: rgba(7, 7, 10, 0.95);
-            --accent-green: #00ff88;
-            --accent-red: #ff4d4d;
-            --snake-speed: 3s;
+            --primary: #ff9800; /* Złoty ze screena */
+            --blue: #1e90ff;    /* Błękit nieba */
+            --green: #00ff88;   /* Zieleń budowli */
+            --bg-dark: #050508;
+            --card-bg: rgba(10, 10, 15, 0.95);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; cursor: default; }
@@ -26,283 +24,193 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
             overflow: hidden;
-            perspective: 2000px;
+            perspective: 1500px;
         }
 
-        #hero-canvas {
+        /* TŁO */
+        #bg-image {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
+            inset: -5%;
+            width: 110%; height: 110%;
+            background-image: url('logo.png');
+            background-size: cover;
+            background-position: center;
+            z-index: -2;
+            filter: brightness(0.4) blur(3px);
         }
 
-        /* --- KARTA Z EFEKTEM WĘŻA --- */
-        .main-card {
+        /* GŁÓWNA KARTA */
+        .main-container {
             position: relative;
             background: var(--card-bg);
-            border-radius: 35px;
+            border-radius: 40px;
             padding: 50px;
-            width: 100%;
-            max-width: 1150px;
+            width: 95%;
+            max-width: 1200px;
             display: grid;
-            grid-template-columns: 1.3fr 1.7fr;
-            gap: 45px;
-            box-shadow: 0 0 100px rgba(0,0,0,0.8);
-            overflow: hidden; /* Ważne dla efektu węża */
+            grid-template-columns: 1.2fr 1.8fr;
+            gap: 40px;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.8);
+            overflow: hidden;
             transform-style: preserve-3d;
             will-change: transform;
-            transition: transform 0.6s cubic-bezier(0.1, 0.9, 0.2, 1);
         }
 
-        /* --- ANIMACJA WĘŻA (SNAKE BORDER) --- */
-        .main-card span.snake {
-            position: absolute;
-            display: block;
-        }
-        .main-card span.snake:nth-child(1) {
-            top: 0; left: -100%; width: 100%; height: 3px;
-            background: linear-gradient(90deg, transparent, var(--primary));
-            animation: snake1 var(--snake-speed) linear infinite;
-        }
-        @keyframes snake1 { 0% { left: -100%; } 50%, 100% { left: 100%; } }
+        /* EFEKT WĘŻA (SNAKE BORDER) */
+        .snake { position: absolute; display: block; filter: blur(2px); }
+        .s1 { top: 0; left: -100%; width: 100%; height: 4px; background: linear-gradient(90deg, transparent, var(--primary)); animation: s1 4s linear infinite; }
+        .s2 { top: -100%; right: 0; width: 4px; height: 100%; background: linear-gradient(180deg, transparent, var(--primary)); animation: s2 4s linear infinite; animation-delay: 2s; }
+        .s3 { bottom: 0; right: -100%; width: 100%; height: 4px; background: linear-gradient(270deg, transparent, var(--primary)); animation: s3 4s linear infinite; }
+        .s4 { bottom: -100%; left: 0; width: 4px; height: 100%; background: linear-gradient(360deg, transparent, var(--primary)); animation: s4 4s linear infinite; animation-delay: 2s; }
 
-        .main-card span.snake:nth-child(2) {
-            top: -100%; right: 0; width: 3px; height: 100%;
-            background: linear-gradient(180deg, transparent, var(--primary));
-            animation: snake2 var(--snake-speed) linear infinite;
-            animation-delay: calc(var(--snake-speed) / 2);
-        }
-        @keyframes snake2 { 0% { top: -100%; } 50%, 100% { top: 100%; } }
+        @keyframes s1 { 0% { left: -100%; } 50%, 100% { left: 100%; } }
+        @keyframes s2 { 0% { top: -100%; } 50%, 100% { top: 100%; } }
+        @keyframes s3 { 0% { right: -100%; } 50%, 100% { right: 100%; } }
+        @keyframes s4 { 0% { bottom: -100%; } 50%, 100% { bottom: 100%; } }
 
-        .main-card span.snake:nth-child(3) {
-            bottom: 0; right: -100%; width: 100%; height: 3px;
-            background: linear-gradient(270deg, transparent, var(--primary));
-            animation: snake3 var(--snake-speed) linear infinite;
-        }
-        @keyframes snake3 { 0% { right: -100%; } 50%, 100% { right: 100%; } }
-
-        .main-card span.snake:nth-child(4) {
-            bottom: -100%; left: 0; width: 3px; height: 100%;
-            background: linear-gradient(360deg, transparent, var(--primary));
-            animation: snake4 var(--snake-speed) linear infinite;
-            animation-delay: calc(var(--snake-speed) / 2);
-        }
-        @keyframes snake4 { 0% { bottom: -100%; } 50%, 100% { bottom: 100%; } }
-
-        /* --- LEWA STRONA --- */
-        .left-side { border-right: 1px solid rgba(255,255,255,0.05); padding-right: 30px; }
-        .server-logo { max-width: 170px; filter: drop-shadow(0 0 30px var(--primary-glow)); margin-bottom: 10px; animation: float 4s ease-in-out infinite; }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-
-        h1 { 
-            font-size: 3.2rem; 
-            font-weight: 900; 
-            letter-spacing: -2px; 
-            margin-bottom: 20px;
-            background: linear-gradient(90deg, #fff, var(--primary), #fff);
-            background-size: 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shine 5s linear infinite;
-        }
-        @keyframes shine { to { background-position: 200% center; } }
-
-        .copy-ip {
-            background: linear-gradient(45deg, var(--primary), #00d4ff);
-            color: white; padding: 18px; border-radius: 15px; font-weight: 900; 
-            cursor: pointer; transition: 0.4s; text-align: center;
-            box-shadow: 0 10px 20px rgba(30, 144, 255, 0.3);
-            text-transform: uppercase; letter-spacing: 1px;
-        }
-        .copy-ip:hover { transform: translateY(-3px); box-shadow: 0 15px 30px var(--primary-glow); filter: brightness(1.1); }
-
-        /* LIVE STATS */
-        .perf-panel {
-            margin-top: 25px; background: rgba(255,255,255,0.03);
-            padding: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05);
-        }
-        .perf-bar { height: 6px; background: rgba(0,0,0,0.3); border-radius: 10px; margin-top: 8px; overflow: hidden; }
-        .perf-fill { height: 100%; background: var(--primary); border-radius: 10px; position: relative; }
-        .perf-fill::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: white; opacity: 0.2; animation: progress 2s infinite; }
-        @keyframes progress { from { left: -100%; } to { left: 100%; } }
-
-        .section-label { font-size: 0.7rem; color: #444; letter-spacing: 3px; text-transform: uppercase; font-weight: 900; margin: 30px 0 15px 0; }
+        /* LEWA STRONA (INFO) */
+        .left { text-align: center; border-right: 1px solid rgba(255,255,255,0.05); padding-right: 20px; }
+        .logo { width: 180px; filter: drop-shadow(0 0 20px var(--primary)); margin-bottom: 20px; }
+        h1 { font-size: 3.5rem; font-weight: 900; background: linear-gradient(#fff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
-        .admins-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .admin-card {
-            background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 10px; border-radius: 15px; display: flex; align-items: center; gap: 10px;
+        .ip-box {
+            margin-top: 30px;
+            background: var(--primary);
+            color: black;
+            padding: 15px;
+            border-radius: 15px;
+            font-weight: 900;
+            cursor: pointer;
             transition: 0.3s;
         }
-        .admin-card:hover { background: rgba(255,255,255,0.08); border-color: var(--primary); }
-        .avatar { width: 35px; height: 35px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); }
+        .ip-box:hover { transform: scale(1.05); box-shadow: 0 0 30px var(--primary); }
 
-        /* --- PRAWA STRONA --- */
-        .status-box { background: rgba(255,255,255,0.02); padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; }
-        .pulse { width: 10px; height: 10px; background: var(--accent-green); border-radius: 50%; margin-right: 10px; box-shadow: 0 0 15px var(--accent-green); animation: pulse-glow 1.5s infinite; }
-        @keyframes pulse-glow { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: 0.5; } 100% { transform: scale(1); opacity: 1; } }
+        /* PRAWA STRONA (MENU) */
+        .right { display: flex; flex-direction: column; gap: 20px; }
+        .section-title { font-size: 0.7rem; letter-spacing: 3px; color: #555; font-weight: 900; text-transform: uppercase; }
 
-        .mode { flex: 1; padding: 20px; border-radius: 18px; font-weight: 900; text-align: center; font-size: 0.8rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; }
-        .m-duels:hover { border-color: var(--accent-red); color: var(--accent-red); box-shadow: 0 10px 20px rgba(255,77,77,0.1); }
-
-        .rule-item { 
-            display: flex; align-items: center; gap: 15px; 
-            background: rgba(255,255,255,0.02); padding: 15px; 
-            border-radius: 15px; border: 1px solid rgba(255,255,255,0.05);
-            font-size: 0.85rem; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        .nav-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 20px;
+            text-decoration: none;
+            color: white;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .rule-item:hover { background: rgba(30,144,255,0.05); border-color: var(--primary); transform: scale(1.02) translateX(10px); }
 
-        .btn { flex: 1; text-decoration: none; color: white; padding: 20px; border-radius: 18px; font-weight: 900; text-align: center; transition: 0.3s; font-size: 0.8rem; text-transform: uppercase; }
-        .btn-dc { background: #5865F2; box-shadow: 0 10px 20px rgba(88, 101, 242, 0.2); }
-        .btn-shop { background: #ff9800; box-shadow: 0 10px 20px rgba(255, 152, 0, 0.2); }
-        .btn:hover { transform: translateY(-5px); filter: brightness(1.2); }
+        .nav-item:hover { transform: translateX(15px); background: rgba(255,255,255,0.07); }
+        .nav-item i { font-size: 2rem; }
+        .nav-item div b { display: block; font-size: 1.1rem; }
+        .nav-item div span { font-size: 0.75rem; opacity: 0.5; }
 
+        /* Kolory przycisków */
+        .n-shop:hover { border-color: var(--primary); }
+        .n-rec:hover { border-color: var(--green); }
+        .n-rules:hover { border-color: var(--blue); }
+
+        /* NOTYFIKACJA */
         #notif {
             position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
-            background: var(--primary); color: white; padding: 15px 40px;
-            border-radius: 50px; font-weight: 900; transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5); z-index: 1000;
+            background: var(--primary); color: #000; padding: 15px 40px;
+            border-radius: 50px; font-weight: 900; transition: 0.5s ease; z-index: 1000;
         }
         #notif.active { top: 30px; }
 
         @media (max-width: 900px) {
-            .main-card { grid-template-columns: 1fr; padding: 30px; }
-            .left-side { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 0 0 30px 0; }
+            .main-container { grid-template-columns: 1fr; }
+            .left { border: none; padding-right: 0; }
         }
     </style>
 </head>
 <body>
 
-    <canvas id="hero-canvas"></canvas>
+    <div id="bg-image"></div>
 
-    <div class="main-card" id="card">
-        <span class="snake"></span>
-        <span class="snake"></span>
-        <span class="snake"></span>
-        <span class="snake"></span>
+    <div class="main-container" id="card">
+        <span class="snake s1"></span><span class="snake s2"></span>
+        <span class="snake s3"></span><span class="snake s4"></span>
 
-        <div class="left-side">
-            <center><img src="logo.png" alt="Logo" class="server-logo"></center>
-            <center><h1>DuceMC</h1></center>
-            <div class="copy-ip" onclick="copyIP()">Kopiuj IP: DuceMC.PL</div>
+        <div class="left">
+            <img src="logo.png" alt="DUCEMC" class="logo">
+            <h1>DUCEMC.PL</h1>
+            <p style="opacity: 0.6; margin-top: 10px;">INNOWACYJNA SIEĆ SERWERÓW</p>
             
-            <p class="section-label">SYSTEM PERFORMANCE</p>
-            <div class="perf-panel">
-                <div style="display: flex; justify-content: space-between; font-size: 0.65rem; font-weight: 800; margin-bottom: 5px; color: #888;">
-                    <span>SERVER CPU</span><span>12%</span>
-                </div>
-                <div class="perf-bar"><div class="perf-fill" style="width: 12%;"></div></div>
-                
-                <div style="display: flex; justify-content: space-between; font-size: 0.65rem; font-weight: 800; margin: 15px 0 5px 0; color: #888;">
-                    <span>MEMORY</span><span>4.2 / 16GB</span>
-                </div>
-                <div class="perf-bar"><div class="perf-fill" style="width: 35%;"></div></div>
+            <div class="ip-box" onclick="copyIP()">
+                KLIKNIJ, ABY SKOPIOWAĆ IP
             </div>
 
-            <p class="section-label">ZARZĄD SIECI</p>
-            <div class="admins-grid">
-                <div class="admin-card"><img src="https://cravatar.eu/avatar/RdstoneBrilliant/64.png" class="avatar"><div class="admin-info"><p>Rdstone</p></div></div>
-                <div class="admin-card"><img src="https://cravatar.eu/avatar/TugareK/64.png" class="avatar"><div class="admin-info"><p>TugareK</p></div></div>
-                <div class="admin-card"><img src="https://cravatar.eu/avatar/xGwiazdek15/64.png" class="avatar"><div class="admin-info"><p>xGwiazdek</p></div></div>
-                <div class="admin-card"><img src="https://cravatar.eu/avatar/gracz900002/64.png" class="avatar"><div class="admin-info"><p>gracz900</p></div></div>
+            <div style="margin-top: 40px; text-align: left;">
+                <p class="section-title">ADMINISTRACJA</p>
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                    <img src="https://cravatar.eu/avatar/RdstoneBrilliant/32.png" style="border-radius: 5px;">
+                    <img src="https://cravatar.eu/avatar/TugareK/32.png" style="border-radius: 5px;">
+                    <img src="https://cravatar.eu/avatar/xGwiazdek15/32.png" style="border-radius: 5px;">
+                </div>
             </div>
         </div>
 
-        <div class="right-side">
-            <p class="section-label">LIVE STATUS</p>
-            <div class="status-grid" style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 15px;">
-                <div class="status-box"><span class="pulse"></span> <span style="font-size: 0.8rem; font-weight: 900; letter-spacing: 1px;">SERWER: ONLINE</span></div>
-                <div class="status-box"><span style="font-size: 0.8rem; font-weight: 900; color: var(--primary);">1.8 - 1.21</span></div>
+        <div class="right">
+            <p class="section-title">NAWIGACJA</p>
+            <div class="nav-grid">
+                <a href="sklep.html" class="nav-item n-shop">
+                    <i>🛒</i>
+                    <div>
+                        <b style="color: var(--primary);">ITEMSHOP</b>
+                        <span>Kup rangi, klucze i dodatki</span>
+                    </div>
+                </a>
+                <a href="rekrutacja.html" class="nav-item n-rec">
+                    <i>📝</i>
+                    <div>
+                        <b style="color: var(--green);">REKRUTACJA</b>
+                        <span>Dołącz do ekipy serwera</span>
+                    </div>
+                </a>
+                <a href="regulamin.html" class="nav-item n-rules">
+                    <i>📜</i>
+                    <div>
+                        <b style="color: var(--blue);">REGULAMIN</b>
+                        <span>Zasady panujące w sieci</span>
+                    </div>
+                </a>
             </div>
 
-            <p class="section-label">DOSTĘPNE TRYBY</p>
-            <div class="modes-wrap" style="display: flex; gap: 15px;">
-                <div class="mode m-duels">⚔️ DUELS 1VS1</div>
-                <div class="mode" style="opacity: 0.5;">WKRÓTCE...</div>
-            </div>
-
-            <p class="section-label">REGULAMIN SERWERA</p>
-            <div class="rules-list">
-                <div class="rule-item">
-                    <span style="color: var(--primary); font-weight: 900;">01.</span>
-                    <span>Zakaz używania cheatów i makr.</span>
+            <p class="section-title" style="margin-top: 20px;">SOCIAL MEDIA</p>
+            <a href="https://dc.ducemc.pl" target="_blank" class="nav-item" style="background: #5865F2;">
+                <i>💬</i>
+                <div>
+                    <b>DISCORD</b>
+                    <span>Dołącz do naszej społeczności</span>
                 </div>
-                <div class="rule-item">
-                    <span style="color: var(--primary); font-weight: 900;">02.</span>
-                    <span>Szanuj innych graczy na czacie.</span>
-                </div>
-                <div class="rule-item">
-                    <span style="color: var(--primary); font-weight: 900;">03.</span>
-                    <span>Brak reklamowania innych serwerów.</span>
-                </div>
-            </div>
-
-            <p class="section-label">NASZA SPOŁECZNOŚĆ</p>
-            <div class="btn-row" style="display: flex; gap: 15px; margin-top: 5px;">
-                <a href="https://dc.ducemc.pl" target="_blank" class="btn btn-dc">DISCORD</a>
-                <a href="https://sklep.ducemc.pl" target="_blank" class="btn btn-shop">ITEMSHOP</a>
-            </div>
+            </a>
         </div>
     </div>
 
-    <div id="notif">ADRES IP SKOPIOWANY!</div>
+    <div id="notif">SKOPIOWANO ADRES IP!</div>
 
     <script>
-        const canvas = document.getElementById('hero-canvas');
-        const ctx = canvas.getContext('2d');
         const card = document.getElementById('card');
-        let stars = [];
-
-        function init() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            stars = [];
-            for(let i=0; i<180; i++) {
-                stars.push({
-                    x: Math.random() * canvas.width - canvas.width/2,
-                    y: Math.random() * canvas.height - canvas.height/2,
-                    z: Math.random() * canvas.width,
-                    o: Math.random()
-                });
-            }
-        }
-
-        function draw() {
-            ctx.fillStyle = '#020205';
-            ctx.fillRect(0,0,canvas.width, canvas.height);
-            ctx.save(); ctx.translate(canvas.width/2, canvas.height/2);
-            for(let s of stars) {
-                s.z -= 1.2;
-                if(s.z <= 0) s.z = canvas.width;
-                let px = s.x / (s.z / canvas.width);
-                let py = s.y / (s.z / canvas.width);
-                let size = (1 - s.z / canvas.width) * 2;
-                ctx.beginPath(); ctx.arc(px, py, size, 0, Math.PI*2);
-                ctx.fillStyle = `rgba(30, 144, 255, ${0.8 - s.z/canvas.width})`;
-                ctx.fill();
-            }
-            ctx.restore();
-            requestAnimationFrame(draw);
-        }
-
-        // PŁYNNY PARALLAX BEZ DRGAŃ
-        let mouseX = 0, mouseY = 0;
-        let currentX = 0, currentY = 0;
+        let mX = 0, mY = 0, cX = 0, cY = 0;
 
         window.addEventListener('mousemove', (e) => {
-            mouseX = (window.innerWidth / 2 - e.pageX) / 80;
-            mouseY = (window.innerHeight / 2 - e.pageY) / 80;
+            mX = (window.innerWidth / 2 - e.pageX) / 70;
+            mY = (window.innerHeight / 2 - e.pageY) / 70;
         });
 
-        function animateGUI() {
-            // LERP - wygładzanie ruchu
-            currentX += (mouseX - currentX) * 0.05;
-            currentY += (mouseY - currentY) * 0.05;
-            card.style.transform = `rotateY(${-currentX}deg) rotateX(${currentY}deg)`;
-            requestAnimationFrame(animateGUI);
+        function animate() {
+            cX += (mX - cX) * 0.05;
+            cY += (mY - cY) * 0.05;
+            card.style.transform = `rotateY(${-cX}deg) rotateX(${cY}deg)`;
+            requestAnimationFrame(animate);
         }
+        animate();
 
         function copyIP() {
             navigator.clipboard.writeText("DUCEMC.PL");
@@ -310,9 +218,6 @@
             n.classList.add('active');
             setTimeout(() => n.classList.remove('active'), 2500);
         }
-
-        window.addEventListener('resize', init);
-        init(); draw(); animateGUI();
     </script>
 </body>
 </html>
