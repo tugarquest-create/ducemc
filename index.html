@@ -10,8 +10,8 @@
             --primary: #ff9800; 
             --blue: #1e90ff;    
             --green: #00ff88;   
-            --bg-dark: #050508;
-            --card-bg: rgba(10, 10, 15, 0.98);
+            --bg-dark: #08080c;
+            --card-bg: rgba(13, 13, 18, 0.95);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; cursor: default; }
@@ -19,129 +19,142 @@
         body {
             font-family: 'Montserrat', sans-serif;
             background: var(--bg-dark);
+            /* Animowany gradient w tle */
+            background: linear-gradient(45deg, #08080c, #1a1a2e, #08080c);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
             color: white;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            perspective: 1500px;
         }
 
-        /* ANIMOWANE TŁO CZĄSTECZEK */
-        #bg-canvas {
-            position: fixed;
-            top: 0; left: 0;
-            z-index: -1;
-            filter: blur(2px);
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         /* GŁÓWNA KARTA */
         .main-container {
             position: relative;
             background: var(--card-bg);
-            border-radius: 40px;
+            border-radius: 30px;
             padding: 50px;
             width: 95%;
             max-width: 1100px;
             display: grid;
             grid-template-columns: 1.2fr 1.8fr;
             gap: 40px;
-            box-shadow: 0 50px 100px rgba(0,0,0,0.9);
-            border: 1px solid rgba(255,255,255,0.05);
-            transform-style: preserve-3d;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+            border: 1px solid rgba(255,255,255,0.03);
+            transition: transform 0.2s ease-out; /* Bardzo płynne śledzenie myszki */
+            will-change: transform;
         }
 
-        /* SNAKE EFFECT */
-        .snake { position: absolute; display: block; filter: blur(1px); }
-        .s1 { top: 0; left: -100%; width: 100%; height: 3px; background: linear-gradient(90deg, transparent, var(--primary)); animation: s1 4s linear infinite; }
-        .s2 { top: -100%; right: 0; width: 3px; height: 100%; background: linear-gradient(180deg, transparent, var(--primary)); animation: s2 4s linear infinite; animation-delay: 2s; }
-        .s3 { bottom: 0; right: -100%; width: 100%; height: 3px; background: linear-gradient(270deg, transparent, var(--primary)); animation: s3 4s linear infinite; }
-        .s4 { bottom: -100%; left: 0; width: 3px; height: 100%; background: linear-gradient(360deg, transparent, var(--primary)); animation: s4 4s linear infinite; animation-delay: 2s; }
+        /* ŁAGODNY SNAKE BORDER */
+        .snake { position: absolute; display: block; opacity: 0.6; }
+        .s1 { top: 0; left: -100%; width: 100%; height: 2px; background: linear-gradient(90deg, transparent, var(--primary)); animation: s1 6s linear infinite; }
+        .s2 { top: -100%; right: 0; width: 2px; height: 100%; background: linear-gradient(180deg, transparent, var(--primary)); animation: s2 6s linear infinite; animation-delay: 3s; }
+        .s3 { bottom: 0; right: -100%; width: 100%; height: 2px; background: linear-gradient(270deg, transparent, var(--primary)); animation: s3 6s linear infinite; }
+        .s4 { bottom: -100%; left: 0; width: 2px; height: 100%; background: linear-gradient(360deg, transparent, var(--primary)); animation: s4 6s linear infinite; animation-delay: 3s; }
 
-        @keyframes s1 { 0% { left: -100%; } 50%, 100% { left: 100%; } }
-        @keyframes s2 { 0% { top: -100%; } 50%, 100% { top: 100%; } }
-        @keyframes s3 { 0% { right: -100%; } 50%, 100% { right: 100%; } }
-        @keyframes s4 { 0% { bottom: -100%; } 50%, 100% { bottom: 100%; } }
+        @keyframes s1 { 0% { left: -100%; } 100% { left: 100%; } }
+        @keyframes s2 { 0% { top: -100%; } 100% { top: 100%; } }
+        @keyframes s3 { 0% { right: -100%; } 100% { right: 100%; } }
+        @keyframes s4 { 0% { bottom: -100%; } 100% { bottom: 100%; } }
 
         /* LEWA STRONA */
-        .left { text-align: center; border-right: 1px solid rgba(255,255,255,0.05); padding-right: 20px; }
-        .logo { width: 160px; margin-bottom: 15px; filter: drop-shadow(0 0 15px var(--primary)); }
+        .left { text-align: center; border-right: 1px solid rgba(255,255,255,0.05); padding-right: 30px; }
+        .logo { width: 140px; margin-bottom: 20px; filter: drop-shadow(0 0 10px rgba(255, 152, 0, 0.3)); }
         
-        h1 { font-size: 3.2rem; font-weight: 900; letter-spacing: -2px; line-height: 1; margin-bottom: 5px; }
-        .server-status { color: var(--primary); font-weight: 700; font-size: 0.9rem; letter-spacing: 2px; height: 20px; }
+        h1 { 
+            font-size: 3.5rem; 
+            font-weight: 900; 
+            letter-spacing: -3px;
+            background: linear-gradient(to bottom, #fff 40%, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .typewriter-container {
+            height: 24px;
+            margin-bottom: 20px;
+        }
+        #typewriter { 
+            color: var(--primary); 
+            font-weight: 700; 
+            font-size: 0.85rem; 
+            letter-spacing: 3px; 
+            text-transform: uppercase;
+        }
 
         .ip-box {
-            margin-top: 25px;
-            background: linear-gradient(135deg, var(--primary), #e67e22);
-            color: black;
-            padding: 16px;
-            border-radius: 15px;
+            background: rgba(255, 152, 0, 0.1);
+            color: var(--primary);
+            padding: 18px;
+            border-radius: 12px;
             font-weight: 900;
-            text-transform: uppercase;
-            box-shadow: 0 10px 20px rgba(255, 152, 0, 0.3);
+            border: 1px solid var(--primary);
+            cursor: pointer;
             transition: 0.3s;
+            letter-spacing: 1px;
         }
-        .ip-box:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(255, 152, 0, 0.5); }
+        .ip-box:hover { background: var(--primary); color: #000; box-shadow: 0 0 20px rgba(255, 152, 0, 0.4); }
 
-        /* STATYSTYKI */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-top: 30px;
-        }
-        .stat-card {
-            background: rgba(255,255,255,0.03);
-            padding: 15px 5px;
-            border-radius: 15px;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-        .stat-card span { display: block; font-size: 0.6rem; opacity: 0.5; text-transform: uppercase; margin-bottom: 5px; }
-        .stat-card b { font-size: 1.1rem; color: #fff; }
+        /* STATS */
+        .stats-grid { display: flex; justify-content: center; gap: 15px; margin-top: 30px; }
+        .stat-card { background: rgba(255,255,255,0.02); padding: 10px 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.04); min-width: 80px; }
+        .stat-card span { font-size: 0.55rem; opacity: 0.4; text-transform: uppercase; display: block; }
+        .stat-card b { font-size: 1rem; color: #eee; }
 
         /* PRAWA STRONA */
-        .right { display: flex; flex-direction: column; gap: 20px; }
-        .section-title { font-size: 0.7rem; letter-spacing: 3px; color: #444; font-weight: 900; text-transform: uppercase; }
+        .right { display: flex; flex-direction: column; gap: 15px; }
+        .section-title { font-size: 0.65rem; letter-spacing: 4px; color: #444; font-weight: 900; text-transform: uppercase; margin-bottom: 5px; }
 
         .nav-item {
             display: flex;
             align-items: center;
             gap: 20px;
-            padding: 18px 25px;
+            padding: 20px 25px;
             background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.03);
+            border-radius: 15px;
             text-decoration: none;
             color: white;
-            transition: 0.4s;
+            transition: 0.3s ease;
         }
-        .nav-item:hover { transform: translateX(10px); background: rgba(255,255,255,0.05); }
-        .nav-item i { font-size: 1.8rem; }
-        .nav-item div b { display: block; font-size: 1.1rem; }
-        .nav-item div span { font-size: 0.75rem; opacity: 0.4; }
+        .nav-item:hover { 
+            background: rgba(255,255,255,0.05); 
+            transform: translateX(8px);
+            border-color: rgba(255,255,255,0.1);
+        }
+        
+        .nav-item i { font-size: 1.6rem; transition: 0.3s; }
+        .nav-item b { display: block; font-size: 1.1rem; letter-spacing: 0.5px; }
+        .nav-item span { font-size: 0.7rem; opacity: 0.4; }
 
-        .n-shop:hover { border-color: var(--primary); }
-        .n-rec:hover { border-color: var(--green); }
-        .n-rules:hover { border-color: var(--blue); }
+        .n-shop:hover b { color: var(--primary); }
+        .n-rec:hover b { color: var(--green); }
+        .n-rules:hover b { color: var(--blue); }
 
         /* NOTIF */
         #notif {
-            position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
-            background: #fff; color: #000; padding: 15px 35px;
-            border-radius: 50px; font-weight: 900; transition: 0.5s; z-index: 9999;
+            position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%);
+            background: #fff; color: #000; padding: 12px 30px;
+            border-radius: 10px; font-weight: 800; transition: 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28); z-index: 1000;
         }
-        #notif.active { top: 30px; }
+        #notif.active { bottom: 40px; }
 
         @media (max-width: 900px) {
             .main-container { grid-template-columns: 1fr; padding: 30px; }
-            .left { border: none; padding-right: 0; margin-bottom: 20px; }
+            .left { border: none; padding-right: 0; margin-bottom: 30px; }
         }
     </style>
 </head>
 <body>
-
-    <canvas id="bg-canvas"></canvas>
 
     <div class="main-container" id="card">
         <span class="snake s1"></span><span class="snake s2"></span>
@@ -150,142 +163,98 @@
         <div class="left">
             <img src="logo.png" alt="Logo" class="logo" onerror="this.style.display='none'">
             <h1>DUCEMC</h1>
-            <div class="server-status" id="typewriter"></div>
+            <div class="typewriter-container">
+                <div id="typewriter"></div>
+            </div>
             
             <div class="ip-box" onclick="copyIP()">
                 IP: DUCEMC.PL
             </div>
 
             <div class="stats-grid">
-                <div class="stat-card">
-                    <span>Graczy</span>
-                    <b>142</b>
-                </div>
-                <div class="stat-card">
-                    <span>Rekord</span>
-                    <b>350</b>
-                </div>
-                <div class="stat-card">
-                    <span>Start</span>
-                    <b>18:00</b>
-                </div>
-            </div>
-
-            <div style="margin-top: 30px; text-align: left;">
-                <p class="section-title">DOŁĄCZ DO NAS</p>
-                <p style="font-size: 0.8rem; opacity: 0.6; margin-top: 5px; line-height: 1.5;">
-                    Największa sieć serwerów w Polsce. Czekają na Ciebie unikalne systemy, brak lagów i najlepsza zabawa!
-                </p>
+                <div class="stat-card"><span>Online</span><b>142</b></div>
+                <div class="stat-card"><span>Rekord</span><b>350</b></div>
+                <div class="stat-card"><span>Wersja</span><b>1.20.x</b></div>
             </div>
         </div>
 
         <div class="right">
-            <p class="section-title">MENU GŁÓWNE</p>
-            <div class="nav-grid" style="display: grid; gap: 15px;">
+            <p class="section-title">Nawigacja</p>
+            <div style="display: grid; gap: 12px;">
                 <a href="sklep.html" class="nav-item n-shop">
                     <i>🛒</i>
                     <div>
-                        <b style="color: var(--primary);">ITEMSHOP</b>
-                        <span>Wsparcie serwera i dodatki</span>
+                        <b>ITEMSHOP</b>
+                        <span>Rangi, klucze i pakiety</span>
                     </div>
                 </a>
                 <a href="rekrutacja.html" class="nav-item n-rec">
                     <i>📝</i>
                     <div>
-                        <b style="color: var(--green);">REKRUTACJA</b>
-                        <span>Zostań częścią administracji</span>
+                        <b>REKRUTACJA</b>
+                        <span>Dołącz do naszego zespołu</span>
                     </div>
                 </a>
                 <a href="regulamin.html" class="nav-item n-rules">
                     <i>📜</i>
                     <div>
-                        <b style="color: var(--blue);">REGULAMIN</b>
-                        <span>Zasady naszej społeczności</span>
+                        <b>REGULAMIN</b>
+                        <span>Zasady gry na serwerze</span>
+                    </div>
+                </a>
+                <a href="https://dc.ducemc.pl" target="_blank" class="nav-item" style="border-color: rgba(88, 101, 242, 0.2);">
+                    <i style="color: #5865f2;">💬</i>
+                    <div>
+                        <b style="color: #5865f2;">DISCORD</b>
+                        <span>Społeczność i pomoc</span>
                     </div>
                 </a>
             </div>
-
-            <p class="section-title" style="margin-top: 10px;">KOMUNIKACJA</p>
-            <a href="https://dc.ducemc.pl" target="_blank" class="nav-item" style="background: rgba(88, 101, 242, 0.1); border-color: #5865f2;">
-                <i style="color: #5865f2;">💬</i>
-                <div>
-                    <b style="color: #5865f2;">DISCORD SERWEROWY</b>
-                    <span>Rozmowy i pomoc techniczna</span>
-                </div>
-            </a>
         </div>
     </div>
 
     <div id="notif">SKOPIOWANO ADRES IP!</div>
 
     <script>
-        // --- EFEKT PISANIA (TYPEWRITER) ---
-        const words = ["SURVIVAL + GILDIE", "TRYB SKYBLOCK", "NAJLEPSZA EKIPA", "UNIKALNE EVENTY"];
+        // --- DELIKATNY EFEKT RUCHU (LIMITOWANY) ---
+        const card = document.getElementById('card');
+        window.addEventListener('mousemove', (e) => {
+            // Zmniejszyłem dzielnik z 60 na 150 - ruch jest teraz 2.5x mniejszy i łagodniejszy
+            let x = (window.innerWidth / 2 - e.pageX) / 150;
+            let y = (window.innerHeight / 2 - e.pageY) / 150;
+            card.style.transform = `rotateY(${-x}deg) rotateX(${y}deg)`;
+        });
+
+        // --- EFEKT PISANIA ---
+        const words = ["Survival + Gildie", "Dopracowane Tryby", "Najlepsza Ekipa", "Brak Lagów"];
         let i = 0, j = 0, current = "", isDeleting = false;
         function type() {
             const target = document.getElementById("typewriter");
-            if (isDeleting) {
-                current = words[i].substring(0, j--);
-            } else {
-                current = words[i].substring(0, j++);
-            }
-            target.innerHTML = current + '<span style="border-right: 2px solid var(--primary); margin-left: 2px;"></span>';
+            if (isDeleting) current = words[i].substring(0, j--);
+            else current = words[i].substring(0, j++);
+            
+            target.innerHTML = current + '<span style="border-right: 2px solid var(--primary); animation: blink 0.7s infinite;"></span>';
             
             if (!isDeleting && j === words[i].length + 1) {
                 isDeleting = true;
-                setTimeout(type, 2000);
+                setTimeout(type, 3000);
             } else if (isDeleting && j === 0) {
                 isDeleting = false;
                 i = (i + 1) % words.length;
                 setTimeout(type, 500);
             } else {
-                setTimeout(type, isDeleting ? 50 : 100);
+                setTimeout(type, isDeleting ? 40 : 80);
             }
         }
         type();
 
-        // --- ANIMACJA KARTY 3D ---
-        const card = document.getElementById('card');
-        window.addEventListener('mousemove', (e) => {
-            let x = (window.innerWidth / 2 - e.pageX) / 60;
-            let y = (window.innerHeight / 2 - e.pageY) / 60;
-            card.style.transform = `rotateY(${-x}deg) rotateX(${y}deg)`;
-        });
-
-        // --- KOPIOWANIE IP ---
         function copyIP() {
             navigator.clipboard.writeText("DUCEMC.PL");
             const n = document.getElementById('notif');
             n.classList.add('active');
-            setTimeout(() => n.classList.remove('active'), 2500);
+            setTimeout(() => n.classList.remove('active'), 2000);
         }
-
-        // --- TŁO CZĄSTECZEK (CANVAS) ---
-        const canvas = document.getElementById('bg-canvas');
-        const ctx = canvas.getContext('2d');
-        let pts = [];
-        function init() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            pts = [];
-            for(let i=0; i<80; i++) pts.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, s:Math.random()*2, d:Math.random()*2*Math.PI});
-        }
-        function draw() {
-            ctx.clearRect(0,0,canvas.width, canvas.height);
-            ctx.fillStyle = "rgba(255,152,0,0.2)";
-            pts.forEach(p => {
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.s, 0, Math.PI*2);
-                ctx.fill();
-                p.x += Math.cos(p.d) * 0.5;
-                p.y += Math.sin(p.d) * 0.5;
-                if(p.x<0) p.x=canvas.width; if(p.x>canvas.width) p.x=0;
-                if(p.y<0) p.y=canvas.height; if(p.y>canvas.height) p.y=0;
-            });
-            requestAnimationFrame(draw);
-        }
-        window.addEventListener('resize', init);
-        init(); draw();
     </script>
+    <style>@keyframes blink { 50% { opacity: 0; } }</style>
 </body>
 </html>
