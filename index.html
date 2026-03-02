@@ -7,11 +7,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #ff9800; /* Złoty ze screena */
-            --blue: #1e90ff;    /* Błękit nieba */
-            --green: #00ff88;   /* Zieleń budowli */
+            --primary: #ff9800; 
+            --blue: #1e90ff;    
+            --green: #00ff88;   
             --bg-dark: #050508;
-            --card-bg: rgba(10, 10, 15, 0.95);
+            --card-bg: rgba(10, 10, 15, 0.98);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; cursor: default; }
@@ -28,16 +28,12 @@
             perspective: 1500px;
         }
 
-        /* TŁO */
-        #bg-image {
+        /* ANIMOWANE TŁO CZĄSTECZEK */
+        #bg-canvas {
             position: fixed;
-            inset: -5%;
-            width: 110%; height: 110%;
-            background-image: url('obraz.png');
-            background-size: cover;
-            background-position: center;
-            z-index: -2;
-            filter: brightness(0.4) blur(3px);
+            top: 0; left: 0;
+            z-index: -1;
+            filter: blur(2px);
         }
 
         /* GŁÓWNA KARTA */
@@ -47,147 +43,174 @@
             border-radius: 40px;
             padding: 50px;
             width: 95%;
-            max-width: 1200px;
+            max-width: 1100px;
             display: grid;
             grid-template-columns: 1.2fr 1.8fr;
             gap: 40px;
-            box-shadow: 0 50px 100px rgba(0,0,0,0.8);
-            overflow: hidden;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.9);
+            border: 1px solid rgba(255,255,255,0.05);
             transform-style: preserve-3d;
-            will-change: transform;
         }
 
-        /* EFEKT WĘŻA (SNAKE BORDER) */
-        .snake { position: absolute; display: block; filter: blur(2px); }
-        .s1 { top: 0; left: -100%; width: 100%; height: 4px; background: linear-gradient(90deg, transparent, var(--primary)); animation: s1 4s linear infinite; }
-        .s2 { top: -100%; right: 0; width: 4px; height: 100%; background: linear-gradient(180deg, transparent, var(--primary)); animation: s2 4s linear infinite; animation-delay: 2s; }
-        .s3 { bottom: 0; right: -100%; width: 100%; height: 4px; background: linear-gradient(270deg, transparent, var(--primary)); animation: s3 4s linear infinite; }
-        .s4 { bottom: -100%; left: 0; width: 4px; height: 100%; background: linear-gradient(360deg, transparent, var(--primary)); animation: s4 4s linear infinite; animation-delay: 2s; }
+        /* SNAKE EFFECT */
+        .snake { position: absolute; display: block; filter: blur(1px); }
+        .s1 { top: 0; left: -100%; width: 100%; height: 3px; background: linear-gradient(90deg, transparent, var(--primary)); animation: s1 4s linear infinite; }
+        .s2 { top: -100%; right: 0; width: 3px; height: 100%; background: linear-gradient(180deg, transparent, var(--primary)); animation: s2 4s linear infinite; animation-delay: 2s; }
+        .s3 { bottom: 0; right: -100%; width: 100%; height: 3px; background: linear-gradient(270deg, transparent, var(--primary)); animation: s3 4s linear infinite; }
+        .s4 { bottom: -100%; left: 0; width: 3px; height: 100%; background: linear-gradient(360deg, transparent, var(--primary)); animation: s4 4s linear infinite; animation-delay: 2s; }
 
         @keyframes s1 { 0% { left: -100%; } 50%, 100% { left: 100%; } }
         @keyframes s2 { 0% { top: -100%; } 50%, 100% { top: 100%; } }
         @keyframes s3 { 0% { right: -100%; } 50%, 100% { right: 100%; } }
         @keyframes s4 { 0% { bottom: -100%; } 50%, 100% { bottom: 100%; } }
 
-        /* LEWA STRONA (INFO) */
+        /* LEWA STRONA */
         .left { text-align: center; border-right: 1px solid rgba(255,255,255,0.05); padding-right: 20px; }
-        .logo { width: 180px; filter: drop-shadow(0 0 20px var(--primary)); margin-bottom: 20px; }
-        h1 { font-size: 3.5rem; font-weight: 900; background: linear-gradient(#fff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .logo { width: 160px; margin-bottom: 15px; filter: drop-shadow(0 0 15px var(--primary)); }
         
+        h1 { font-size: 3.2rem; font-weight: 900; letter-spacing: -2px; line-height: 1; margin-bottom: 5px; }
+        .server-status { color: var(--primary); font-weight: 700; font-size: 0.9rem; letter-spacing: 2px; height: 20px; }
+
         .ip-box {
-            margin-top: 30px;
-            background: var(--primary);
+            margin-top: 25px;
+            background: linear-gradient(135deg, var(--primary), #e67e22);
             color: black;
-            padding: 15px;
+            padding: 16px;
             border-radius: 15px;
             font-weight: 900;
-            cursor: pointer;
+            text-transform: uppercase;
+            box-shadow: 0 10px 20px rgba(255, 152, 0, 0.3);
             transition: 0.3s;
         }
-        .ip-box:hover { transform: scale(1.05); box-shadow: 0 0 30px var(--primary); }
+        .ip-box:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(255, 152, 0, 0.5); }
 
-        /* PRAWA STRONA (MENU) */
+        /* STATYSTYKI */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 30px;
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.03);
+            padding: 15px 5px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .stat-card span { display: block; font-size: 0.6rem; opacity: 0.5; text-transform: uppercase; margin-bottom: 5px; }
+        .stat-card b { font-size: 1.1rem; color: #fff; }
+
+        /* PRAWA STRONA */
         .right { display: flex; flex-direction: column; gap: 20px; }
-        .section-title { font-size: 0.7rem; letter-spacing: 3px; color: #555; font-weight: 900; text-transform: uppercase; }
+        .section-title { font-size: 0.7rem; letter-spacing: 3px; color: #444; font-weight: 900; text-transform: uppercase; }
 
-        .nav-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
-        
         .nav-item {
             display: flex;
             align-items: center;
             gap: 20px;
-            padding: 20px;
-            background: rgba(255,255,255,0.03);
+            padding: 18px 25px;
+            background: rgba(255,255,255,0.02);
             border: 1px solid rgba(255,255,255,0.05);
             border-radius: 20px;
             text-decoration: none;
             color: white;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: 0.4s;
         }
-
-        .nav-item:hover { transform: translateX(15px); background: rgba(255,255,255,0.07); }
-        .nav-item i { font-size: 2rem; }
+        .nav-item:hover { transform: translateX(10px); background: rgba(255,255,255,0.05); }
+        .nav-item i { font-size: 1.8rem; }
         .nav-item div b { display: block; font-size: 1.1rem; }
-        .nav-item div span { font-size: 0.75rem; opacity: 0.5; }
+        .nav-item div span { font-size: 0.75rem; opacity: 0.4; }
 
-        /* Kolory przycisków */
         .n-shop:hover { border-color: var(--primary); }
         .n-rec:hover { border-color: var(--green); }
         .n-rules:hover { border-color: var(--blue); }
 
-        /* NOTYFIKACJA */
+        /* NOTIF */
         #notif {
             position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
-            background: var(--primary); color: #000; padding: 15px 40px;
-            border-radius: 50px; font-weight: 900; transition: 0.5s ease; z-index: 1000;
+            background: #fff; color: #000; padding: 15px 35px;
+            border-radius: 50px; font-weight: 900; transition: 0.5s; z-index: 9999;
         }
         #notif.active { top: 30px; }
 
         @media (max-width: 900px) {
-            .main-container { grid-template-columns: 1fr; }
-            .left { border: none; padding-right: 0; }
+            .main-container { grid-template-columns: 1fr; padding: 30px; }
+            .left { border: none; padding-right: 0; margin-bottom: 20px; }
         }
     </style>
 </head>
 <body>
 
-    <div id="bg-image"></div>
+    <canvas id="bg-canvas"></canvas>
 
     <div class="main-container" id="card">
         <span class="snake s1"></span><span class="snake s2"></span>
         <span class="snake s3"></span><span class="snake s4"></span>
 
         <div class="left">
-            <img src="logo.png" alt="DUCEMC" class="logo">
-            <h1>DUCEMC.PL</h1>
-            <p style="opacity: 0.6; margin-top: 10px;">INNOWACYJNA SIEĆ SERWERÓW</p>
+            <img src="logo.png" alt="Logo" class="logo" onerror="this.style.display='none'">
+            <h1>DUCEMC</h1>
+            <div class="server-status" id="typewriter"></div>
             
             <div class="ip-box" onclick="copyIP()">
-                KLIKNIJ, ABY SKOPIOWAĆ IP
+                IP: DUCEMC.PL
             </div>
 
-            <div style="margin-top: 40px; text-align: left;">
-                <p class="section-title">ADMINISTRACJA</p>
-                <div style="display: flex; gap: 10px; margin-top: 10px;">
-                    <img src="https://cravatar.eu/avatar/RdstoneBrilliant/32.png" style="border-radius: 5px;">
-                    <img src="https://cravatar.eu/avatar/TugareK/32.png" style="border-radius: 5px;">
-                    <img src="https://cravatar.eu/avatar/xGwiazdek15/32.png" style="border-radius: 5px;">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span>Graczy</span>
+                    <b>142</b>
                 </div>
+                <div class="stat-card">
+                    <span>Rekord</span>
+                    <b>350</b>
+                </div>
+                <div class="stat-card">
+                    <span>Start</span>
+                    <b>18:00</b>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px; text-align: left;">
+                <p class="section-title">DOŁĄCZ DO NAS</p>
+                <p style="font-size: 0.8rem; opacity: 0.6; margin-top: 5px; line-height: 1.5;">
+                    Największa sieć serwerów w Polsce. Czekają na Ciebie unikalne systemy, brak lagów i najlepsza zabawa!
+                </p>
             </div>
         </div>
 
         <div class="right">
-            <p class="section-title">NAWIGACJA</p>
-            <div class="nav-grid">
+            <p class="section-title">MENU GŁÓWNE</p>
+            <div class="nav-grid" style="display: grid; gap: 15px;">
                 <a href="sklep.html" class="nav-item n-shop">
                     <i>🛒</i>
                     <div>
                         <b style="color: var(--primary);">ITEMSHOP</b>
-                        <span>Kup rangi, klucze i dodatki</span>
+                        <span>Wsparcie serwera i dodatki</span>
                     </div>
                 </a>
                 <a href="rekrutacja.html" class="nav-item n-rec">
                     <i>📝</i>
                     <div>
                         <b style="color: var(--green);">REKRUTACJA</b>
-                        <span>Dołącz do ekipy serwera</span>
+                        <span>Zostań częścią administracji</span>
                     </div>
                 </a>
                 <a href="regulamin.html" class="nav-item n-rules">
                     <i>📜</i>
                     <div>
                         <b style="color: var(--blue);">REGULAMIN</b>
-                        <span>Zasady panujące w sieci</span>
+                        <span>Zasady naszej społeczności</span>
                     </div>
                 </a>
             </div>
 
-            <p class="section-title" style="margin-top: 20px;">SOCIAL MEDIA</p>
-            <a href="https://dc.ducemc.pl" target="_blank" class="nav-item" style="background: #5865F2;">
-                <i>💬</i>
+            <p class="section-title" style="margin-top: 10px;">KOMUNIKACJA</p>
+            <a href="https://dc.ducemc.pl" target="_blank" class="nav-item" style="background: rgba(88, 101, 242, 0.1); border-color: #5865f2;">
+                <i style="color: #5865f2;">💬</i>
                 <div>
-                    <b>DISCORD</b>
-                    <span>Dołącz do naszej społeczności</span>
+                    <b style="color: #5865f2;">DISCORD SERWEROWY</b>
+                    <span>Rozmowy i pomoc techniczna</span>
                 </div>
             </a>
         </div>
@@ -196,28 +219,73 @@
     <div id="notif">SKOPIOWANO ADRES IP!</div>
 
     <script>
-        const card = document.getElementById('card');
-        let mX = 0, mY = 0, cX = 0, cY = 0;
+        // --- EFEKT PISANIA (TYPEWRITER) ---
+        const words = ["SURVIVAL + GILDIE", "TRYB SKYBLOCK", "NAJLEPSZA EKIPA", "UNIKALNE EVENTY"];
+        let i = 0, j = 0, current = "", isDeleting = false;
+        function type() {
+            const target = document.getElementById("typewriter");
+            if (isDeleting) {
+                current = words[i].substring(0, j--);
+            } else {
+                current = words[i].substring(0, j++);
+            }
+            target.innerHTML = current + '<span style="border-right: 2px solid var(--primary); margin-left: 2px;"></span>';
+            
+            if (!isDeleting && j === words[i].length + 1) {
+                isDeleting = true;
+                setTimeout(type, 2000);
+            } else if (isDeleting && j === 0) {
+                isDeleting = false;
+                i = (i + 1) % words.length;
+                setTimeout(type, 500);
+            } else {
+                setTimeout(type, isDeleting ? 50 : 100);
+            }
+        }
+        type();
 
+        // --- ANIMACJA KARTY 3D ---
+        const card = document.getElementById('card');
         window.addEventListener('mousemove', (e) => {
-            mX = (window.innerWidth / 2 - e.pageX) / 70;
-            mY = (window.innerHeight / 2 - e.pageY) / 70;
+            let x = (window.innerWidth / 2 - e.pageX) / 60;
+            let y = (window.innerHeight / 2 - e.pageY) / 60;
+            card.style.transform = `rotateY(${-x}deg) rotateX(${y}deg)`;
         });
 
-        function animate() {
-            cX += (mX - cX) * 0.05;
-            cY += (mY - cY) * 0.05;
-            card.style.transform = `rotateY(${-cX}deg) rotateX(${cY}deg)`;
-            requestAnimationFrame(animate);
-        }
-        animate();
-
+        // --- KOPIOWANIE IP ---
         function copyIP() {
             navigator.clipboard.writeText("DUCEMC.PL");
             const n = document.getElementById('notif');
             n.classList.add('active');
             setTimeout(() => n.classList.remove('active'), 2500);
         }
+
+        // --- TŁO CZĄSTECZEK (CANVAS) ---
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let pts = [];
+        function init() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            pts = [];
+            for(let i=0; i<80; i++) pts.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, s:Math.random()*2, d:Math.random()*2*Math.PI});
+        }
+        function draw() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            ctx.fillStyle = "rgba(255,152,0,0.2)";
+            pts.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.s, 0, Math.PI*2);
+                ctx.fill();
+                p.x += Math.cos(p.d) * 0.5;
+                p.y += Math.sin(p.d) * 0.5;
+                if(p.x<0) p.x=canvas.width; if(p.x>canvas.width) p.x=0;
+                if(p.y<0) p.y=canvas.height; if(p.y>canvas.height) p.y=0;
+            });
+            requestAnimationFrame(draw);
+        }
+        window.addEventListener('resize', init);
+        init(); draw();
     </script>
 </body>
 </html>
