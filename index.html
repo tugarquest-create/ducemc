@@ -3,184 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DuceMC.PL | The Next Era</title>
+    <title>DuceMC.PL | Official Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --accent: #ff0055; /* Hot Pink/Crimson */
-            --secondary: #7000ff; /* Electric Purple */
-            --bg-start: #0a0510;
-            --bg-end: #030105;
-            --text-glow: 0 0 20px rgba(255, 0, 85, 0.6);
-            --glass: rgba(10, 5, 20, 0.8);
-            --border: rgba(255, 255, 255, 0.08);
-            --transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            --primary: #bc13fe; /* Neon Purple */
+            --secondary: #ff0055; /* Hot Pink */
+            --gold: #ffcc00;
+            --bg-dark: #050208;
+            --glass: rgba(15, 15, 25, 0.7);
+            --border-light: rgba(255, 255, 255, 0.1);
+            --smooth: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
         body {
-            background-color: var(--bg-start);
+            background-color: var(--bg-dark);
             color: white;
             font-family: 'Space Grotesk', sans-serif;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden; /* Wyłączamy scroll, bo tło pływa */
-            perspective: 1500px;
+            overflow: hidden;
+            perspective: 1000px;
         }
 
-        /* --- DYNAMICZNE TŁO OBRAZOWE --- */
+        /* --- TŁO PARALLAX (BEZ WIBRACJI) --- */
         #bg-image {
             position: fixed;
-            top: -10%; left: -10%; /* Zapas na ruch parallax */
-            width: 120%; height: 120%;
-            background-image: url('obraz1.png'); /* <--- TWOJE ZDJĘCIE */
+            top: -5%; left: -5%;
+            width: 110%; height: 110%;
+            background-image: url('obraz1.png'); 
             background-size: cover;
             background-position: center;
             z-index: -2;
-            filter: brightness(0.4) contrast(1.1) blur(2px); /* Przyciemniamy i lekko rozmywamy tło */
-            transition: transform 0.1s ease-out; /* Płynny ruch */
+            filter: brightness(0.5) contrast(1.2) saturate(1.2);
+            transition: transform 0.8s cubic-bezier(0.2, 0, 0.2, 1); /* Bardzo wolne i płynne */
         }
 
-        /* --- NAKŁADKA GRADIENTOWA DLA GŁĘBI --- */
         #bg-overlay {
             position: fixed; inset: 0;
-            background: radial-gradient(circle at center, transparent 0%, var(--bg-end) 100%);
+            background: radial-gradient(circle at center, rgba(5, 2, 8, 0.2) 0%, var(--bg-dark) 80%);
             z-index: -1;
-            opacity: 0.8;
         }
 
-        /* --- GŁÓWNY PANELE --- */
+        /* --- GŁÓWNY PANEL --- */
         .master-panel {
             background: var(--glass);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border);
-            border-radius: 40px;
-            padding: 60px;
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--border-light);
+            border-radius: 50px;
+            padding: 70px 50px;
             width: 90%;
-            max-width: 1000px;
+            max-width: 1100px;
             text-align: center;
-            box-shadow: 0 50px 100px rgba(0,0,0,0.9), inset 0 0 30px rgba(112, 0, 255, 0.05);
+            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
             transform-style: preserve-3d;
-            animation: panelEntrance 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.2s ease-out; /* Szybka ale wygładzona reakcja */
             position: relative;
         }
 
-        @keyframes panelEntrance {
-            from { opacity: 0; transform: scale(0.9) translateY(50px) rotateX(10deg); }
-            to { opacity: 1; transform: scale(1) translateY(0) rotateX(0); }
+        /* --- LOGO I NOWOCZESNY TYTUŁ --- */
+        .logo-box { margin-bottom: 25px; transform: translateZ(50px); }
+        .logo-img { 
+            width: 150px; 
+            filter: drop-shadow(0 0 25px var(--primary));
+            animation: float 6s ease-in-out infinite;
         }
-
-        /* --- LOGO I TYTUŁ Z EFEKTEM GLITCH --- */
-        .logo-box { position: relative; display: inline-block; margin-bottom: 20px; transform: translateZ(30px); }
-        .logo-img { width: 140px; animation: hoverAni 4s ease-in-out infinite; z-index: 5; position: relative; filter: drop-shadow(0 0 20px var(--accent)); }
         
-        @keyframes hoverAni { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-15px) rotate(2deg); } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
 
-        .glitch-title {
+        .main-title {
             font-family: 'Syncopate', sans-serif;
-            font-size: 5rem;
+            font-size: 5.5rem;
             font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: -6px;
-            position: relative;
-            background: linear-gradient(to bottom, #fff, #888);
+            letter-spacing: -4px;
+            background: linear-gradient(180deg, #fff 0%, #a445ed 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 40px;
-            transform: translateZ(50px);
-        }
-        
-        /* Efekt podwojenia glitch */
-        .glitch-title::before, .glitch-title::after {
-            content: 'DUCEMC';
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: transparent; -webkit-background-clip: text;
-            opacity: 0.1; z-index: -1;
-        }
-        .glitch-title::before { color: var(--accent); transform: translate(-3px, 0); animation: glitch 2s infinite; }
-        .glitch-title::after { color: var(--secondary); transform: translate(3px, 0); animation: glitch 2s infinite reverse; }
-
-        @keyframes glitch { 
-            0%, 100% { transform: translate(-3px, 0); } 
-            50% { transform: translate(3px, -2px); } 
+            filter: drop-shadow(0 0 15px rgba(188, 19, 254, 0.4));
+            transform: translateZ(80px);
         }
 
-        /* --- KONTENER PRZYCISKÓW --- */
-        .action-container {
+        /* --- MENU - GRID --- */
+        .menu-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 20px;
-            margin-top: 40px;
-            transform: translateZ(20px);
+            margin-top: 20px;
+            transform: translateZ(40px);
         }
 
-        .cyber-btn {
+        .menu-item {
             position: relative;
-            background: rgba(255, 255, 255, 0.01);
-            border: 1px solid var(--border);
-            padding: 25px;
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-light);
+            padding: 30px 15px;
+            border-radius: 25px;
             text-decoration: none;
             color: #fff;
-            font-weight: 700;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: var(--transition);
+            transition: var(--smooth);
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            overflow: hidden;
         }
 
-        .cyber-btn i { font-size: 1.8rem; margin-bottom: 5px; opacity: 0.5; transition: 0.4s; }
+        .menu-item i { font-size: 2rem; transition: var(--smooth); color: rgba(255,255,255,0.6); }
 
-        /* Kolory i poświaty hover dla każdego przycisku */
-        .btn-sklep:hover { color: #ffaa00; border-color: #ffaa00; box-shadow: 0 0 30px rgba(255, 170, 0, 0.2); }
-        .btn-rek:hover { color: var(--accent); border-color: var(--accent); box-shadow: 0 0 30px rgba(255, 0, 85, 0.2); }
-        .btn-reg:hover { color: var(--secondary); border-color: var(--secondary); box-shadow: 0 0 30px rgba(112, 0, 255, 0.2); }
-        .btn-dc:hover { color: #5865f2; border-color: #5865f2; box-shadow: 0 0 30px rgba(88, 101, 242, 0.2); }
+        /* Hover Styles */
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.07);
+            transform: translateY(-10px) scale(1.02);
+            border-color: var(--primary);
+            box-shadow: 0 15px 35px rgba(188, 19, 254, 0.2);
+        }
 
-        .cyber-btn:hover i { transform: scale(1.1); opacity: 1; }
+        .menu-item:hover i { color: #fff; transform: scale(1.2); filter: drop-shadow(0 0 10px var(--primary)); }
 
-        /* --- IP BAR --- */
-        .ip-wrapper {
-            margin-top: 50px;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 20px 40px;
+        /* Rekrutacja ma złoty akcent */
+        .btn-rek:hover { border-color: var(--gold); box-shadow: 0 15px 35px rgba(255, 204, 0, 0.2); }
+        .btn-rek:hover i { filter: drop-shadow(0 0 10px var(--gold)); }
+
+        /* --- IP PANEL --- */
+        .ip-footer {
+            margin-top: 60px;
+            transform: translateZ(30px);
+        }
+
+        .ip-button {
+            background: linear-gradient(90deg, #1a1a2e, #0f0f1a);
+            border: 1px solid var(--primary);
+            padding: 18px 45px;
             border-radius: 100px;
             display: inline-flex;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
             cursor: pointer;
-            border: 1px solid var(--secondary);
-            box-shadow: 0 0 20px rgba(112, 0, 255, 0.1);
-            transition: 0.3s;
-            transform: translateZ(10px);
+            transition: var(--smooth);
         }
-        .ip-wrapper:hover { transform: scale(1.05) translateZ(10px); box-shadow: 0 0 40px rgba(112, 0, 255, 0.3); border-color: var(--primary); }
-        .ip-val { font-family: 'Syncopate', sans-serif; font-size: 1.4rem; color: #fff; letter-spacing: 2px; }
-        .copy-tag { font-size: 0.7rem; font-weight: 900; background: var(--secondary); color: white; padding: 4px 10px; border-radius: 5px; text-transform: uppercase; }
 
-        /* --- NOTIFICATION --- */
+        .ip-button:hover {
+            transform: scale(1.08);
+            box-shadow: 0 0 40px rgba(188, 19, 254, 0.4);
+            background: var(--primary);
+        }
+
+        .ip-button .val { font-family: 'Syncopate', sans-serif; font-size: 1.5rem; letter-spacing: 2px; }
+        .ip-button .label { font-size: 0.7rem; background: rgba(255,255,255,0.1); padding: 5px 12px; border-radius: 20px; }
+
+        /* --- NOTIF --- */
         #toast {
-            position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%);
-            background: var(--secondary); color: white; padding: 15px 40px;
-            border-radius: 50px; font-weight: 900; transition: 0.5s ease-out;
-            z-index: 1000; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
+            background: var(--primary); padding: 15px 40px; border-radius: 40px;
+            font-weight: 700; transition: 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 9999;
         }
-        #toast.active { bottom: 40px; }
+        #toast.show { top: 40px; }
 
-        /* Responsywność */
-        @media (max-width: 768px) {
-            .glitch-title { font-size: 2.8rem; letter-spacing: -2px; }
-            .master-panel { padding: 40px 20px; border-radius: 30px; }
-            .ip-wrapper { padding: 15px 25px; }
-            .ip-val { font-size: 1.1rem; }
+        @media (max-width: 900px) {
+            .menu-grid { grid-template-columns: 1fr 1fr; }
+            .main-title { font-size: 3rem; }
+            .master-panel { padding: 40px 20px; }
         }
     </style>
 </head>
@@ -189,76 +178,74 @@
     <div id="bg-image"></div>
     <div id="bg-overlay"></div>
 
-    <div class="master-panel" id="panel">
+    <div class="master-panel" id="mainPanel">
         <div class="logo-box">
-            <img src="logo.png" alt="DuceMC" class="logo-img">
+            <img src="logo.png" alt="Logo" class="logo-img">
         </div>
 
-        <h1 class="glitch-title">DUCEMC</h1>
+        <h1 class="main-title">DUCEMC</h1>
         
-        <p style="text-transform: uppercase; letter-spacing: 5px; font-size: 0.7rem; color: #666; margin-top: -30px; margin-bottom: 40px; font-weight: 700;">Elite Duel Experience</p>
+        <p style="letter-spacing: 8px; font-size: 0.8rem; color: #888; margin-top: -35px; margin-bottom: 50px; font-weight: 300; text-transform: uppercase;">Discover the power of skill</p>
 
-        <div class="action-container">
-            <a href="sklep.html" class="cyber-btn btn-sklep">
+        <nav class="menu-grid">
+            <a href="sklep.html" class="menu-item">
                 <i>🛒</i>
                 <span>Sklep</span>
             </a>
-            <a href="rekrutacja.html" class="cyber-btn btn-rek">
+            <a href="rekrutacja.html" class="menu-item btn-rek">
                 <i>✉️</i>
                 <span>Rekrutacja</span>
             </a>
-            <a href="regulamin.html" class="cyber-btn btn-reg">
+            <a href="regulamin.html" class="menu-item">
                 <i>📜</i>
                 <span>Regulamin</span>
             </a>
-            <a href="https://dc.ducemc.pl" class="cyber-btn btn-dc">
-                <i>📱</i>
+            <a href="https://dc.ducemc.pl" class="menu-item">
+                <i>💬</i>
                 <span>Discord</span>
             </a>
-        </div>
+        </nav>
 
-        <div class="ip-wrapper" onclick="copyIP()">
-            <span class="ip-val">DUCEMC.PL</span>
-            <span class="copy-tag">KOPIUJ IP</span>
+        <div class="ip-footer">
+            <div class="ip-button" onclick="copyIP()">
+                <span class="label">KLIKNIJ ABY SKOPIOWAĆ</span>
+                <span class="val">DUCEMC.PL</span>
+            </div>
         </div>
     </div>
 
-    <div id="toast">SYSTEM: IP SKOPIOWANE!</div>
+    <div id="toast">SKOPIOWANO ADRES IP!</div>
 
     <script>
-        const panel = document.getElementById('panel');
-        const bgImage = document.getElementById('bg-image');
+        const panel = document.getElementById('mainPanel');
+        const bg = document.getElementById('bg-image');
         
-        // --- EFEKT PARALLAX DLA TŁA I PANELU (3D) ---
-        window.addEventListener('mousemove', (e) => {
-            // Obliczenia środka ekranu
-            const screenCenterX = window.innerWidth / 2;
-            const screenCenterY = window.innerHeight / 2;
-            
-            // Odchylenie myszki od środka
-            const offsetX = (screenCenterX - e.pageX);
-            const offsetY = (screenCenterY - e.pageY);
+        // --- SMOOTH MOUSE TRACKING (BEZ WIBRACJI) ---
+        let mouseX = 0, mouseY = 0;
+        let currentX = 0, currentY = 0;
 
-            // 1. Ruch panelu (obrót 3D) - delikatny
-            const panelRotateX = offsetY / 50; 
-            const panelRotateY = offsetX / 50;
-            panel.style.transform = `rotateY(${-panelRotateY}deg) rotateX(${panelRotateX}deg)`;
-
-            // 2. Ruch tła (przesunięcie) - w przeciwną stronę dla głębi
-            const bgTranslateX = offsetX / 30; 
-            const bgTranslateY = offsetY / 30;
-            bgImage.style.transform = `translate(${bgTranslateX}px, ${bgTranslateY}px)`;
+        document.addEventListener('mousemove', (e) => {
+            mouseX = (window.innerWidth / 2 - e.pageX) / 45;
+            mouseY = (window.innerHeight / 2 - e.pageY) / 45;
         });
 
-        // --- FUNKCJA KOPIOWANIA IP ---
+        function animate() {
+            // "Lerp" - current dogania mouseX powoli, co eliminuje drgania
+            currentX += (mouseX - currentX) * 0.1;
+            currentY += (mouseY - currentY) * 0.1;
+
+            panel.style.transform = `rotateY(${-currentX}deg) rotateX(${currentY}deg)`;
+            bg.style.transform = `scale(1.1) translate(${currentX * 2}px, ${currentY * 2}px)`;
+
+            requestAnimationFrame(animate);
+        }
+        animate();
+
         function copyIP() {
-            navigator.clipboard.writeText("DUCEMC.PL").then(() => {
-                const t = document.getElementById('toast');
-                t.classList.add('active');
-                setTimeout(() => t.classList.remove('active'), 2500);
-            }).catch(() => {
-                alert("Nie udało się skopiować IP. Wpisz ręcznie: DUCEMC.PL");
-            });
+            navigator.clipboard.writeText("DUCEMC.PL");
+            const t = document.getElementById('toast');
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3000);
         }
     </script>
 </body>
