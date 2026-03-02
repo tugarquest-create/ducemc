@@ -74,7 +74,8 @@
         .server-logo { 
             max-width: 170px; 
             filter: drop-shadow(0 0 20px var(--primary-glow)); 
-            margin-bottom: 15px;
+            margin: 0 auto 15px auto;
+            display: block;
             transition: var(--transition);
         }
         .server-logo:hover { transform: scale(1.05) rotate(3deg); }
@@ -94,9 +95,15 @@
             box-shadow: 0 0 30px var(--primary-glow); 
             transform: scale(1.03); 
         }
-        .copy-ip:active { transform: scale(0.97); }
 
         .section-label { font-size: 0.7rem; color: #666; letter-spacing: 3px; text-transform: uppercase; font-weight: 900; margin: 30px 0 12px 0; }
+
+        /* --- ANIMOWANE PASKI --- */
+        @keyframes jitter {
+            0% { width: var(--base-width); opacity: 0.9; }
+            50% { width: calc(var(--base-width) + 1.5%); opacity: 1; }
+            100% { width: var(--base-width); opacity: 0.9; }
+        }
 
         .perf-panel {
             background: rgba(255,255,255,0.03);
@@ -104,7 +111,12 @@
         }
         .perf-row { display: flex; justify-content: space-between; font-size: 0.65rem; font-weight: 800; margin-bottom: 6px; }
         .perf-bar { height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-bottom: 12px; overflow: hidden; }
-        .perf-fill { height: 100%; background: var(--primary); box-shadow: 0 0 10px var(--primary); transition: width 1.5s ease-in-out; }
+        .perf-fill { 
+            height: 100%; 
+            background: var(--primary); 
+            box-shadow: 0 0 10px var(--primary); 
+            animation: jitter 4s ease-in-out infinite;
+        }
 
         .admins-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .admin-card {
@@ -112,11 +124,7 @@
             padding: 10px; border-radius: 14px; display: flex; align-items: center; gap: 10px;
             transition: var(--transition); cursor: pointer;
         }
-        .admin-card:hover { 
-            background: rgba(30, 144, 255, 0.1); 
-            border-color: var(--primary); 
-            transform: translateY(-3px);
-        }
+        .admin-card:hover { background: rgba(30, 144, 255, 0.1); border-color: var(--primary); transform: translateY(-3px); }
         .avatar { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--primary); }
         .admin-info p { font-size: 0.8rem; font-weight: 800; }
 
@@ -164,7 +172,7 @@
         }
         .btn-dc { background: #5865F2; box-shadow: 0 6px 20px rgba(88, 101, 242, 0.3); }
         .btn-shop { background: #ff9800; box-shadow: 0 6px 20px rgba(255, 152, 0, 0.3); }
-        .btn:hover { transform: translateY(-6px) scale(1.02); filter: brightness(1.1); box-shadow: 0 10px 25px rgba(0,0,0,0.4); }
+        .btn:hover { transform: translateY(-6px) scale(1.02); filter: brightness(1.1); }
 
         #notif {
             position: fixed; top: 30px; background: var(--primary); color: white;
@@ -190,20 +198,20 @@
         <div class="corner bot-r"></div>
 
         <div class="left-side">
-            <center><img src="logo.png" alt="Logo" class="server-logo"></center>
+            <img src="logo.png" alt="Logo" class="server-logo">
             <h1>DuceMC.PL</h1>
             <div class="copy-ip" onclick="copyIP()">SKOPIUJ ADRES IP</div>
             
-            <p class="section-label">WYDAJNOŚĆ MASZYNY</p>
+            <p class="section-label">LIVE PERFORMANCE</p>
             <div class="perf-panel">
                 <div class="perf-row"><span>PROCESOR (AMD)</span><span>12%</span></div>
-                <div class="perf-bar"><div class="perf-fill" style="width: 12%;"></div></div>
+                <div class="perf-bar"><div class="perf-fill" style="width: 12%; --base-width: 12%;"></div></div>
                 
                 <div class="perf-row"><span>PAMIĘĆ RAM</span><span>4.2GB / 16GB</span></div>
-                <div class="perf-bar"><div class="perf-fill" style="width: 35%;"></div></div>
+                <div class="perf-bar"><div class="perf-fill" style="width: 35%; --base-width: 35%;"></div></div>
 
                 <div class="perf-row"><span>OPÓŹNIENIE (PING)</span><span>18ms</span></div>
-                <div class="perf-bar"><div class="perf-fill" style="width: 15%; background: var(--accent-green);"></div></div>
+                <div class="perf-bar"><div class="perf-fill" style="width: 15%; --base-width: 15%; background: var(--accent-green);"></div></div>
             </div>
 
             <p class="section-label">ADMINISTRACJA</p>
@@ -216,7 +224,7 @@
         </div>
 
         <div class="right-side">
-            <p class="section-label">INFORMACJE O SERWERZE</p>
+            <p class="section-label">STATUS SYSTEMU</p>
             <div class="status-grid">
                 <div class="status-box"><span class="pulse"></span> <span style="font-size: 0.8rem; font-weight: 800;">STATUS: ONLINE</span></div>
                 <div class="status-box"><span style="font-size: 0.8rem; font-weight: 800; color: var(--primary);">WERSJA: 1.8 - 1.21</span></div>
@@ -228,19 +236,19 @@
                 <div class="mode">WKRÓTCE...</div>
             </div>
 
-            <p class="section-label">ZASADY PANUJĄCE NA SERWERZE</p>
+            <p class="section-label">KODEKS POSTĘPOWANIA</p>
             <div class="rules-list">
                 <div class="rule-item">
                     <span class="rule-icon">01</span>
-                    <span>Brak wspomagaczy i nieuczciwej przewagi.</span>
+                    <span>Brak wspomagaczy (Cheaty/Makra).</span>
                 </div>
                 <div class="rule-item">
                     <span class="rule-icon">02</span>
-                    <span>Kultura na czacie – szanuj innych graczy.</span>
+                    <span>Szanuj innych – toksyczność = kara.</span>
                 </div>
                 <div class="rule-item">
                     <span class="rule-icon">03</span>
-                    <span>Zakaz reklamowania innych serwerów.</span>
+                    <span>Zakaz reklamowania obcych sieci.</span>
                 </div>
             </div>
 
@@ -292,14 +300,12 @@
             requestAnimationFrame(draw);
         }
 
-        // Ulepszony obrót karty
         window.addEventListener('mousemove', (e) => {
             let xAxis = (window.innerWidth / 2 - e.pageX) / 60;
             let yAxis = (window.innerHeight / 2 - e.pageY) / 60;
             card.style.transform = `rotateY(${xAxis}deg) rotateX(${-yAxis}deg)`;
         });
 
-        // Reset pozycji karty po wyjechaniu myszką
         window.addEventListener('mouseleave', () => {
             card.style.transform = `rotateY(0deg) rotateX(0deg)`;
         });
