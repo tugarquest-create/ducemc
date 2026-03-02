@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sklep Duels | DuceMC.PL</title>
+    <title>Sklep | DuceMC.PL</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     
     <style>
@@ -11,107 +11,97 @@
             --primary: #1e90ff;
             --primary-glow: rgba(30, 144, 255, 0.5);
             --bg-dark: #020205;
-            --card-bg: rgba(7, 7, 10, 0.94);
+            --card-bg: rgba(15, 15, 20, 0.98);
             --gold: #ffd700;
             --transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background: var(--bg-dark);
-            color: white;
-            min-height: 100vh;
-            overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+        body { font-family: 'Montserrat', sans-serif; background: var(--bg-dark); color: white; min-height: 100vh; overflow-x: hidden; display: flex; flex-direction: column; align-items: center; }
+        #hero-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
 
-        #hero-canvas {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-        }
-
-        /* --- NAWIGACJA --- */
-        nav {
-            width: 100%;
-            padding: 20px 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(30, 144, 255, 0.2);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
+        nav { width: 100%; padding: 20px 50px; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.5); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(30, 144, 255, 0.2); position: sticky; top: 0; z-index: 100; }
         .nav-logo { font-weight: 900; color: var(--primary); text-decoration: none; font-size: 1.5rem; }
         .back-btn { text-decoration: none; color: white; font-weight: 700; font-size: 0.9rem; padding: 10px 20px; border: 1px solid var(--primary); border-radius: 10px; transition: var(--transition); }
         .back-btn:hover { background: var(--primary); box-shadow: 0 0 15px var(--primary-glow); }
 
-        /* --- KONTENER SKLEPU --- */
         .shop-container { max-width: 1200px; width: 95%; margin: 50px 0; text-align: center; }
         h2 { font-size: 3rem; font-weight: 900; margin-bottom: 10px; text-shadow: 0 0 20px var(--primary-glow); }
         .subtitle { color: #888; margin-bottom: 40px; text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; }
-
         .category-label { font-size: 1.2rem; font-weight: 900; color: var(--primary); text-align: left; margin: 40px 0 20px 0; border-left: 4px solid var(--primary); padding-left: 15px; }
 
-        /* --- SIATKA PRZEDMIOTÓW --- */
         .items-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
-
-        .item-card {
-            background: var(--card-bg);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 20px;
-            padding: 25px;
-            transition: var(--transition);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-        }
-
+        .item-card { background: rgba(7, 7, 10, 0.94); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; padding: 25px; transition: var(--transition); display: flex; flex-direction: column; justify-content: space-between; }
         .item-card:hover { transform: translateY(-8px); border-color: var(--primary); box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
-
         .item-icon { font-size: 2.2rem; margin-bottom: 15px; }
         .item-name { font-size: 1.3rem; font-weight: 900; margin-bottom: 5px; text-transform: uppercase; }
         .item-price { color: #00ff88; font-size: 1.2rem; font-weight: 700; margin-bottom: 20px; }
-        
-        .buy-btn {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            background: #ff9800;
-            color: white;
-            text-decoration: none;
-            font-weight: 900;
-            border-radius: 10px;
-            transition: var(--transition);
-            font-size: 0.8rem;
-        }
 
+        .buy-btn { display: block; width: 100%; padding: 12px; background: #ff9800; color: white; border: none; font-weight: 900; border-radius: 10px; transition: var(--transition); font-size: 0.8rem; cursor: pointer; }
         .buy-btn:hover { filter: brightness(1.2); box-shadow: 0 5px 15px rgba(255, 152, 0, 0.4); }
 
-        /* Kolory z Twojej konfiguracji LPC */
-        .c-vip { color: #ffb015; }
-        .c-rekin { color: #3080e9; }
-        .c-gangster { color: #6b5ad0; }
-        .c-magnat { color: #d0c02c; }
-        .c-raiot { color: #2fd007; }
-        .c-empire { color: #8611e2; }
-
+        .c-vip { color: #ffb015; } .c-rekin { color: #3080e9; } .c-gangster { color: #6b5ad0; } .c-magnat { color: #d0c02c; } .c-raiot { color: #2fd007; } .c-empire { color: #8611e2; }
         .special-card { border: 2px solid var(--gold) !important; background: rgba(255, 215, 0, 0.05); }
-        .special-card .item-name { color: var(--gold); }
+
+        /* --- MODAL STYLE --- */
+        #payment-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 1000;
+            align-items: center; justify-content: center;
+        }
+        .modal-content {
+            background: var(--card-bg); border: 1px solid var(--primary); border-radius: 30px;
+            padding: 40px; width: 90%; max-width: 500px; position: relative; text-align: center;
+            box-shadow: 0 0 50px rgba(30, 144, 255, 0.2);
+        }
+        .close-modal { position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 1.5rem; color: #666; }
+        .modal-title { font-weight: 900; font-size: 1.5rem; margin-bottom: 5px; }
+        .modal-item-info { color: var(--primary); font-weight: 700; margin-bottom: 25px; }
+        
+        input[type="text"] {
+            width: 100%; padding: 15px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px; color: white; font-family: inherit; font-weight: 700; margin-bottom: 20px; outline: none;
+        }
+        input[type="text"]:focus { border-color: var(--primary); }
+
+        .payment-methods { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 25px; }
+        .method {
+            padding: 12px; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px;
+            cursor: pointer; transition: 0.2s; font-size: 0.8rem; font-weight: 800;
+        }
+        .method:hover { background: rgba(30, 144, 255, 0.1); border-color: var(--primary); }
+        .method.active { background: var(--primary); border-color: var(--primary); color: white; }
+
+        .pay-final-btn {
+            width: 100%; padding: 18px; background: #00ff88; color: #020205; border: none;
+            border-radius: 12px; font-weight: 900; text-transform: uppercase; cursor: pointer; transition: var(--transition);
+        }
+        .pay-final-btn:hover { transform: scale(1.03); box-shadow: 0 0 20px rgba(0, 255, 136, 0.4); }
     </style>
 </head>
 <body>
 
     <canvas id="hero-canvas"></canvas>
+
+    <div id="payment-modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <div class="modal-title">FINALIZACJA ZAKUPU</div>
+            <div id="selected-item-display" class="modal-item-info">Ranga: ???</div>
+            
+            <input type="text" id="player-nick" placeholder="TWÓJ NICK Z MINECRAFT" maxlength="16">
+            
+            <p style="font-size: 0.7rem; color: #888; margin-bottom: 10px; text-align: left;">WYBIERZ METODĘ:</p>
+            <div class="payment-methods">
+                <div class="method active" onclick="setMethod(this)">BLIK / PRZELEW</div>
+                <div class="method" onclick="setMethod(this)">PAYSAFECARD</div>
+                <div class="method" onclick="setMethod(this)">PAYPAL</div>
+                <div class="method" onclick="setMethod(this)">SMS PREMIUM</div>
+            </div>
+
+            <button class="pay-final-btn" onclick="processPayment()">PRZEJDŹ DO PŁATNOŚCI</button>
+        </div>
+    </div>
 
     <nav>
         <a href="index.html" class="nav-logo">DuceMC.PL</a>
@@ -124,101 +114,64 @@
 
         <div class="category-label">RANGI SERWEROWE</div>
         <div class="items-grid">
-            <div class="item-card">
-                <span class="item-icon">⭐</span>
-                <div class="item-name c-vip">Vip</div>
-                <div class="item-price">14.99 PLN</div>
-                <a href="#" class="buy-btn">KUP TERAZ</a>
-            </div>
-            <div class="item-card">
-                <span class="item-icon">🦈</span>
-                <div class="item-name c-rekin">Rekin</div>
-                <div class="item-price">34.99 PLN</div>
-                <a href="#" class="buy-btn">KUP TERAZ</a>
-            </div>
-            <div class="item-card">
-                <span class="item-icon">🎭</span>
-                <div class="item-name c-gangster">GangSter</div>
-                <div class="item-price">59.99 PLN</div>
-                <a href="#" class="buy-btn">KUP TERAZ</a>
-            </div>
-            <div class="item-card">
-                <span class="item-icon">💰</span>
-                <div class="item-name c-magnat">Magnat</div>
-                <div class="item-price">89.99 PLN</div>
-                <a href="#" class="buy-btn">KUP TERAZ</a>
-            </div>
-            <div class="item-card">
-                <span class="item-icon">⚡</span>
-                <div class="item-name c-raiot">Raiot</div>
-                <div class="item-price">119.99 PLN</div>
-                <a href="#" class="buy-btn">KUP TERAZ</a>
-            </div>
-            <div class="item-card">
-                <span class="item-icon">🛡️</span>
-                <div class="item-name c-empire">Empire</div>
-                <div class="item-price">149.99 PLN</div>
-                <a href="#" class="buy-btn">KUP TERAZ</a>
-            </div>
-        </div>
-
-        <div class="category-label">PAKIETY SPECJALNE</div>
-        <div class="items-grid">
-            <div class="item-card special-card">
-                <span class="item-icon">👑</span>
-                <div class="item-name">Pakiet Empire</div>
-                <div class="item-price">199.99 PLN</div>
-                <p style="font-size: 0.7rem; color: #ccc; margin-bottom: 10px;">Ranga Empire + Unikalne Efekty + Wszystkie Kosmetyki</p>
-                <a href="#" class="buy-btn">WYBIERZ</a>
-            </div>
-            <div class="item-card special-card" style="border-color: #00ff88 !important; background: rgba(0, 255, 136, 0.05);">
-                <span class="item-icon">💎</span>
-                <div class="item-name" style="color: #00ff88;">Pakiet Bogacza</div>
-                <div class="item-price">299.99 PLN</div>
-                <p style="font-size: 0.7rem; color: #ccc; margin-bottom: 10px;">Dostęp do loży bogaczy + Złoty Prefix na czacie</p>
-                <a href="#" class="buy-btn">WYBIERZ</a>
-            </div>
+            <div class="item-card"><span class="item-icon">⭐</span><div class="item-name c-vip">Vip</div><div class="item-price">14.99 PLN</div><button class="buy-btn" onclick="openModal('Vip', '14.99 PLN')">KUP TERAZ</button></div>
+            <div class="item-card"><span class="item-icon">🦈</span><div class="item-name c-rekin">Rekin</div><div class="item-price">34.99 PLN</div><button class="buy-btn" onclick="openModal('Rekin', '34.99 PLN')">KUP TERAZ</button></div>
+            <div class="item-card"><span class="item-icon">🎭</span><div class="item-name c-gangster">GangSter</div><div class="item-price">59.99 PLN</div><button class="buy-btn" onclick="openModal('GangSter', '59.99 PLN')">KUP TERAZ</button></div>
+            <div class="item-card"><span class="item-icon">💰</span><div class="item-name c-magnat">Magnat</div><div class="item-price">89.99 PLN</div><button class="buy-btn" onclick="openModal('Magnat', '89.99 PLN')">KUP TERAZ</button></div>
+            <div class="item-card"><span class="item-icon">⚡</span><div class="item-name c-raiot">Raiot</div><div class="item-price">119.99 PLN</div><button class="buy-btn" onclick="openModal('Raiot', '119.99 PLN')">KUP TERAZ</button></div>
+            <div class="item-card"><span class="item-icon">🛡️</span><div class="item-name c-empire">Empire</div><div class="item-price">149.99 PLN</div><button class="buy-btn" onclick="openModal('Empire', '149.99 PLN')">KUP TERAZ</button></div>
         </div>
     </div>
 
     <script>
+        const modal = document.getElementById('payment-modal');
+        const itemDisplay = document.getElementById('selected-item-display');
+        
+        function openModal(name, price) {
+            itemDisplay.innerText = `Przedmiot: ${name} (${price})`;
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+
+        function setMethod(element) {
+            document.querySelectorAll('.method').forEach(m => m.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        function processPayment() {
+            const nick = document.getElementById('player-nick').value;
+            if(nick.length < 3) {
+                alert("Podaj poprawny nick gracza!");
+                return;
+            }
+            alert("Przekierowywanie do systemu płatności dla gracza: " + nick);
+            // Tutaj możesz wstawić: window.location.href = "TWÓJ_LINK_DO_PŁATNOŚCI";
+        }
+
+        // TŁO STARS (ten sam kod co wcześniej)
         const canvas = document.getElementById('hero-canvas');
         const ctx = canvas.getContext('2d');
         let stars = [];
-
         function init() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
             stars = [];
-            for(let i=0; i<180; i++) {
-                stars.push({
-                    x: Math.random() * canvas.width - canvas.width/2,
-                    y: Math.random() * canvas.height - canvas.height/2,
-                    z: Math.random() * canvas.width
-                });
-            }
+            for(let i=0; i<180; i++) stars.push({x: Math.random()*canvas.width-canvas.width/2, y: Math.random()*canvas.height-canvas.height/2, z: Math.random()*canvas.width});
         }
-
         function draw() {
-            ctx.fillStyle = '#020205';
-            ctx.fillRect(0,0,canvas.width, canvas.height);
-            ctx.save(); 
-            ctx.translate(canvas.width/2, canvas.height/2);
+            ctx.fillStyle = '#020205'; ctx.fillRect(0,0,canvas.width, canvas.height);
+            ctx.save(); ctx.translate(canvas.width/2, canvas.height/2);
             for(let s of stars) {
-                s.z -= 1.2;
-                if(s.z <= 0) s.z = canvas.width;
-                let px = s.x / (s.z / canvas.width);
-                let py = s.y / (s.z / canvas.width);
+                s.z -= 1.2; if(s.z <= 0) s.z = canvas.width;
+                let px = s.x / (s.z / canvas.width); let py = s.y / (s.z / canvas.width);
                 let size = (1 - s.z / canvas.width) * 1.8;
-                ctx.beginPath(); 
-                ctx.arc(px, py, size, 0, Math.PI*2);
-                ctx.fillStyle = `rgba(30, 144, 255, ${0.8 - s.z/canvas.width})`;
-                ctx.fill();
+                ctx.beginPath(); ctx.arc(px, py, size, 0, Math.PI*2);
+                ctx.fillStyle = `rgba(30, 144, 255, ${0.8 - s.z/canvas.width})`; ctx.fill();
             }
-            ctx.restore();
-            requestAnimationFrame(draw);
+            ctx.restore(); requestAnimationFrame(draw);
         }
-
         window.addEventListener('resize', init);
         init(); draw();
     </script>
