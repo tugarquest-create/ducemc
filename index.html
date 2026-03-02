@@ -3,225 +3,280 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DuceMC.PL | Elite Minecraft Network</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>DuceMC.PL | Profesjonalna Sieć Serwerów</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #00d2ff; /* Jasny błękit wody */
-            --accent: #3a7bd5;  /* Głęboki niebieski */
-            --green: #00ff88;   
-            --bg-dark: #02050a;
-            --card-bg: rgba(10, 20, 40, 0.85);
+            --primary: #00d2ff;
+            --accent: #3a7bd5;
+            --bg-dark: #03080f;
+            --glass: rgba(10, 25, 47, 0.75);
+            --border: rgba(0, 210, 255, 0.2);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; cursor: default; }
 
         body {
             font-family: 'Montserrat', sans-serif;
-            background: var(--bg-dark);
-            background: radial-gradient(circle at center, #0a192f 0%, #02050a 100%);
+            background-color: var(--bg-dark);
             color: white;
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             overflow: hidden;
         }
 
-        /* EFEKT FALUJĄCEJ WODY */
-        .ocean { 
-            height: 5%; width: 100%; position: absolute; bottom: 0; left: 0; background: #01579b; opacity: 0.5;
+        /* BACKGROUND IMAGE WITH BLUR */
+        .bg-image {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: url('pobrane (1).jpg') center/cover no-repeat;
+            filter: brightness(0.3) blur(4px);
+            z-index: -2;
+            transform: scale(1.1);
         }
-        .wave {
-            background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/85486/wave.svg) repeat-x; 
-            position: absolute; top: -198px; width: 6400px; height: 198px; animation: wave 7s cubic-bezier( 0.36, 0.45, 0.63, 0.53) infinite; transform: translate3d(0, 0, 0);
-        }
-        .wave:nth-of-type(2) { top: -175px; animation: wave 7s cubic-bezier( 0.36, 0.45, 0.63, 0.53) -.125s infinite, swell 7s ease -1.25s infinite; opacity: 1; }
-        @keyframes wave { 0% { margin-left: 0; } 100% { margin-left: -1600px; } }
-        @keyframes swell { 0%, 100% { transform: translate3d(0,-25px,0); } 50% { transform: translate3d(0,5px,0); } }
 
-        /* GŁÓWNA KARTA */
-        .main-container {
-            position: relative;
-            background: var(--card-bg);
-            backdrop-filter: blur(15px); /* Efekt mrożonego szkła */
-            border-radius: 30px;
-            padding: 50px;
-            width: 95%;
-            max-width: 1000px;
+        #bubbles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+
+        /* MAIN WRAPPER */
+        .container {
             display: grid;
-            grid-template-columns: 1.2fr 1.8fr;
-            gap: 40px;
-            box-shadow: 0 0 50px rgba(0, 210, 255, 0.2);
-            border: 1px solid rgba(0, 210, 255, 0.1);
-            transition: transform 0.3s ease-out;
+            grid-template-columns: 1.1fr 1.9fr;
+            gap: 25px;
+            width: 95%;
+            max-width: 1200px;
             z-index: 10;
+            perspective: 1000px;
         }
 
-        /* NIEBIESKI SNAKE BORDER */
-        .snake { position: absolute; display: block; filter: blur(2px); }
-        .s1 { top: 0; left: -100%; width: 100%; height: 2px; background: linear-gradient(90deg, transparent, var(--primary)); animation: s1 4s linear infinite; }
-        .s2 { top: -100%; right: 0; width: 2px; height: 100%; background: linear-gradient(180deg, transparent, var(--primary)); animation: s2 4s linear infinite; animation-delay: 2s; }
-        .s3 { bottom: 0; right: -100%; width: 100%; height: 2px; background: linear-gradient(270deg, transparent, var(--primary)); animation: s3 4s linear infinite; }
-        .s4 { bottom: -100%; left: 0; width: 2px; height: 100%; background: linear-gradient(360deg, transparent, var(--primary)); animation: s4 4s linear infinite; animation-delay: 2s; }
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            padding: 45px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5), inset 0 0 20px rgba(0,210,255,0.05);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
 
-        @keyframes s1 { 0% { left: -100%; } 100% { left: 100%; } }
-        @keyframes s2 { 0% { top: -100%; } 100% { top: 100%; } }
-        @keyframes s3 { 0% { right: -100%; } 100% { right: 100%; } }
-        @keyframes s4 { 0% { bottom: -100%; } 100% { bottom: 100%; } }
-
-        /* LEWA STRONA */
-        .left { text-align: center; border-right: 1px solid rgba(255,255,255,0.05); padding-right: 30px; }
-        .logo { width: 130px; margin-bottom: 20px; filter: drop-shadow(0 0 15px var(--primary)); }
+        /* LEFT SIDE */
+        .card-info { text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         
-        h1 { 
-            font-size: 3.5rem; 
-            font-weight: 900; 
-            letter-spacing: -2px;
-            background: linear-gradient(to bottom, #fff, var(--primary));
+        .status-badge {
+            background: rgba(0, 210, 255, 0.1);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+            box-shadow: 0 0 15px rgba(0,210,255,0.2);
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #fff 30%, var(--primary) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 10px rgba(0,210,255,0.3));
-        }
-        
-        #typewriter { 
-            color: #fff; opacity: 0.8;
-            font-weight: 700; font-size: 0.8rem; letter-spacing: 4px; text-transform: uppercase;
+            margin-bottom: 5px;
+            filter: drop-shadow(0 0 20px rgba(0,210,255,0.4));
         }
 
-        .ip-box {
-            margin-top: 25px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
+        .ip-button {
+            width: 100%;
+            margin-top: 30px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
             color: #000;
-            padding: 15px;
-            border-radius: 12px;
+            padding: 18px;
+            border-radius: 15px;
             font-weight: 900;
+            font-size: 1.1rem;
             cursor: pointer;
-            transition: 0.4s;
-            box-shadow: 0 0 20px rgba(0,210,255,0.2);
+            box-shadow: 0 10px 25px rgba(0, 210, 255, 0.3);
+            transition: 0.3s;
         }
-        .ip-box:hover { transform: scale(1.05); box-shadow: 0 0 30px var(--primary); }
 
-        /* PRAWA STRONA */
-        .right { display: flex; flex-direction: column; gap: 12px; }
-        .section-title { font-size: 0.6rem; letter-spacing: 5px; color: var(--primary); font-weight: 900; text-transform: uppercase; opacity: 0.6; }
+        .ip-button:hover { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(0, 210, 255, 0.5); }
 
-        .nav-item {
+        /* RIGHT SIDE NAVIGATION */
+        .card-nav { display: flex; flex-direction: column; gap: 20px; }
+        .section-label { font-size: 0.7rem; letter-spacing: 5px; opacity: 0.4; font-weight: 800; margin-bottom: 5px; }
+
+        .nav-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+
+        .nav-link {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.07);
+            padding: 25px;
+            border-radius: 20px;
+            text-decoration: none;
+            color: white;
             display: flex;
             align-items: center;
             gap: 15px;
-            padding: 18px 25px;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 15px;
-            text-decoration: none;
-            color: white;
             transition: 0.3s;
         }
-        .nav-item:hover { 
-            background: rgba(0, 210, 255, 0.1); 
+
+        .nav-link:hover {
+            background: rgba(0, 210, 255, 0.08);
             border-color: var(--primary);
-            transform: translateX(10px);
+            transform: scale(1.02);
         }
-        
-        .nav-item b { display: block; font-size: 1.1rem; }
-        .nav-item span { font-size: 0.7rem; opacity: 0.5; }
 
-        /* NOTIF */
+        .nav-link i { font-size: 1.8rem; }
+        .nav-link b { font-size: 1.2rem; display: block; }
+        .nav-link span { font-size: 0.75rem; opacity: 0.5; }
+
+        /* RECENT PURCHASES BAR */
+        .footer-stats {
+            margin-top: 40px;
+            width: 95%;
+            max-width: 1200px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 30px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.05);
+            z-index: 10;
+        }
+
+        .purchase-list { display: flex; gap: 12px; align-items: center; }
+        .head-img { width: 32px; height: 32px; border-radius: 5px; border: 1px solid var(--border); }
+
+        /* NOTIFICATION */
         #notif {
-            position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%);
-            background: var(--primary); color: #000; padding: 12px 30px;
-            border-radius: 10px; font-weight: 800; transition: 0.5s ease; z-index: 1000;
+            position: fixed; bottom: -80px; left: 50%; transform: translateX(-50%);
+            background: #fff; color: #000; padding: 15px 35px;
+            border-radius: 50px; font-weight: 800; transition: 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28); z-index: 100;
         }
-        #notif.active { bottom: 30px; }
+        #notif.show { bottom: 40px; }
 
-        @media (max-width: 800px) {
-            .main-container { grid-template-columns: 1fr; }
-            .left { border: none; padding-right: 0; }
+        @media (max-width: 950px) {
+            .container { grid-template-columns: 1fr; overflow-y: auto; padding: 20px; }
+            body { overflow-y: auto; }
+            .bg-image { filter: brightness(0.2) blur(8px); }
         }
     </style>
 </head>
 <body>
 
-    <div class="ocean">
-        <div class="wave"></div>
-        <div class="wave"></div>
-    </div>
+    <div class="bg-image"></div>
+    <canvas id="bubbles"></canvas>
 
-    <div class="main-container" id="card">
-        <span class="snake s1"></span><span class="snake s2"></span>
-        <span class="snake s3"></span><span class="snake s4"></span>
-
-        <div class="left">
-            <img src="logo.png" alt="Logo" class="logo" onerror="this.style.display='none'">
-            <h1>DUCEMC</h1>
-            <div id="typewriter"></div>
+    <div class="container" id="tilt-scene">
+        <div class="glass-card card-info">
+            <div class="status-badge">● 409 GRACZY ONLINE</div>
+            <h1>DUCEMC.PL</h1>
+            <p style="opacity: 0.6; font-weight: 500;">Najlepszy Survival + Gildie w Polsce</p>
             
-            <div class="ip-box" onclick="copyIP()">
-                KOPIUJ IP: DUCEMC.PL
-            </div>
-
-            <div style="display: flex; gap: 10px; margin-top: 30px; justify-content: center;">
-                <div style="background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; border-bottom: 2px solid var(--primary);">
-                    <small style="font-size: 0.5rem; opacity: 0.5;">ONLINE</small><br><b>142</b>
-                </div>
-                <div style="background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; border-bottom: 2px solid var(--primary);">
-                    <small style="font-size: 0.5rem; opacity: 0.5;">REKORD</small><br><b>350</b>
-                </div>
+            <div class="ip-button" onclick="copyIP()">SKOPIUJ ADRES IP</div>
+            
+            <div style="margin-top: 25px; display: flex; gap: 20px;">
+                <div><small style="opacity:0.4; font-size: 0.6rem;">WERSJA</small><br><b>1.20.x</b></div>
+                <div style="width: 1px; background: rgba(255,255,255,0.1);"></div>
+                <div><small style="opacity:0.4; font-size: 0.6rem;">REKORD</small><br><b>842</b></div>
             </div>
         </div>
 
-        <div class="right">
-            <p class="section-title">SERWER</p>
-            <a href="sklep.html" class="nav-item">
-                <span style="font-size: 1.5rem;">🛒</span>
-                <div><b>ITEMSHOP</b><span>Wsparcie serwera</span></div>
-            </a>
-            <a href="rekrutacja.html" class="nav-item">
-                <span style="font-size: 1.5rem;">📝</span>
-                <div><b>REKRUTACJA</b><span>Dołącz do nas</span></div>
-            </a>
-            <a href="regulamin.html" class="nav-item">
-                <span style="font-size: 1.5rem;">📜</span>
-                <div><b>REGULAMIN</b><span>Zasady sieci</span></div>
-            </a>
-            <a href="https://dc.ducemc.pl" target="_blank" class="nav-item" style="border-left: 4px solid #5865f2;">
-                <span style="font-size: 1.5rem;">💬</span>
-                <div><b style="color: #5865f2;">DISCORD</b><span>Społeczność</span></div>
-            </a>
+        <div class="glass-card card-nav">
+            <p class="section-label">NAWIGACJA SIECI</p>
+            <div class="nav-buttons">
+                <a href="#" class="nav-link">
+                    <i>🛒</i>
+                    <div><b>ITEMSHOP</b><span>Doładuj portfel</span></div>
+                </a>
+                <a href="#" class="nav-link">
+                    <i>📜</i>
+                    <div><b>REGULAMIN</b><span>Zasady serwera</span></div>
+                </a>
+                <a href="#" class="nav-link">
+                    <i>🎫</i>
+                    <div><b>VOUCHERY</b><span>Zrealizuj kod</span></div>
+                </a>
+                <a href="https://dc.ducemc.pl" class="nav-link" style="border-left: 4px solid #5865f2;">
+                    <i>💬</i>
+                    <div><b style="color: #5865f2;">DISCORD</b><span>Dołącz do nas</span></div>
+                </a>
+            </div>
+            
+            <p class="section-label" style="margin-top: 15px;">TWOJE KONTO</p>
+            <div class="nav-link" style="background: rgba(0, 210, 255, 0.05); cursor: pointer;">
+                <i>👤</i>
+                <div><b>ZALOGUJ SIĘ</b><span>Zarządzaj statystykami</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-stats">
+        <div style="font-size: 0.7rem; font-weight: 700; opacity: 0.6; letter-spacing: 1px;">OSTATNIE ZAKUPY:</div>
+        <div class="purchase-list">
+            <img src="https://cravatar.eu/avatar/MHF_Steve/32.png" class="head-img" title="Steve">
+            <img src="https://cravatar.eu/avatar/MHF_Alex/32.png" class="head-img" title="Alex">
+            <img src="https://cravatar.eu/avatar/TugareK/32.png" class="head-img" title="TugareK">
+            <img src="https://cravatar.eu/avatar/RdstoneBrilliant/32.png" class="head-img" title="Gracz">
+            <span style="font-size: 0.7rem; opacity: 0.4; margin-left: 10px;">i 12 innych...</span>
         </div>
     </div>
 
     <div id="notif">SKOPIOWANO ADRES IP!</div>
 
     <script>
-        // --- RUCH KARTY ---
-        const card = document.getElementById('card');
-        window.addEventListener('mousemove', (e) => {
-            let x = (window.innerWidth / 2 - e.pageX) / 100;
-            let y = (window.innerHeight / 2 - e.pageY) / 100;
-            card.style.transform = `rotateY(${-x}deg) rotateX(${y}deg)`;
-        });
+        // --- BĄBELKI WODY ---
+        const canvas = document.getElementById('bubbles');
+        const ctx = canvas.getContext('2d');
+        let bubbles = [];
 
-        // --- PISANIE ---
-        const words = ["Survival + Gildie", "Najlepsza Społeczność", "Brak Lagów", "Wersja 1.20.x"];
-        let i = 0, j = 0, current = "", isDeleting = false;
-        function type() {
-            const target = document.getElementById("typewriter");
-            if (isDeleting) current = words[i].substring(0, j--);
-            else current = words[i].substring(0, j++);
-            target.innerHTML = current + '<span style="border-right: 2px solid var(--primary); animation: blink 0.7s infinite;"></span>';
-            if (!isDeleting && j === words[i].length + 1) { isDeleting = true; setTimeout(type, 2000); }
-            else if (isDeleting && j === 0) { isDeleting = false; i = (i + 1) % words.length; setTimeout(type, 500); }
-            else { setTimeout(type, isDeleting ? 40 : 80); }
+        function init() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            bubbles = [];
+            for(let i=0; i<40; i++) {
+                bubbles.push({
+                    x: Math.random() * canvas.width,
+                    y: canvas.height + 100,
+                    r: Math.random() * 3 + 1,
+                    v: Math.random() * 1.5 + 0.5,
+                    o: Math.random() * 0.4
+                });
+            }
         }
-        type();
+
+        function animate() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            bubbles.forEach(b => {
+                ctx.beginPath();
+                ctx.arc(b.x, b.y, b.r, 0, Math.PI*2);
+                ctx.fillStyle = `rgba(0, 210, 255, ${b.o})`;
+                ctx.fill();
+                b.y -= b.v;
+                if(b.y < -50) { b.y = canvas.height + 50; b.x = Math.random() * canvas.width; }
+            });
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', init);
+        init(); animate();
+
+        // --- SUBTELNY RUCH KARTY ---
+        const scene = document.getElementById('tilt-scene');
+        window.addEventListener('mousemove', (e) => {
+            let x = (window.innerWidth / 2 - e.pageX) / 120;
+            let y = (window.innerHeight / 2 - e.pageY) / 120;
+            scene.style.transform = `rotateY(${-x}deg) rotateX(${y}deg)`;
+        });
 
         function copyIP() {
             navigator.clipboard.writeText("DUCEMC.PL");
             const n = document.getElementById('notif');
-            n.classList.add('active');
-            setTimeout(() => n.classList.remove('active'), 2000);
+            n.classList.add('show');
+            setTimeout(() => n.classList.remove('show'), 2500);
         }
     </script>
 </body>
