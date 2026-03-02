@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DuceMC.PL | Sklep Serwerowy</title>
+    <title>DuceMC.PL | Sklep Rang</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-dark: #02060a;
             --glass: rgba(10, 25, 47, 0.9);
             --border: rgba(255, 255, 255, 0.08);
-            /* Kolory z Twojego LuckPerms */
             --vip: #ffb015;
             --rekin: #3080e9;
             --gangster: #6b5ad0;
@@ -42,7 +41,6 @@
         .header h1 { font-size: 3.5rem; font-weight: 900; letter-spacing: -2px; text-transform: uppercase; }
         .header span { color: var(--rekin); }
 
-        /* BOX NICKU */
         .nick-section {
             background: var(--glass);
             padding: 30px;
@@ -55,7 +53,6 @@
             margin-bottom: 50px;
             width: 100%;
             max-width: 450px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
 
         .nick-section input {
@@ -68,12 +65,8 @@
             font-family: 'JetBrains Mono';
             font-size: 1.2rem;
             text-align: center;
-            transition: 0.3s;
         }
 
-        .nick-section input:focus { border-color: var(--rekin); outline: none; background: rgba(0,0,0,0.6); }
-
-        /* SIATKA RANG */
         .ranks-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -88,21 +81,18 @@
             padding: 40px;
             border: 1px solid var(--border);
             text-align: center;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: 0.4s;
             display: flex;
             flex-direction: column;
-            position: relative;
         }
 
-        .rank-card:hover { transform: translateY(-15px); border-color: rgba(255,255,255,0.3); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        .rank-card:hover { transform: translateY(-10px); border-color: rgba(255,255,255,0.2); }
 
         .rank-title { font-size: 2.5rem; font-weight: 900; margin-bottom: 5px; }
-        .rank-price { font-size: 1.8rem; font-weight: 800; margin-bottom: 30px; opacity: 0.9; }
-        .rank-price span { font-size: 1rem; opacity: 0.5; }
+        .rank-price { font-size: 1.8rem; font-weight: 800; margin-bottom: 30px; }
 
         .features { text-align: left; margin-bottom: 40px; flex-grow: 1; }
-        .features li { list-style: none; padding: 10px 0; font-size: 0.95rem; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 10px; }
-        .features li::before { content: '★'; color: inherit; font-weight: 900; }
+        .features li { list-style: none; padding: 10px 0; font-size: 0.95rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
 
         .buy-btn {
             width: 100%;
@@ -116,7 +106,7 @@
             transition: 0.3s;
         }
 
-        /* KOLORYSTYKA RANG */
+        /* KOLORY RANG */
         .r-vip { border-top: 8px solid var(--vip); color: var(--vip); }
         .r-vip .buy-btn { background: var(--vip); color: black; }
 
@@ -132,12 +122,10 @@
         .r-raiot { border-top: 8px solid var(--raiot); color: var(--raiot); }
         .r-raiot .buy-btn { background: var(--raiot); color: white; }
 
-        .r-empire { border-top: 8px solid var(--empire); color: var(--empire); box-shadow: inset 0 0 20px rgba(134, 17, 226, 0.1); }
+        .r-empire { border-top: 8px solid var(--empire); color: var(--empire); }
         .r-empire .buy-btn { background: var(--empire); color: white; }
 
-        .buy-btn:hover { transform: scale(1.05); filter: brightness(1.2); }
-
-        .footer { margin-top: 80px; opacity: 0.4; font-size: 0.8rem; text-align: center; line-height: 2; }
+        .footer { margin-top: 80px; opacity: 0.4; font-size: 0.8rem; text-align: center; }
     </style>
 </head>
 <body>
@@ -146,100 +134,100 @@
 
     <div class="header">
         <h1>Duce<span>MC</span>.PL</h1>
-        <p>Oficjalny sklep z rangami</p>
+        <p>Wybierz rangę i wspieraj serwer</p>
     </div>
 
     <div class="nick-section">
-        <img id="avatar" src="https://cravatar.eu/avatar/MHF_Steve/80.png" style="width: 80px; border-radius: 20px; border: 2px solid var(--border);">
-        <input type="text" id="player-nick" placeholder="TWÓJ NICK Z GRY" oninput="document.getElementById('avatar').src='https://cravatar.eu/avatar/'+this.value+'/80.png'">
-        <p style="font-size: 0.7rem; font-weight: 700; opacity: 0.5;">PODAJ NICK, ABY PRZYPISAĆ ZAKUP</p>
+        <img id="avatar" src="https://cravatar.eu/avatar/MHF_Steve/80.png" style="width: 80px; border-radius: 20px;">
+        <input type="text" id="player-nick" placeholder="TWÓJ NICK Z MC" oninput="document.getElementById('avatar').src='https://cravatar.eu/avatar/'+this.value+'/80.png'">
+        <p style="font-size: 0.7rem; font-weight: 700; opacity: 0.5;">NA TEN NICK OTRZYMASZ RANGĘ</p>
     </div>
 
     <div class="ranks-container">
         
         <div class="rank-card r-vip">
             <div class="rank-title">VIP</div>
-            <div class="rank-price">14.99 <span>PLN</span></div>
+            <div class="rank-price">14.99 PLN</div>
             <ul class="features">
                 <li>Pisanie na kolorowo</li>
-                <li>Zestaw /kit vip</li>
-                <li>Prefiks [VIP] na czacie</li>
+                <li>Dostęp do /kit vip</li>
+                <li>Specjalny prefiks czatu</li>
             </ul>
-            <button class="buy-btn" onclick="pay('VIP')">DO KOSZYKA</button>
+            <button class="buy-btn" onclick="pay('https://pay.cashbill.pl/pl/pay/hdz6zna9zu?token=0cb07dd6a615c4dda16649176a1c3bb577459f4f')">ZAKUP VIP</button>
         </div>
 
         <div class="rank-card r-rekin">
             <div class="rank-title">REKIN</div>
-            <div class="rank-price">34.99 <span>PLN</span></div>
+            <div class="rank-price">34.99 PLN</div>
             <ul class="features">
-                <li>Wszystko co VIP</li>
-                <li>Latanie na lobby (/fly)</li>
-                <li>Zestaw /kit rekin</li>
+                <li>Wszystkie bonusy VIP</li>
+                <li>Latanie na Lobby</li>
+                <li>Dostęp do /kit rekin</li>
             </ul>
-            <button class="buy-btn" onclick="pay('REKIN')">DO KOSZYKA</button>
+            <button class="buy-btn" onclick="pay('https://pay.cashbill.pl/pl/pay/hdz6znaerw?token=aacc11517652f478c33892d2116091275b4c1d95')">ZAKUP REKIN</button>
         </div>
 
         <div class="rank-card r-gangster">
             <div class="rank-title">GANGSTER</div>
-            <div class="rank-price">59.99 <span>PLN</span></div>
+            <div class="rank-price">59.99 PLN</div>
             <ul class="features">
-                <li>Wszystko co REKIN</li>
-                <li>Dostęp do /nick</li>
-                <li>Zmiana koloru nicku</li>
+                <li>Wszystkie bonusy REKIN</li>
+                <li>Możliwość zmiany /nick</li>
+                <li>Pisanie kolorami HEX</li>
             </ul>
-            <button class="buy-btn" onclick="pay('GANGSTER')">DO KOSZYKA</button>
+            <button class="buy-btn" onclick="pay('https://pay.cashbill.pl/pl/pay/hdz6znah9a?token=020c9334dee69dfaedb095b60c6a9517fa07994a')">ZAKUP GANGSTER</button>
         </div>
 
         <div class="rank-card r-magnat">
             <div class="rank-title">MAGNAT</div>
-            <div class="rank-price">89.99 <span>PLN</span></div>
+            <div class="rank-price">89.99 PLN</div>
             <ul class="features">
-                <li>Pakiety premium /kit</li>
-                <li>Dostęp do cząsteczek</li>
-                <li>Slot na pełnym serwerze</li>
+                <li>Ekskluzywne pakiety /kit</li>
+                <li>Efekty cząsteczkowe</li>
+                <li>Dostęp do pełnego serwera</li>
             </ul>
-            <button class="buy-btn" onclick="pay('MAGNAT')">DO KOSZYKA</button>
+            <button class="buy-btn" onclick="pay('https://pay.cashbill.pl/pl/pay/hdz6znakof?token=e4547204e53edf5909d6d65a4d57918b65c826f3')">ZAKUP MAGNAT</button>
         </div>
 
         <div class="rank-card r-raiot">
             <div class="rank-title">RAIOT</div>
-            <div class="rank-price">119.99 <span>PLN</span></div>
+            <div class="rank-price">119.99 PLN</div>
             <ul class="features">
                 <li>Unikalny prefiks RAIOT</li>
-                <li>Zestaw mistrzowski</li>
-                <li>Dostęp do ukrytych kanałów</li>
+                <li>Topowe zestawy eq</li>
+                <li>Ranga na Discordzie</li>
             </ul>
-            <button class="buy-btn" onclick="pay('RAIOT')">DO KOSZYKA</button>
+            <button class="buy-btn" onclick="pay('https://pay.cashbill.pl/pl/pay/hdz6znam7p?token=7ccad60bf19c69b7addfe043735cff8234393f57')">ZAKUP RAIOT</button>
         </div>
 
         <div class="rank-card r-empire">
             <div class="rank-title">EMPIRE</div>
-            <div class="rank-price">149.99 <span>PLN</span></div>
+            <div class="rank-price">149.99 PLN</div>
             <ul class="features">
-                <li>NAJLEPSZA RANGA</li>
-                <li>Wszystkie przywileje</li>
-                <li>Status Legendy</li>
+                <li>NAJWYŻSZA RANGA</li>
+                <li>Wszystkie możliwe opcje</li>
+                <li>Status Legendy DuceMC</li>
             </ul>
-            <button class="buy-btn" onclick="pay('EMPIRE')">DO KOSZYKA</button>
+            <button class="buy-btn" onclick="pay('https://pay.cashbill.pl/pl/pay/hdz6znanc4?token=fd51d28b5218f605f7fedf255b0351aa0743b116')">ZAKUP EMPIRE</button>
         </div>
 
     </div>
 
     <div class="footer">
-        DUCEMC.PL &copy; 2026 | Płatności obsługiwane przez IceHost.pl<br>
-        Ta strona wykorzystuje pliki cookies. Korzystając z niej akceptujesz politykę prywatności.
+        DUCEMC.PL &copy; 2026 | Płatności CashBill<br>
+        Wszystkie transakcje są bezpieczne i szyfrowane.
     </div>
 
     <script>
-        function pay(rankName) {
+        function pay(url) {
             const nick = document.getElementById('player-nick').value;
             if(nick.length < 3) {
-                alert("❌ Musisz wpisać swój nick z gry, aby kontynuować!");
+                alert("❌ Najpierw wpisz swój nick z Minecraft!");
                 return;
             }
-            // Link do Twojego sklepu z parametrami
-            const baseUrl = "https://dash.icehost.pl/t/nRcpQxBTdK";
-            window.location.href = `${baseUrl}?nick=${nick}&item=${rankName}`;
+            // Ponieważ CashBill ma tokeny w URL, wysyłamy gracza bezpośrednio tam.
+            // Uwaga: Gracz musi wpisać nick w formularzu płatności jeśli go o to poproszą.
+            window.location.href = url;
         }
     </script>
 
