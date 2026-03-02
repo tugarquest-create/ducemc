@@ -64,7 +64,7 @@
             position: relative;
             transform-style: preserve-3d;
             will-change: transform;
-            transition: transform 0.4s cubic-bezier(0.03, 0.98, 0.52, 0.99);
+            transition: transform 0.2s ease-out; /* Szybsza reakcja na myszkę */
         }
 
         .corner {
@@ -76,22 +76,23 @@
 
         .left-side { border-right: 1px solid rgba(255,255,255,0.05); padding-right: 30px; }
         .server-logo { max-width: 160px; filter: drop-shadow(0 0 25px var(--primary-glow)); margin-bottom: 10px; }
-        h1 { font-size: 2.8rem; color: var(--primary); font-weight: 900; letter-spacing: -1px; margin-bottom: 15px; }
+        h1 { font-size: 2.8rem; color: var(--primary); font-weight: 900; letter-spacing: -1px; margin-bottom: 15px; text-align: center; }
 
         .copy-ip {
             background: rgba(30, 144, 255, 0.1);
             border: 1px solid var(--primary);
             color: white; padding: 15px; border-radius: 12px; font-weight: 900; 
             cursor: pointer; transition: 0.3s; text-align: center;
+            margin-bottom: 10px;
         }
-        .copy-ip:hover { background: var(--primary); box-shadow: 0 0 25px var(--primary-glow); }
+        .copy-ip:hover { background: var(--primary); box-shadow: 0 0 25px var(--primary-glow); transform: scale(1.02); }
 
         .perf-panel {
             margin-top: 20px; background: rgba(255,255,255,0.02);
             padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05);
         }
         .perf-bar { height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-top: 5px; overflow: hidden; }
-        .perf-fill { height: 100%; background: var(--primary); width: 45%; box-shadow: 0 0 10px var(--primary); }
+        .perf-fill { height: 100%; background: var(--primary); box-shadow: 0 0 10px var(--primary); transition: width 1s ease-in-out; }
 
         .section-label { font-size: 0.65rem; color: #555; letter-spacing: 2px; text-transform: uppercase; font-weight: 900; margin: 25px 0 10px 0; }
         
@@ -99,20 +100,34 @@
         .admin-card {
             background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05);
             padding: 8px; border-radius: 12px; display: flex; align-items: center; gap: 8px;
+            transition: 0.3s;
         }
+        .admin-card:hover { background: rgba(255, 255, 255, 0.08); border-color: var(--primary); }
         .avatar { width: 30px; height: 30px; border-radius: 5px; border: 1px solid var(--primary); }
         .admin-info p { font-size: 0.75rem; font-weight: 800; }
 
         .right-side { display: flex; flex-direction: column; gap: 20px; }
 
         .status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .status-box { background: rgba(30,144,255,0.05); padding: 12px; border-radius: 12px; border: 1px solid rgba(30,144,255,0.1); }
-        .pulse { display: inline-block; width: 8px; height: 8px; background: var(--accent-green); border-radius: 50%; margin-right: 5px; animation: blink 1.5s infinite; }
-        @keyframes blink { 0% { opacity: 1; box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.7); } 70% { opacity: 0.5; box-shadow: 0 0 0 10px rgba(0, 255, 136, 0); } 100% { opacity: 1; } }
+        .status-box { background: rgba(30,144,255,0.05); padding: 12px; border-radius: 12px; border: 1px solid rgba(30,144,255,0.1); display: flex; align-items: center; }
+        
+        .pulse { 
+            display: inline-block; width: 10px; height: 10px; 
+            background: var(--accent-green); border-radius: 50%; 
+            margin-right: 8px; 
+            animation: blinker 1.5s cubic-bezier(.45, 0, .55, 1) infinite; 
+        }
+        
+        @keyframes blinker { 
+            0% { opacity: 1; box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.7); } 
+            70% { opacity: 0.5; box-shadow: 0 0 0 8px rgba(0, 255, 136, 0); } 
+            100% { opacity: 1; } 
+        }
 
         .modes-wrap { display: flex; gap: 10px; }
-        .mode { flex: 1; padding: 15px; border-radius: 12px; font-weight: 900; text-align: center; font-size: 0.7rem; border: 1px solid rgba(255,255,255,0.1); }
+        .mode { flex: 1; padding: 15px; border-radius: 12px; font-weight: 900; text-align: center; font-size: 0.7rem; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; }
         .m-duels { border-color: var(--accent-red); color: var(--accent-red); background: rgba(255,77,77,0.05); }
+        .m-duels:hover { background: rgba(255,77,77,0.15); transform: translateY(-3px); }
 
         .rules-list { display: flex; flex-direction: column; gap: 8px; }
         .rule-item { 
@@ -126,18 +141,24 @@
 
         .btn-row { display: flex; gap: 10px; }
         .btn { flex: 1; text-decoration: none; color: white; padding: 18px; border-radius: 15px; font-weight: 900; text-align: center; transition: 0.3s; font-size: 0.8rem; text-transform: uppercase; }
-        .btn-dc { background: #5865F2; }
-        .btn-shop { background: #ff9800; }
+        .btn-dc { background: #5865F2; box-shadow: 0 4px 15px rgba(88, 101, 242, 0.3); }
+        .btn-dc:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(88, 101, 242, 0.5); }
+        .btn-shop { background: #ff9800; box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3); }
+        .btn-shop:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(255, 152, 0, 0.5); }
 
         #notif {
             position: fixed; bottom: 30px; background: var(--primary); color: white;
             padding: 12px 30px; border-radius: 40px; font-weight: 900; display: none;
             box-shadow: 0 0 30px var(--primary-glow); z-index: 1000;
+            animation: slideIn 0.3s ease-out;
         }
 
+        @keyframes slideIn { from { transform: translateY(100px); } to { transform: translateY(0); } }
+
         @media (max-width: 900px) {
-            .main-card { grid-template-columns: 1fr; }
+            .main-card { grid-template-columns: 1fr; max-height: 90vh; overflow-y: auto; padding: 25px; }
             .left-side { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 0 0 30px 0; }
+            body { overflow-y: auto; }
         }
     </style>
 </head>
@@ -151,7 +172,7 @@
 
         <div class="left-side">
             <center><img src="logo.png" alt="Logo" class="server-logo"></center>
-            <center><h1>DuceMC.PL</h1></center>
+            <h1>DuceMC.PL</h1>
             <div class="copy-ip" onclick="copyIP()">KOPIUJ ADRES IP</div>
             
             <p class="section-label">LIVE PERFORMANCE</p>
@@ -258,16 +279,18 @@
         }
 
         window.addEventListener('mousemove', (e) => {
-            let xAxis = (window.innerWidth / 2 - e.pageX) / 120;
-            let yAxis = (window.innerHeight / 2 - e.pageY) / 120;
-            card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+            let xAxis = (window.innerWidth / 2 - e.pageX) / 80; // Zwiększona czułość dla lepszego efektu
+            let yAxis = (window.innerHeight / 2 - e.pageY) / 80;
+            card.style.transform = `rotateY(${xAxis}deg) rotateX(${-yAxis}deg)`;
         });
 
         function copyIP() {
             navigator.clipboard.writeText("DUCEMC.PL");
             const n = document.getElementById('notif');
             n.style.display = 'block';
-            setTimeout(() => n.style.display = 'none', 2500);
+            setTimeout(() => {
+                n.style.display = 'none';
+            }, 2500);
         }
 
         window.addEventListener('resize', init);
