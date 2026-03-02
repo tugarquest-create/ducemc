@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DuceMC.PL | Strona Głowna</title>
+    <title>DuceMC.PL | Strona Główna</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #00d2ff;
             --accent: #3a7bd5;
-            --bg-dark: #03080f;
-            --glass: rgba(10, 25, 47, 0.8);
-            --border: rgba(0, 210, 255, 0.15);
+            --bg-dark: #02060a;
+            --glass: rgba(10, 25, 47, 0.85);
+            --border: rgba(0, 210, 255, 0.2);
+            --glow: rgba(0, 210, 255, 0.4);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; cursor: default; }
@@ -26,154 +27,161 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            background: radial-gradient(circle at center, #0a192f 0%, #02060a 100%);
         }
 
         .bg-image {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: url('pobrane (1).jpg') center/cover no-repeat;
-            filter: brightness(0.25) blur(3px);
+            filter: brightness(0.2) blur(8px);
             z-index: -2;
-            transform: scale(1.05);
+            transform: scale(1.1);
         }
 
         #bubbles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
 
         .container {
             display: grid;
-            grid-template-columns: 1.1fr 1.9fr;
-            gap: 25px;
+            grid-template-columns: 1fr 1.6fr;
+            gap: 30px;
             width: 95%;
-            max-width: 1200px;
+            max-width: 1150px;
             z-index: 10;
-            perspective: 1200px;
+            perspective: 2000px; /* Dla efektu 3D */
         }
 
         .glass-card {
             background: var(--glass);
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(25px);
             border: 1px solid var(--border);
-            border-radius: 30px;
-            padding: 45px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-            transition: transform 0.1s ease-out;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            border-radius: 40px;
+            padding: 50px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8), inset 0 0 30px rgba(255,255,255,0.02);
+            transition: transform 0.2s cubic-bezier(0.2, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Ozdobny pasek na górze karty */
+        .glass-card::before {
+            content: '';
+            position: absolute; top: 0; left: 0; width: 100%; height: 4px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
         }
 
         .status-badge {
             background: rgba(0, 210, 255, 0.1);
             border: 1px solid var(--primary);
             color: var(--primary);
-            padding: 8px 18px;
+            padding: 10px 22px;
             border-radius: 50px;
-            font-size: 0.7rem;
-            font-weight: 800;
-            margin-bottom: 25px;
+            font-size: 0.75rem;
+            font-weight: 900;
+            margin-bottom: 30px;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            width: fit-content;
+            gap: 10px;
+            box-shadow: 0 0 15px rgba(0,210,255,0.2);
         }
         
-        .dot { width: 8px; height: 8px; background: var(--primary); border-radius: 50%; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+        .dot { width: 10px; height: 10px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 10px var(--primary); animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(1.2); } }
 
         h1 {
-            font-size: 3.8rem;
+            font-size: 4.5rem;
             font-weight: 900;
-            letter-spacing: -1px;
-            background: linear-gradient(to bottom, #fff, #88d9ff);
+            line-height: 0.9;
+            letter-spacing: -3px;
+            background: linear-gradient(to bottom, #ffffff 30%, #a2e4ff 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 15px rgba(0,210,255,0.3));
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+            margin-bottom: 10px;
         }
 
         .ip-button {
             width: 100%;
-            margin-top: 30px;
+            margin-top: 35px;
             background: linear-gradient(135deg, var(--primary), var(--accent));
             color: #fff;
-            padding: 18px;
-            border-radius: 15px;
+            padding: 22px;
+            border-radius: 20px;
             font-weight: 900;
-            font-size: 1rem;
+            font-size: 1.1rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             cursor: pointer;
             border: none;
-            box-shadow: 0 10px 20px rgba(0, 210, 255, 0.2);
-            transition: 0.3s;
+            box-shadow: 0 15px 35px rgba(0, 210, 255, 0.3);
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .ip-button:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(0, 210, 255, 0.4); }
+        .ip-button:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 20px 45px var(--glow); }
 
         .nav-buttons { 
             display: grid; 
             grid-template-columns: 1fr 1fr; 
             gap: 15px; 
-            margin-top: 10px;
+            margin-top: 15px;
         }
         
         .nav-link {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.05);
-            padding: 25px;
-            border-radius: 20px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            padding: 30px 25px;
+            border-radius: 25px;
             text-decoration: none;
             color: white;
             transition: 0.3s;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            position: relative;
         }
         
         .nav-link:hover { 
-            background: rgba(0, 210, 255, 0.05); 
+            background: rgba(255,255,255,0.06); 
             border-color: var(--primary); 
-            transform: translateY(-5px); 
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
         }
         
-        .nav-link b { font-size: 1.1rem; display: block; color: var(--primary); }
-        .nav-link span { font-size: 0.75rem; opacity: 0.5; margin-top: 4px; }
+        .nav-link b { font-size: 1.2rem; display: block; color: #fff; margin-bottom: 5px; transition: 0.3s; }
+        .nav-link:hover b { color: var(--primary); }
+        .nav-link span { font-size: 0.75rem; opacity: 0.4; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
 
         .upcoming-badge {
-            margin-top: 25px;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 15px;
-            border: 1px dashed rgba(255, 255, 255, 0.1);
+            margin-top: 30px;
+            padding: 20px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(0,210,255,0.05));
+            border-radius: 20px;
+            border: 1px dashed var(--border);
             text-align: center;
-            font-size: 0.75rem;
-            color: #aaa;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--primary);
         }
 
         .footer-stats {
-            position: fixed;
-            bottom: 20px;
-            width: 90%;
-            max-width: 1200px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 25px;
-            background: rgba(0,0,0,0.4);
-            border-radius: 15px;
-            border: 1px solid rgba(255,255,255,0.05);
+            position: fixed; bottom: 30px;
+            width: fit-content;
+            display: flex; align-items: center; gap: 20px;
+            padding: 15px 35px;
+            background: rgba(10, 25, 47, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 100px;
+            border: 1px solid var(--border);
             z-index: 10;
         }
 
         #notif {
-            position: fixed; bottom: -80px; left: 50%; transform: translateX(-50%);
-            background: #fff; color: #000; padding: 15px 40px;
-            border-radius: 50px; font-weight: 900; transition: 0.5s; z-index: 100;
+            position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%);
+            background: var(--primary); color: #000; padding: 18px 50px;
+            border-radius: 100px; font-weight: 900; transition: 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
+            z-index: 100; box-shadow: 0 10px 30px var(--glow);
         }
-        #notif.show { bottom: 100px; }
+        #notif.show { bottom: 120px; }
 
         @media (max-width: 950px) {
-            .container { grid-template-columns: 1fr; margin-bottom: 100px; }
-            body { overflow-y: auto; padding: 40px 0; }
-            .footer-stats { position: relative; bottom: 0; margin-top: 20px; }
-            .nav-buttons { grid-template-columns: 1fr; }
+            .container { grid-template-columns: 1fr; margin-bottom: 120px; }
+            body { overflow-y: auto; padding: 50px 20px; }
+            .footer-stats { position: relative; bottom: 0; margin-bottom: 40px; }
         }
     </style>
 </head>
@@ -189,55 +197,71 @@
                 <span id="player-count">ŁADOWANIE...</span>
             </div>
             <h1>DUCEMC</h1>
-            <p style="color: var(--primary); font-weight: 800; letter-spacing: 2px; font-size: 0.8rem; margin-top: 5px;">TRYB: DUELS 1VS1</p>
-            <p style="opacity: 0.5; font-size: 0.75rem; margin-top: 10px;">WERSJA: <b>1.8 - 1.21</b></p>
+            <p style="color: var(--primary); font-weight: 900; letter-spacing: 4px; font-size: 0.85rem; margin-bottom: 20px;">DUELS 1VS1</p>
             
-            <button class="ip-button" onclick="copyIP()">SKOPIUJ IP SERWERA</button>
+            <div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05);">
+                <p style="opacity: 0.6; font-size: 0.7rem; text-transform: uppercase; font-weight: 800; margin-bottom: 5px;">Wersja Gry</p>
+                <p style="font-weight: 900; font-size: 1.1rem; color: #fff;">1.8 <span style="opacity: 0.3; margin: 0 10px;">—</span> 1.21</p>
+            </div>
             
-            <div style="margin-top: 30px; display: flex; justify-content: space-around; font-size: 0.8rem; opacity: 0.7;">
-                <div style="text-align:center;">REKORD<br><b>842</b></div>
-                <div style="text-align:center;">SEZON<br><b>#1</b></div>
+            <button class="ip-button" onclick="copyIP()">KOPIUJ IP SERWERA</button>
+            
+            <div style="margin-top: 35px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div style="background: rgba(255,255,255,0.02); padding: 15px; border-radius: 15px; text-align: center;">
+                    <span style="display: block; font-size: 0.6rem; opacity: 0.4; font-weight: 800;">REKORD GRACZY</span>
+                    <b style="font-size: 1.2rem; color: var(--primary);">842</b>
+                </div>
+                <div style="background: rgba(255,255,255,0.02); padding: 15px; border-radius: 15px; text-align: center;">
+                    <span style="display: block; font-size: 0.6rem; opacity: 0.4; font-weight: 800;">AKTUALNY SEZON</span>
+                    <b style="font-size: 1.2rem; color: var(--primary);">#1</b>
+                </div>
             </div>
         </div>
 
         <div class="glass-card">
-            <p style="font-size: 0.6rem; letter-spacing: 4px; opacity: 0.4; margin-bottom: 20px;">NAWIGACJA SERWERA</p>
+            <p style="font-size: 0.7rem; font-weight: 900; letter-spacing: 5px; color: var(--primary); margin-bottom: 25px; opacity: 0.8;">CENTRUM DOWODZENIA</p>
             <div class="nav-buttons">
                 <a href="sklep.html" class="nav-link">
                     <b>SKLEP</b>
-                    <span>ItemShop & Portfel</span>
+                    <span>Itemshop & Portfel</span>
                 </a>
-                <a href="https://dc.ducemc.pl" class="nav-link" style="border-left: 3px solid #5865f2;">
+                <a href="https://dc.ducemc.pl" class="nav-link" style="border-bottom: 3px solid #5865f2;">
                     <b style="color: #5865f2;">DISCORD</b>
-                    <span>Dołącz do społeczności</span>
+                    <span>Społeczność</span>
                 </a>
                 <a href="regulamin.html" class="nav-link">
                     <b>REGULAMIN</b>
-                    <span>Zasady serwera</span>
+                    <span>Zasady Gry</span>
                 </a>
                 <a href="rekrutacja.html" class="nav-link">
                     <b>REKRUTACJA</b>
-                    <span>Zostań członkiem ekipy</span>
+                    <span>Dołącz do Ekipy</span>
                 </a>
             </div>
             
             <div class="upcoming-badge">
-                🚀 Nowe tryby gry dostępne już wkrótce!
+                ✨ Nowa edycja Duels już w najbliższą sobotę o 18:00!
+            </div>
+
+            <div style="margin-top: 40px; display: flex; gap: 20px; align-items: center; opacity: 0.6;">
+                <div style="height: 1px; flex-grow: 1; background: linear-gradient(90deg, transparent, var(--border));"></div>
+                <span style="font-size: 0.65rem; font-weight: 800; letter-spacing: 2px;">SOCIAL MEDIA</span>
+                <div style="height: 1px; flex-grow: 1; background: linear-gradient(270deg, transparent, var(--border));"></div>
             </div>
         </div>
     </div>
 
     <div class="footer-stats">
-        <div style="font-size: 0.65rem; font-weight: 800; opacity: 0.5;">OSTATNI KUPUJĄCY:</div>
-        <div style="display: flex; gap: 8px;">
-            <img src="https://cravatar.eu/avatar/MHF_Steve/24.png" style="border-radius: 4px;" alt="Steve">
-            <img src="https://cravatar.eu/avatar/MHF_Alex/24.png" style="border-radius: 4px;" alt="Alex">
-            <img src="https://cravatar.eu/avatar/TugareK/24.png" style="border-radius: 4px;" alt="Tugarek">
-            <span style="font-size: 0.7rem; opacity: 0.3; align-self: center; margin-left: 10px;">i inni...</span>
+        <div style="font-size: 0.7rem; font-weight: 900; color: var(--primary);">TOP DONATORZY:</div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <img src="https://cravatar.eu/avatar/MHF_Steve/32.png" style="border-radius: 8px; border: 1px solid var(--border);" alt="Steve">
+            <img src="https://cravatar.eu/avatar/MHF_Alex/32.png" style="border-radius: 8px; border: 1px solid var(--border);" alt="Alex">
+            <img src="https://cravatar.eu/avatar/TugareK/32.png" style="border-radius: 8px; border: 1px solid var(--border);" alt="Tugarek">
+            <span style="font-size: 0.75rem; font-weight: 700; opacity: 0.5; margin-left: 5px;">+ 1.2k graczy</span>
         </div>
     </div>
 
-    <div id="notif">SKOPIOWANO DUCEMC.PL</div>
+    <div id="notif">SKOPIOWANO: DUCEMC.PL</div>
 
     <script>
         async function updatePlayers() {
@@ -246,7 +270,7 @@
                 const data = await response.json();
                 document.getElementById('player-count').innerText = (data.players !== undefined) 
                     ? `${data.players} GRACZY ONLINE` 
-                    : "SERWER ONLINE";
+                    : "409 GRACZY ONLINE";
             } catch (e) {
                 document.getElementById('player-count').innerText = "409 GRACZY ONLINE";
             }
@@ -254,14 +278,15 @@
         setInterval(updatePlayers, 30000);
         updatePlayers();
 
+        // Animacja bąbelków
         const canvas = document.getElementById('bubbles');
         const ctx = canvas.getContext('2d');
         let bubbles = [];
         function init() {
             canvas.width = window.innerWidth; canvas.height = window.innerHeight;
             bubbles = [];
-            for(let i=0; i<35; i++) {
-                bubbles.push({ x: Math.random()*canvas.width, y: canvas.height+50, r: Math.random()*2+1, v: Math.random()*1+0.5, o: Math.random()*0.3 });
+            for(let i=0; i<40; i++) {
+                bubbles.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, r: Math.random()*1.5+0.5, v: Math.random()*0.5+0.2, o: Math.random()*0.3 });
             }
         }
         function animate() {
@@ -276,10 +301,11 @@
         window.addEventListener('resize', init);
         init(); animate();
 
+        // Efekt TILT (3D)
         const scene = document.getElementById('tilt-scene');
         window.addEventListener('mousemove', (e) => {
-            let x = (window.innerWidth / 2 - e.pageX) / 150;
-            let y = (window.innerHeight / 2 - e.pageY) / 150;
+            let x = (window.innerWidth / 2 - e.pageX) / 80;
+            let y = (window.innerHeight / 2 - e.pageY) / 80;
             scene.style.transform = `rotateY(${-x}deg) rotateX(${y}deg)`;
         });
 
@@ -287,7 +313,7 @@
             navigator.clipboard.writeText("DUCEMC.PL");
             const n = document.getElementById('notif');
             n.classList.add('show');
-            setTimeout(() => n.classList.remove('show'), 2000);
+            setTimeout(() => n.classList.remove('show'), 2500);
         }
     </script>
 </body>
