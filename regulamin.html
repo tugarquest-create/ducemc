@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regulamin | DuceMC.PL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #00e5ff;
+            --primary-glow: rgba(0, 229, 255, 0.4);
+            --bg-dark: #020205;
+            --card-bg: rgba(10, 10, 20, 0.95);
+            --border: rgba(255, 255, 255, 0.05);
+            --transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--bg-dark);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 80px 20px;
+            overflow-x: hidden;
+        }
+
+        /* Animowane tło - linie kodu / matrix */
+        #matrix-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; opacity: 0.15; pointer-events: none;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        header { text-align: center; margin-bottom: 60px; }
+        
+        .badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: var(--primary-glow);
+            border: 1px solid var(--primary);
+            border-radius: 50px;
+            color: var(--primary);
+            font-size: 0.7rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        h1 { font-size: 3.5rem; font-weight: 900; letter-spacing: -2px; margin-bottom: 10px; }
+        .last-update { color: #555; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; }
+
+        /* --- SEKCJE REGULAMINU --- */
+        .rules-wrapper { display: flex; flex-direction: column; gap: 20px; }
+
+        .rule-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 25px;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .rule-header {
+            padding: 30px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+
+        .rule-header:hover { background: rgba(255,255,255,0.02); }
+        
+        .rule-title { display: flex; align-items: center; gap: 20px; }
+        .rule-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.2rem;
+            color: var(--primary);
+            font-weight: 700;
+            opacity: 0.5;
+        }
+        .rule-header h3 { font-size: 1.3rem; font-weight: 800; letter-spacing: 1px; }
+
+        .rule-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0, 1, 0, 1);
+            background: rgba(0,0,0,0.2);
+        }
+
+        .rule-section.active .rule-content {
+            max-height: 1000px;
+            transition: all 0.5s cubic-bezier(1, 0, 1, 0);
+            padding: 0 30px 30px 80px;
+        }
+
+        .rule-section.active {
+            border-color: var(--primary);
+            box-shadow: 0 10px 40px rgba(0, 229, 255, 0.1);
+            transform: scale(1.02);
+        }
+
+        .rule-list { list-style: none; }
+        .rule-list li {
+            position: relative;
+            margin-bottom: 15px;
+            color: #aaa;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .rule-list li::before {
+            content: '>';
+            position: absolute;
+            left: -25px;
+            color: var(--primary);
+            font-weight: 900;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* --- STOPKA --- */
+        .footer-info {
+            margin-top: 60px;
+            text-align: center;
+            padding: 40px;
+            border-top: 1px solid var(--border);
+        }
+
+        .accept-box {
+            background: linear-gradient(90deg, transparent, rgba(var(--primary-rgb), 0.05), transparent);
+            padding: 20px;
+            font-weight: 700;
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .btn-back {
+            display: inline-block;
+            margin-top: 30px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+            transition: 0.3s;
+        }
+        .btn-back:hover { letter-spacing: 5px; text-shadow: 0 0 10px var(--primary); }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.2rem; }
+            .rule-header { padding: 20px; }
+            .rule-section.active .rule-content { padding-left: 40px; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="matrix-bg"></canvas>
+
+    <div class="container">
+        <header>
+            <div class="badge">Legal Document v2.0</div>
+            <h1>REGULAMIN</h1>
+            <p class="last-update">Ostatnia aktualizacja: 02.03.2026</p>
+        </header>
+
+        <div class="rules-wrapper">
+            <div class="rule-section active">
+                <div class="rule-header" onclick="toggleSection(this)">
+                    <div class="rule-title">
+                        <span class="rule-number">01</span>
+                        <h3>Postanowienia Ogólne</h3>
+                    </div>
+                    <span class="icon">▼</span>
+                </div>
+                <div class="rule-content">
+                    <ul class="rule-list">
+                        <li>Wejście na serwer oznacza automatyczną akceptację poniższego regulaminu.</li>
+                        <li>Nieznajomość regulaminu nie zwalnia z odpowiedzialności za jego łamanie.</li>
+                        <li>Administracja zastrzega sobie prawo do zmiany regulaminu w dowolnym momencie.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="rule-section">
+                <div class="rule-header" onclick="toggleSection(this)">
+                    <div class="rule-title">
+                        <span class="rule-number">02</span>
+                        <h3>Rozgrywka i Cheaty</h3>
+                    </div>
+                    <span class="icon">▼</span>
+                </div>
+                <div class="rule-content">
+                    <ul class="rule-list">
+                        <li>Używanie jakichkolwiek wspomagaczy (KillAura, Fly, Autoclicker itp.) jest karane permanentnym banem.</li>
+                        <li>Wykorzystywanie błędów serwera (bugów) musi być natychmiast zgłoszone administracji.</li>
+                        <li>Zakaz używania modyfikacji dających przewagę nad innymi (z wyjątkiem OptiFine/Sodium).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="rule-section">
+                <div class="rule-header" onclick="toggleSection(this)">
+                    <div class="rule-title">
+                        <span class="rule-number">03</span>
+                        <h3>Kultura i Czat</h3>
+                    </div>
+                    <span class="icon">▼</span>
+                </div>
+                <div class="rule-content">
+                    <ul class="rule-list">
+                        <li>Zakaz obrażania graczy oraz członków administracji.</li>
+                        <li>Zakaz reklamowania innych serwerów Minecraft, stron WWW oraz kanałów YT/DC bez zgody.</li>
+                        <li>Spamowanie, floodowanie oraz pisanie nadmiernie dużymi literami (CAPS) jest zabronione.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="rule-section">
+                <div class="rule-header" onclick="toggleSection(this)">
+                    <div class="rule-title">
+                        <span class="rule-number">04</span>
+                        <h3>Płatności i Sklep</h3>
+                    </div>
+                    <span class="icon">▼</span>
+                </div>
+                <div class="rule-content">
+                    <ul class="rule-list">
+                        <li>Zakupy w sklepie są dobrowolne i wspierają rozwój serwera.</li>
+                        <li>Serwer nie zwraca kosztów za zakupione rangi w przypadku otrzymania bana za łamanie regulaminu.</li>
+                        <li>Problemy z płatnościami należy zgłaszać poprzez ticket na Discordzie.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-info">
+            <div class="accept-box">
+                GRAJĄC NA DUCEMC.PL ŚWIADCZYĆ TO BĘDZIE O PEŁNEJ AKCEPTACJI POWYŻSZYCH ZASAD.
+            </div>
+            <a href="index.html" class="btn-back">← POWRÓT DO PORTALU</a>
+        </div>
+    </div>
+
+    <script>
+        // Funkcja do rozwijania sekcji (Accordion)
+        function toggleSection(element) {
+            const section = element.parentElement;
+            const isActive = section.classList.contains('active');
+            
+            // Zamknij wszystkie sekcje (opcjonalne - jeśli chcesz tylko jedną otwartą)
+            // document.querySelectorAll('.rule-section').forEach(s => s.classList.remove('active'));
+
+            if (!isActive) {
+                section.classList.add('active');
+            } else {
+                section.classList.remove('active');
+            }
+        }
+
+        // MATRIX BACKGROUND EFFECT
+        const canvas = document.getElementById('matrix-bg');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>[]{}/?';
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+
+        for (let i = 0; i < columns; i++) drops[i] = 1;
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(2, 2, 5, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#00e5ff';
+            ctx.font = fontSize + 'px Courier New';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = characters.charAt(Math.floor(Math.random() * characters.length));
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            }
+        }
+
+        setInterval(drawMatrix, 50);
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
